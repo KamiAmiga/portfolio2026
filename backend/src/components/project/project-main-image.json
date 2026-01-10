@@ -1,0 +1,33 @@
+{
+  "collectionName": "components_project_project_main_images",
+  "info": {
+    "displayName": "Project main image",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "images": {
+      "type": "media",
+      "multiple": true,
+      "required": true,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "type": {
+      "type": "enumeration",
+      "enum": [
+        "ui-mobile_desktop",
+        "ui-desktop",
+        "ui-mobile",
+        "design-print",
+        "design-visual_id",
+        "drawing"
+      ],
+      "required": true
+    }
+  }
+}

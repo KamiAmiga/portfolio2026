@@ -1,0 +1,100 @@
+{
+  "kind": "collectionType",
+  "collectionName": "projects",
+  "info": {
+    "singularName": "project",
+    "pluralName": "projects",
+    "displayName": "Project",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "skills": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::skill.skill"
+    },
+    "year": {
+      "type": "integer",
+      "required": true,
+      "min": 2015
+    },
+    "footer_image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "typography": {
+      "type": "component",
+      "repeatable": true,
+      "component": "project.typography"
+    },
+    "colors": {
+      "type": "component",
+      "repeatable": true,
+      "component": "project.color"
+    },
+    "main_images": {
+      "type": "component",
+      "repeatable": true,
+      "component": "project.project-main-image"
+    },
+    "secondary_images": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "name"
+    },
+    "type": {
+      "type": "enumeration",
+      "enum": [
+        "design",
+        "illustration"
+      ]
+    },
+    "cover_image_portrait": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "cover_image_landscape": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "seo": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.seo"
+    },
+    "description": {
+      "type": "blocks"
+    }
+  }
+}

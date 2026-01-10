@@ -1,0 +1,17 @@
+{
+  "collectionName": "components_project_colors",
+  "info": {
+    "displayName": "Color"
+  },
+  "options": {},
+  "attributes": {
+    "color_name": {
+      "type": "string"
+    },
+    "color_code": {
+      "type": "string",
+      "maxLength": 6,
+      "minLength": 6
+    }
+  }
+}

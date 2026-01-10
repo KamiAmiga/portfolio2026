@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_project_typographies",
+  "info": {
+    "displayName": "Typography"
+  },
+  "options": {},
+  "attributes": {
+    "typo_visual": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": false
+    },
+    "typo_name": {
+      "type": "string"
+    }
+  }
+}

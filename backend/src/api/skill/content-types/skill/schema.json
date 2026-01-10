@@ -1,0 +1,40 @@
+{
+  "kind": "collectionType",
+  "collectionName": "skills",
+  "info": {
+    "singularName": "skill",
+    "pluralName": "skills",
+    "displayName": "Skill",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "level": {
+      "type": "integer",
+      "max": 2,
+      "min": 0,
+      "required": true,
+      "default": 0
+    },
+    "category": {
+      "type": "enumeration",
+      "enum": [
+        "language",
+        "development",
+        "art",
+        "web"
+      ]
+    },
+    "icon_name": {
+      "type": "string"
+    }
+  }
+}

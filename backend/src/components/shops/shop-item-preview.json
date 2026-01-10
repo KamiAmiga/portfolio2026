@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_shops_shop_item_previews",
+  "info": {
+    "displayName": "Shop item preview"
+  },
+  "options": {},
+  "attributes": {
+    "image": {
+      "allowedTypes": [
+        "images"
+      ],
+      "type": "media",
+      "multiple": false,
+      "required": true
+    },
+    "link": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

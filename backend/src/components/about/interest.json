@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_about_interests",
+  "info": {
+    "displayName": "Interest"
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "icon_name": {
+      "type": "string"
+    }
+  }
+}

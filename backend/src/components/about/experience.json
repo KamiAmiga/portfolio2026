@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_about_experiences",
+  "info": {
+    "displayName": "Experience"
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "date": {
+      "type": "string"
+    },
+    "place": {
+      "type": "string"
+    },
+    "category": {
+      "type": "enumeration",
+      "enum": [
+        "school",
+        "work"
+      ]
+    }
+  }
+}

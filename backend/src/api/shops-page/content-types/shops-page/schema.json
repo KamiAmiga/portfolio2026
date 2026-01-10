@@ -1,0 +1,37 @@
+{
+  "kind": "singleType",
+  "collectionName": "shops_pages",
+  "info": {
+    "singularName": "shops-page",
+    "pluralName": "shops-pages",
+    "displayName": "Shops page",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "subtitle": {
+      "type": "string"
+    },
+    "shops_list": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shops.shop-item"
+    },
+    "social_links": {
+      "type": "component",
+      "repeatable": true,
+      "component": "about.social-link"
+    },
+    "seo": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.seo"
+    }
+  }
+}
