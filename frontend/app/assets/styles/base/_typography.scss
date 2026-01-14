@@ -1,0 +1,17 @@
+@use '../abstracts' as *;
+
+.font-sans {
+  @each $level, $settings in $font-sans {
+    &--#{$level} {
+      @include font-sans($settings)
+    }
+  }
+}
+
+.font-mono {
+  @each $level, $settings in $font-mono {
+    &--#{$level} {
+      @include font-mono($settings)
+    }
+  }
+}

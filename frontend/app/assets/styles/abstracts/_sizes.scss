@@ -1,0 +1,50 @@
+@use "sass:math";
+
+//
+// Spacers
+//
+
+$spacer: 1rem;
+$spacers: (
+  1: math.div($spacer, 8),
+  2: math.div($spacer, 4),
+  3: math.div($spacer, 2),
+  4: $spacer,
+  5: $spacer * 1.25,
+  6: $spacer * 1.5,
+  7: $spacer * 2,
+  8: $spacer * 3,
+  9: $spacer * 4,
+  10: $spacer * 5,
+  11: $spacer * 7
+);
+
+
+//
+// Breakpoints
+//
+
+$breakpoints: (
+  xs: 30rem,
+  s: 40rem,
+  m: 60rem,
+  l: 80rem,
+);
+
+
+//
+// Icons
+//
+
+$icon-sizes: (
+  s: 1rem,
+  m: 1.25rem,
+  l: 1.5rem,
+  xl: 2rem
+);
+
+$icon-wrapper-sizes: (
+  s: 2.5rem,
+  m: 3rem,
+  l: 4rem
+);

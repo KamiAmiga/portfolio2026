@@ -1,0 +1,137 @@
+@use 'sass:math';
+@use "sass:map";
+@use 'sass:list';
+@use './colors' as *;
+
+//
+// Font-sizes calculated from:
+// https://utopia.fyi/type/calculator?c=400,16,1.25,1600,20,1.25,6,1,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l&g=s,l,xl,12
+//
+
+$font-sizes: (
+  sm: clamp(0.8rem, 0.7333rem + 0.2667vw, 1rem),
+  base: clamp(1rem, 0.9167rem + 0.3333vw, 1.25rem),
+  md: clamp(1.25rem, 1.1458rem + 0.4167vw, 1.5625rem),
+  lg: clamp(1.9531rem, 1.7904rem + 0.651vw, 2.4414rem),
+  xl: clamp(2.4414rem, 2.238rem + 0.8138vw, 3.0518rem),
+  xxl: clamp(3.0518rem, 2.7974rem + 1.0173vw, 3.8147rem),
+  xxxl: clamp(3.8147rem, 3.4968rem + 1.2716vw, 4.7684rem)
+);
+
+$font-families: (
+  sans: (Montserrat, Avenir, Helvetica Neue, sans-serif),
+  mono: (Inconsolata, Ubuntu Mono, monospace),
+);
+
+$letter-spacings: (
+  xs: -.005em, // for lg & xl
+  sm: 0, // for md, xxl & xxxl
+  base: .005em, // for base & base bold, 
+  md: .02em, // for sm & base mono,
+  lg: 0.12em, // for md capitalized
+  xl: 0.16em, // for base capitalized
+);
+
+$line-heights: (
+  sm: 1.25, // for md+
+  base: 1.5, // for sm & base
+);
+
+$font-sans: (
+  sm: (
+    font-size: map.get($font-sizes, small),
+    color: map.get($theme-colors, primary, lighter-2),
+    font-weight: 400,
+    line-height: map.get($line-heights, base),
+    letter-spacing: map.get($letter-spacings, base),
+  ),
+  base: (
+    font-size: map.get($font-sizes, base),
+    color: map.get($theme-colors, primary, reverse),
+    font-weight: 400,
+    line-height: map.get($line-heights, base),
+    letter-spacing: map.get($letter-spacings, md),
+  ),
+  base-bold: (
+    font-size: map.get($font-sizes, base),
+    color: map.get($theme-colors, primary, reverse),
+    font-weight: 700,
+    line-height: map.get($line-heights, base),
+    letter-spacing: map.get($letter-spacings, base),
+  ),
+  base-capitalized: (
+    font-size: map.get($font-sizes, base),
+    color: map.get($theme-colors, accent, lighter),
+    font-weight: 300,
+    line-height: map.get($line-heights, base),
+    letter-spacing: map.get($letter-spacings, xl),
+    text-transform: uppercase,
+    text-wrap: balance,
+  ),
+  md: (
+    font-size: map.get($font-sizes, md),
+    color: map.get($theme-colors, primary, reverse),
+    font-weight: 600,
+    line-height: map.get($line-heights, sm),
+    letter-spacing: map.get($letter-spacings, md),
+  ),
+  md-capitalized: (
+    font-size: map.get($font-sizes, md),
+    color: map.get($theme-colors, primary, reverse),
+    font-weight: 300,
+    line-height: map.get($line-heights, sm),
+    letter-spacing: map.get($letter-spacings, lg),
+    text-transform: uppercase,
+    text-wrap: balance,
+  ),
+  lg: (
+    font-size: map.get($font-sizes, lg),
+    color: map.get($theme-colors, primary, reverse),
+    font-weight: 600,
+    line-height: map.get($line-heights, sm),
+    letter-spacing: map.get($letter-spacings, sm),
+    text-wrap: balance,
+  ),
+  xl: (
+    font-size: map.get($font-sizes, xl),
+    color: map.get($theme-colors, primary, reverse),
+    font-weight: 600,
+    line-height: map.get($line-heights, sm),
+    letter-spacing: map.get($letter-spacings, sm),
+    text-wrap: balance,
+  ),
+  xxl: (
+    font-size: map.get($font-sizes, xxl),
+    color: map.get($theme-colors, primary, reverse),
+    font-weight: 600,
+    line-height: map.get($line-heights, sm),
+    letter-spacing: map.get($letter-spacings, xs),
+    text-wrap: balance,
+  ),
+  xxxl: (
+    font-size: map.get($font-sizes, xxxl),
+    color: map.get($theme-colors, primary, reverse),
+    font-weight: 600,
+    line-height: map.get($line-heights, sm),
+    letter-spacing: map.get($letter-spacings, xs),
+    text-wrap: balance,
+  ),
+);
+
+$font-mono: (
+  sm: (
+    font-size: map.get($font-sizes, sm),
+    color: map.get($theme-colors, primary, lighter-2),
+    font-weight: 700,
+    line-height: map.get($line-heights, base),
+    letter-spacing: map.get($letter-spacings, md),
+  ),
+  base: (
+    font-size: map.get($font-sizes, base),
+    color: map.get($theme-colors, primary, reverse),
+    font-weight: 700,
+    line-height: map.get($line-heights, base),
+    letter-spacing: map.get($letter-spacings, md),
+  ),
+);
+

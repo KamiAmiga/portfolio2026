@@ -1,6 +1,8 @@
 <template>
-  <div>
-    <NuxtRouteAnnouncer />
-    <NuxtWelcome />
-  </div>
+  <div>Hello ?</div>
 </template>
+
+<style lang="scss">
+@use "~/assets/styles/base";
+</style>
+

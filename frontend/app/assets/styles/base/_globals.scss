@@ -1,0 +1,19 @@
+@use "sass:map";
+@use '../abstracts/mixins' as *;
+@use '../abstracts/typography' as *;
+
+html {
+  &:focus-within {
+    scroll-behavior: smooth;
+
+    @media (prefers-reduced-motion: reduce) {
+      scroll-behavior: auto;
+    }
+  }
+}
+
+body {
+  @include font-sans(map.get($font-sans, base));
+  
+  background: var(--color-primary-base);
+}

@@ -1,0 +1,15 @@
+@use '../abstracts' as *;
+
+@include font-face("Montserrat",
+  "montserrat-semibold",
+  600);
+@include font-face("Montserrat",
+  "montserrat-regular",
+  normal);
+@include font-face("Montserrat",
+  "montserrat-light",
+  300);
+@include font-face("Inconsolata",
+  "inconsolata-bold",
+  700,
+  $font-display: fallback);

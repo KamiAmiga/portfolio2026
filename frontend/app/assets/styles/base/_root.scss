@@ -1,0 +1,41 @@
+@use '../abstracts/index' as *;
+
+:root {
+  @each $level, $values in $theme-colors {
+    @each $name, $value in $values {
+      --color-#{$level}-#{$name}: #{$value};
+    }
+  }
+
+  @each $level, $value in $opacities {
+    --opacity-#{$level}: #{$value};
+  }
+
+  @each $level, $value in $font-sizes {
+    --font-size-#{$level}: #{$value};
+  }
+
+  @each $level, $value in $font-families {
+    --font-family-#{$level}: #{$value};
+  }
+
+  @each $level, $value in $letter-spacings {
+    --letter-spacing-#{$level}: #{$value};
+  }
+  
+  @each $level, $value in $line-heights {
+    --line-height-#{$level}: #{$value};
+  }
+
+  @each $level, $value in $spacers {
+    --spacer-#{$level}: #{$value};
+  }
+
+  @each $level, $value in $icon-sizes {
+    --icon-size-#{$level}: #{$value};
+  }
+
+  @each $level, $value in $icon-wrapper-sizes {
+    --icon-wrapper-size-#{$level}: #{$value};
+  }
+}

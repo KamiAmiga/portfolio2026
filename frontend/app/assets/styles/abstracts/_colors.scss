@@ -1,0 +1,54 @@
+@use "sass:map";
+@use "sass:math";
+
+$theme-colors: (
+  primary: (
+    base: #04081C,
+    darker: #000002,
+    lighter-1: #202A5D,
+    lighter-2: #9EB6C2,
+    reverse: #ffffff,
+  ),
+  accent: (
+    base: #12D7E0,
+    darker: #0A7E93,
+    lighter: #24EFEA,
+  ),
+  secondary: (
+    base: #EA0445,
+    darker: #86032E,
+    lighter: #F7755F,
+  ),
+  tertiary: (
+    base: #F88A37,
+    darker: #A54720,
+    lighter: #FFD789,
+  ),
+  fourth: (
+    base: #1EF484,
+    darker: #007746,
+    lighter: #AAF895,
+  )
+);
+
+$opacities: (
+  1: .04,
+  2: .08,
+  3: .16,
+  4: .24,
+  5: .32,
+  6: .48,
+  7: .64,
+  8: .8,
+  9: .92,
+);
+
+$opacities-percentages: ();
+@each $key, $value in $opacities {
+  $opacities-percentages: map.set($opacities-percentages, $key, math.percentage($value));
+}
+
+$fading-out: ();
+@each $key, $value in $opacities {
+  $fading-out: map.set($fading-out, $key, math.div(math.round((1 - $value) * 100), 100));
+}
