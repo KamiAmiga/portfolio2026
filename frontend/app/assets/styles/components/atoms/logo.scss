@@ -1,0 +1,35 @@
+.logo {
+  width: 100%;
+  aspect-ratio: .866;
+  position: relative;
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+  background: linear-gradient(
+    to right,
+    var(--color-accent-base)
+    67%,
+    var(--color-accent-darker));
+  
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    clip-path: polygon(0 0, 100% 50%, 0 100%);
+  }
+
+  &::before {
+    width: 50%;
+    padding-bottom: 56.94%;
+    top: 50%;
+    left: 25%;
+    background-color: var(--color-primary-base);
+    transform: translateY(-50%);
+  }
+
+  &::after {
+    width: 20%;
+    padding-bottom: 22.222%;
+    left: 16.5%;
+    bottom: 50%;
+    background-color: var(--color-primary-reverse);
+  } 
+}
