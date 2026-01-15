@@ -1,0 +1,44 @@
+@use "sass:map";
+@use '../../abstracts/' as *;
+
+.grid {
+  display: grid;
+  width: 100%;
+  box-sizing: border-box;
+  padding-inline: var(--spacer-4);
+  grid-template-columns: 1fr;
+
+  @media screen and (min-width: map.get($breakpoints, m)) {
+    padding-inline: var(--spacer-10);
+    grid-template-columns: repeat(6, 1fr);
+    column-gap: var(--spacer-4);
+  }
+
+  @media screen and (min-width: map.get($breakpoints, l)) {
+    column-gap: var(--spacer-6);
+  }
+
+  &--full {
+    > * {
+      @media screen and (min-width: map.get($breakpoints, m)) {
+        grid-column: span 6;
+      }
+    }
+  }
+
+  &--halves {
+    > * {
+      @media screen and (min-width: map.get($breakpoints, m)) {
+        grid-column: span 3;
+      }
+    }
+  }
+
+  &--thirds {
+    > * {
+      @media screen and (min-width: map.get($breakpoints, m)) {
+        grid-column: span 2;
+      }
+    }
+  }
+}

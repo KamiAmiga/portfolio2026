@@ -24,6 +24,10 @@ export default defineNuxtConfig({
         path: "~/components/molecules",
         global: true,
       },
+      {
+        path: "~/components/organisms",
+        global: true,
+      },
       "~/components",
     ],
   },
