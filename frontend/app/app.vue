@@ -1,5 +1,13 @@
+<script setup lang="ts">
+const mainID = "main"
+</script>
+
 <template>
-  <div>Hello ?</div>
+  <SkipLink :targetID="mainID" />
+
+  <main role="main" :id="mainID">
+    <NuxtPage />
+  </main>
 </template>
 
 <style lang="scss">

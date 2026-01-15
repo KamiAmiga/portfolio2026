@@ -39,7 +39,7 @@ $line-heights: (
 
 $font-sans: (
   sm: (
-    font-size: map.get($font-sizes, small),
+    font-size: map.get($font-sizes, sm),
     color: map.get($theme-colors, primary, lighter-2),
     font-weight: 400,
     line-height: map.get($line-heights, base),

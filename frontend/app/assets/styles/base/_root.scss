@@ -38,4 +38,8 @@
   @each $level, $value in $icon-wrapper-sizes {
     --icon-wrapper-size-#{$level}: #{$value};
   }
+
+  @each $level, $value in $z-index {
+    --z-index-#{$level}: #{$value};
+  }
 }

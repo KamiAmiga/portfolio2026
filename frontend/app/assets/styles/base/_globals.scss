@@ -13,7 +13,7 @@ html {
 }
 
 body {
-  @include font-sans(map.get($font-sans, base));
-  
+  font-family: var(--font-family-sans);
+  color: var(--color-primary-reverse);
   background: var(--color-primary-base);
 }
