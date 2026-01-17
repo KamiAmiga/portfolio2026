@@ -1,6 +1,4 @@
 @use "sass:map";
-@use '../abstracts/mixins' as *;
-@use '../abstracts/typography' as *;
 
 html {
   &:focus-within {

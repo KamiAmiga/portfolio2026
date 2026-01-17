@@ -14,8 +14,8 @@ $font-sizes: (
   md: clamp(1.25rem, 1.1458rem + 0.4167vw, 1.5625rem),
   lg: clamp(1.9531rem, 1.7904rem + 0.651vw, 2.4414rem),
   xl: clamp(2.4414rem, 2.238rem + 0.8138vw, 3.0518rem),
-  xxl: clamp(3.0518rem, 2.7974rem + 1.0173vw, 3.8147rem),
-  xxxl: clamp(3.8147rem, 3.4968rem + 1.2716vw, 4.7684rem)
+  2xl: clamp(3.0518rem, 2.7974rem + 1.0173vw, 3.8147rem),
+  3xl: clamp(3.8147rem, 3.4968rem + 1.2716vw, 4.7684rem)
 );
 
 $font-families: (
@@ -25,7 +25,7 @@ $font-families: (
 
 $letter-spacings: (
   xs: -.005em, // for lg & xl
-  sm: 0, // for md, xxl & xxxl
+  sm: 0, // for md, 2xl & 3xl
   base: .005em, // for base & base bold, 
   md: .02em, // for sm & base mono,
   lg: 0.12em, // for md capitalized
@@ -100,16 +100,16 @@ $font-sans: (
     letter-spacing: map.get($letter-spacings, sm),
     text-wrap: balance,
   ),
-  xxl: (
-    font-size: map.get($font-sizes, xxl),
+  2xl: (
+    font-size: map.get($font-sizes, 2xl),
     color: map.get($theme-colors, primary, reverse),
     font-weight: 600,
     line-height: map.get($line-heights, sm),
     letter-spacing: map.get($letter-spacings, xs),
     text-wrap: balance,
   ),
-  xxxl: (
-    font-size: map.get($font-sizes, xxxl),
+  3xl: (
+    font-size: map.get($font-sizes, 3xl),
     color: map.get($theme-colors, primary, reverse),
     font-weight: 600,
     line-height: map.get($line-heights, sm),

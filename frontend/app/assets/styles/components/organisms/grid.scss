@@ -5,17 +5,17 @@
   display: grid;
   width: 100%;
   box-sizing: border-box;
-  padding-inline: var(--spacer-4);
+  padding-inline: var(--spacer-md);
   grid-template-columns: 1fr;
 
   @media screen and (min-width: map.get($breakpoints, m)) {
-    padding-inline: var(--spacer-10);
+    padding-inline: var(--spacer-3xl);
     grid-template-columns: repeat(6, 1fr);
-    column-gap: var(--spacer-4);
+    column-gap: var(--spacer-base);
   }
 
   @media screen and (min-width: map.get($breakpoints, l)) {
-    column-gap: var(--spacer-6);
+    column-gap: var(--spacer-lg);
   }
 
   &--full {

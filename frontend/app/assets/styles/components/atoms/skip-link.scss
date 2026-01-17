@@ -1,23 +1,20 @@
 @use "sass:map";
-@use '../../abstracts/typography' as *;
-@use '../../abstracts/mixins' as *;
+@use '../../abstracts' as *;
 
 .skip-link {
   width: 100%;
-  border-top: 3px solid var(--color-secondary-darker);
+  border-top: var(--spacer-2xs) solid var(--color-secondary-darker);
   position: fixed;
   left: 0;
-  top: 0;
+  top: -100vh;
   z-index: calc(var(--z-index-nav) + var(--z-index-base-increase));
-  transform: translateY(-150%);
-  transition: transform .2s ease-in-out;
 
   &__label {
     @include font-mono(map.get($font-mono, sm));
 
     display: inline-block;
-    padding: var(--spacer-1) var(--spacer-3);
-    margin-inline-start: var(--spacer-6);
+    padding: var(--spacer-2xs) var(--spacer-sm);
+    margin-inline-start: var(--spacer-md);
     background-color: var(--color-secondary-darker);
     color: var(--color-primary-reverse);
     line-height: 1;
@@ -25,6 +22,6 @@
   }
 
   &:focus-within {
-    transform: translateY(0);
+    top: 0;
   }
 }

@@ -1,4 +1,4 @@
-@use '../abstracts/index' as *;
+@use '../abstracts' as *;
 
 :root {
   @each $level, $values in $theme-colors {
@@ -9,6 +9,14 @@
 
   @each $level, $value in $opacities {
     --opacity-#{$level}: #{$value};
+  }
+
+  @each $level, $value in $opacities-percentages {
+    --opacity-percentage-#{$level}: #{$value};
+  }
+
+  @each $level, $value in $fading-out {
+    --fading-out-#{$level}: #{$value};
   }
 
   @each $level, $value in $font-sizes {
@@ -31,12 +39,8 @@
     --spacer-#{$level}: #{$value};
   }
 
-  @each $level, $value in $icon-sizes {
-    --icon-size-#{$level}: #{$value};
-  }
-
-  @each $level, $value in $icon-wrapper-sizes {
-    --icon-wrapper-size-#{$level}: #{$value};
+  @each $level, $value in $one-up-spacers {
+    --spacer-#{$level}: #{$value};
   }
 
   @each $level, $value in $z-index {
