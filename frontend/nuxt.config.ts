@@ -32,5 +32,14 @@ export default defineNuxtConfig({
     ],
   },
   devtools: { enabled: true },
-  modules: ['@nuxt/content']
+  image: {
+    format: ['webp'],
+    quality: 85,
+    screens: {
+      'md': 640,
+      'lg': 1280,
+      'xl': 1920
+    },
+  },
+  modules: ['@nuxt/content', '@nuxt/image']
 })
