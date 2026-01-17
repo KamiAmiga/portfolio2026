@@ -1,9 +1,21 @@
 <script setup lang="ts">
 const mainID = "main"
+const menuLinks = [
+  {
+    target: 'projets',
+    label: 'Projets'
+  },
+    {
+    target: 'a-propos',
+    label: 'À propos'
+  }
+]
 </script>
 
 <template>
   <SkipLink :targetID="mainID" />
+  
+  <MainMenu :links="menuLinks" />
 
   <main role="main" :id="mainID">
     <NuxtPage />
@@ -12,5 +24,6 @@ const mainID = "main"
 
 <style lang="scss">
 @use "~/assets/styles/base";
+@use "~/assets/styles/utilities";
 </style>
 
