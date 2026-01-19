@@ -15,7 +15,8 @@ $font-sizes: (
   lg: clamp(1.9531rem, 1.7904rem + 0.651vw, 2.4414rem),
   xl: clamp(2.4414rem, 2.238rem + 0.8138vw, 3.0518rem),
   2xl: clamp(3.0518rem, 2.7974rem + 1.0173vw, 3.8147rem),
-  3xl: clamp(3.8147rem, 3.4968rem + 1.2716vw, 4.7684rem)
+  3xl: clamp(3.8147rem, 3.4968rem + 1.2716vw, 4.7684rem),
+  4xl: clamp(4.7684rem, 4.371rem + 1.5895vw, 5.9605rem)
 );
 
 $font-families: (
@@ -110,6 +111,14 @@ $font-sans: (
   ),
   3xl: (
     font-size: map.get($font-sizes, 3xl),
+    color: map.get($theme-colors, primary, reverse),
+    font-weight: 600,
+    line-height: map.get($line-heights, sm),
+    letter-spacing: map.get($letter-spacings, xs),
+    text-wrap: balance,
+  ),
+  4xl: (
+    font-size: map.get($font-sizes, 4xl),
     color: map.get($theme-colors, primary, reverse),
     font-weight: 600,
     line-height: map.get($line-heights, sm),

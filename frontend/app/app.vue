@@ -10,46 +10,6 @@ const menuLinks = [
     label: 'À propos'
   }
 ]
-
-const testImg = {
-  id: 0,
-  attributes: {
-    alternativeText: 'test',
-    caption: '',
-    ext: '',
-    name: '',
-    url: '/uploads/cat_Elite_3_ff269ab618.jpg',
-    width: 100,
-    height: 100
-  }
-}
-
-const testPicture = {
-  landscape: {
-    id: 0,
-    attributes: {
-      alternativeText: '',
-      caption: '',
-      ext: '',
-      name: '',
-      url: '/uploads/cat_Elite_cover_Landscape_a59a8a81b6.jpg',
-      width: 100,
-      height: 100
-    }
-  },
-  portrait: {
-    id: 0,
-    attributes: {
-      alternativeText: '',
-      caption: '',
-      ext: '',
-      name: '',
-      url: '/uploads/cat_Elite_cover_Portrait_7d03803253.jpg',
-      width: 100,
-      height: 100
-    }
-  }
-}
 </script>
 
 <template>
