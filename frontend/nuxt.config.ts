@@ -41,5 +41,5 @@ export default defineNuxtConfig({
       'xl': 1920
     },
   },
-  modules: ['@nuxt/content', '@nuxt/image']
+  modules: ['@nuxt/content', '@nuxt/image', 'nuxt-icons']
 })

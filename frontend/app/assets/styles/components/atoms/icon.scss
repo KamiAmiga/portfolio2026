@@ -1,0 +1,28 @@
+@use "sass:map";
+@use '../../abstracts/' as *;
+
+$icon-sizes: (
+  sm: map.get($font-sizes, sm),
+  base: map.get($font-sizes, base),
+  md: map.get($font-sizes, md),
+  lg: map.get($font-sizes, lg),
+);
+
+.icon {
+  display: inline-block;
+  line-height: 1;
+
+  @each $key, $value in $icon-sizes {
+    &--#{$key} {
+      svg {
+        width: $value;
+        height: auto;
+        aspect-ratio: 1;
+      }
+    }
+  }
+
+  svg {
+    margin-bottom: 0;
+  }
+}
