@@ -11,8 +11,5 @@
     "generate:contents": "node ./index.mjs",
     "generate:media": "rsync -av --exclude='.gitkeep' --exclude='thumbnail_*' backend/public/uploads/ frontend/public/uploads",
     "generate": "npm run generate:contents && npm run generate:media"
-  },
-  "dependencies": {
-    "gsap": "^3.14.2"
   }
 }
