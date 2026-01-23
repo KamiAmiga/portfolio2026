@@ -1,0 +1,38 @@
+.crt-filter {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 100;
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+  }
+
+  &::before {
+    background: linear-gradient(
+      to bottom,
+      transparent 50%,
+      color-mix(
+        in srgb,
+        transparent var(--opacity-percentage-9),
+        var(--color-primary-darker)
+      ) 50%
+    );
+    background-size: 100% var(--spacer-2xs);
+  }
+
+  &::after {
+    background: radial-gradient(
+      circle,
+      transparent 80%,
+      color-mix(
+        in srgb,
+        transparent var(--opacity-percentage-6),
+        var(--color-primary-darker)
+      ) 95%
+    );
+  }
+}

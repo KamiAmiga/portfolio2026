@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup lang="ts"> 
 const mainID = "main"
 const menuLinks = [
   {
@@ -13,6 +13,7 @@ const menuLinks = [
 </script>
 
 <template>
+  <CrtFilter />
   <SkipLink :targetID="mainID" />
   
   <MainMenu :links="menuLinks" />
