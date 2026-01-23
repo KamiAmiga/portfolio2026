@@ -9,19 +9,21 @@ const props = defineProps<{
   format?: "full_screen" | "projects_image";
 }>();
 
+const modifiers = {
+  format: 'webp',
+  quality: 85
+}
+
 const img = useImage()
 const imgSizesParams = {
   sizes: 'md:100vw lg:100vw xl:100vw',
-  modifiers: {
-    format: 'webp',
-    quality: 85
-  }
+  modifiers
 }
 
 const _srcset = computed(() => {
-  const resizerDefault = img.getSizes(props.pictureDataDefault?.attributes?.url, imgSizesParams)
+  const resizerDefault = img.getSizes(props.pictureDataDefault.url, imgSizesParams)
   const resizerPortrait = props.pictureDataPortrait 
-    ? img.getSizes(props.pictureDataPortrait.attributes.url, imgSizesParams)
+    ? img.getSizes(props.pictureDataPortrait.url, imgSizesParams)
     : null
 
   return {resizerDefault, resizerPortrait}
@@ -42,13 +44,15 @@ const _srcset = computed(() => {
       :sizes="_srcset.resizerDefault.sizes"
       type="image/webp">
     <img 
-      :src="_srcset?.resizerDefault?.src ?? pictureDataDefault?.attributes?.url"
-      :alt="pictureDataDefault?.attributes?.alternativeText ?? ''" >
+      :src="_srcset?.resizerDefault?.src ?? pictureDataDefault?.url"
+      :alt="pictureDataDefault?.alternativeText ?? ''" >
   </picture>
 
   <NuxtImg 
     v-else
-    :src="pictureDataDefault?.attributes?.url"
-    :alt="pictureDataDefault?.attributes?.alternativeText ?? ''"
-    :sizes="imgSizesParams.sizes" />
+    :src="pictureDataDefault.url"
+    :alt="pictureDataDefault.alternativeText ?? ''"
+    :sizes="imgSizesParams.sizes"
+    :format="modifiers.format"
+    :quality="modifiers.quality" />
 </template>

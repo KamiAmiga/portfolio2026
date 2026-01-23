@@ -33,8 +33,6 @@ export default defineNuxtConfig({
   },
   devtools: { enabled: true },
   image: {
-    format: ['webp'],
-    quality: 85,
     screens: {
       'md': 640,
       'lg': 1280,
