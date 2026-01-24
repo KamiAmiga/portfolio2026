@@ -2,15 +2,13 @@ import { defineCollection, defineContentConfig, z } from '@nuxt/content'
 
 const strapiImageSchema = z.object({
   id: z.number(),
-  attributes: z.object({
-    alternativeText: z.string(),
-    caption: z.string(),
-    ext: z.string(),
-    name: z.string(),
-    url: z.string(),
-    width: z.number(),
-    height: z.number()
-  })
+  alternativeText: z.string(),
+  caption: z.string(),
+  ext: z.string(),
+  name: z.string(),
+  url: z.string(),
+  width: z.number(),
+  height: z.number()
 })
 
 const jsonRichtextTextNode = z.object({
@@ -53,12 +51,10 @@ const linkSchema = z.object({
 
 const skillSchema = z.object({
   id: z.number(),
-  attributes: z.object({
-    name: z.string(),
-    level: z.number(),
-    category: z.string(),
-    icon_name: z.string()
-  })
+  name: z.string(),
+  level: z.number(),
+  category: z.string(),
+  icon_name: z.string()
 })
 
 const homeSchema = z.object({
@@ -81,9 +77,7 @@ const aboutSchema = z.object({
       category: z.string()
     })
   ),
-  skills: z.object({
-    data: z.array(skillSchema)
-  }),
+  skills: z.array(skillSchema),
   interests: z.array(
     z.object({
       id: z.number(),
