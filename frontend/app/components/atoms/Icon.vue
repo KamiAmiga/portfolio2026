@@ -17,5 +17,5 @@ const props = withDefaults(defineProps<Props>(), {
 </template>
 
 <style lang="scss">
-  @use '~/assets/styles/components/atoms/icon' as *;
+@use '~/assets/styles/components/atoms/icon' as *;
 </style>

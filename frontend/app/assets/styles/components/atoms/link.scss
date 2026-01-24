@@ -1,0 +1,30 @@
+.link {
+  position: relative;
+  color: var(--color-accent-lighter);
+  text-decoration: none;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 100%;
+    height: 2px;
+    background: linear-gradient(
+      to right,
+      var(--color-accent-base),
+      color-mix(
+        in srgb,
+        transparent var(--opacity-percentage-8),
+        var(--color-accent-lighter)
+      ));
+    transition: right .16s ease-out;
+  }
+
+  &:hover,
+  &:focus-visible {
+    &::after {
+      right: 0;
+    }
+  }
+}

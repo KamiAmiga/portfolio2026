@@ -13,6 +13,6 @@ const linkTarget = computed(() => `#${props.targetID}`)
 </template>
 
 <style lang="scss">
-  @use "~/assets/styles/components/atoms/skip-link";
+@use "~/assets/styles/components/atoms/skip-link";
 </style>
 
