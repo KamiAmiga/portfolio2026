@@ -7,7 +7,7 @@
   position: fixed;
   left: 0;
   top: -100vh;
-  z-index: calc(var(--z-index-nav) + var(--z-index-base-increase));
+  z-index: calc(var(--z-index-crt) + var(--z-index-base-increase));
 
   &__label {
     @include font-mono(map.get($font-mono, sm));

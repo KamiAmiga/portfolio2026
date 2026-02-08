@@ -1,12 +1,12 @@
-<script setup lang="ts"> 
+<script setup lang="ts">
 const mainID = "main"
 const menuLinks = [
   {
-    target: 'projets',
+    target: '/projets',
     label: 'Projets'
   },
     {
-    target: 'a-propos',
+    target: '/a-propos',
     label: 'À propos'
   }
 ]
