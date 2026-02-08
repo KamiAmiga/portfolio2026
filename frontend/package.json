@@ -17,10 +17,12 @@
     "nuxt": "^4.2.2",
     "nuxt-icons": "^4.0.0",
     "nuxt-strapi-blocks-renderer": "^1.1.2",
+    "three": "^0.182.0",
     "vue": "^3.5.26",
     "vue-router": "^4.6.4"
   },
   "devDependencies": {
+    "@types/three": "^0.182.0",
     "sass": "^1.97.2"
   }
 }
