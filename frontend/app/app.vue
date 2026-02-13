@@ -16,25 +16,6 @@ const menuLinks = [
     label: 'À propos'
   }
 ]
-
-const main = ref();
-const smoothContent = ref()
-let ctx: gsap.Context;
-
-onMounted(() => {
-  ctx = gsap.context(() => {
-    ScrollSmoother.create({
-      smooth: 1,
-      normalizeScroll: true,
-      wrapper: main.value,
-      content: smoothContent.value
-    });
-  }, main.value);
-});
-
-onUnmounted(() => {
-  ctx.revert();
-});
 </script>
 
 <template>
@@ -43,10 +24,10 @@ onUnmounted(() => {
   
   <MainMenu :links="menuLinks" />
 
-  <main role="main" :id="mainID" ref="main">
-    <div ref="smoothContent">
+  <main role="main" :id="mainID">
+    <NuxtLayout>
       <NuxtPage />
-    </div>
+    </NuxtLayout>
   </main>
 </template>
 

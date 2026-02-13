@@ -1,4 +1,8 @@
 <script lang="ts" setup>
+definePageMeta({
+  layout: 'no-smooth-scroll',
+})
+
 const { data: homeData } = await useAsyncData(() => queryCollection('home').first())
 
 if (!homeData.value) {
@@ -16,7 +20,6 @@ if (seoMeta) {
     description: seoMeta.metaDescription,
     ogTitle: seoMeta.metaTitle ?? '',
     ogDescription: seoMeta.metaDescription ?? '',
-    ogImage: seoMeta.metaImage.data?.attributes?.url ? `https://www.cgicquel.fr${seoMeta.metaImage.data.attributes.url}`:'',
   })
 }
 </script>
