@@ -28,7 +28,7 @@
     &__item {
       &--home {
         height: var(--font-size-xl);
-        aspect-ratio: $triangle-aspect-ratio-sm;
+        aspect-ratio: var(--triangle-aspect-ratio-sm);
         margin-inline-end: auto;
       }
     }

@@ -68,4 +68,9 @@ $icon-wrapper-sizes: (
 // Misc
 //
 
-$triangle-aspect-ratio-sm: .866;
+$triangle-aspect-ratio: .866;
+
+$triangle-aspect-ratios: (
+  sm: $triangle-aspect-ratio,
+  lg: math.div(1, $triangle-aspect-ratio)
+);

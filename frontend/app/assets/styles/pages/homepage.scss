@@ -1,0 +1,299 @@
+@use '../abstracts/' as *;
+
+.title {
+  &-wrapper {
+    position: fixed;
+    bottom: calc(var(--spacer-xl) + env(safe-area-inset-bottom));
+  }
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  text-align: center;
+}
+
+.illustration {
+  --horizon-position: 45%;
+
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  z-index: var(--z-index-base-decrease);
+
+  &__cityscape,
+  &__ground {
+    width: min(calc(100% - var(--spacer-md) * 2), 40rem);
+    position: absolute;
+    left: 50%;
+    bottom: var(--horizon-position);
+    transform: translateX(-50%);
+
+    @include breakpoint-m-landscape-up {
+      width: min(50%, 100vh);
+    }
+  }
+
+  &__cityscape {
+    overflow: hidden;
+    aspect-ratio: var(--triangle-aspect-ratio-lg);
+
+
+    &__shape {
+      position: absolute;
+      bottom: 0;
+      z-index: -2;
+      overflow: hidden;
+
+      &--back-1 {
+        width: 13%;
+        height: 100%;
+        left: var(--spacer-up-xl-2xl);
+        background: linear-gradient(
+          to bottom,
+          color-mix(
+            in srgb,
+            transparent var(--opacity-percentage-8),
+            var(--color-fourth-darker)
+          ),
+          33%,
+          color-mix(
+            in srgb,
+            transparent var(--opacity-percentage-7),
+            var(--color-fourth-base)
+          ));
+        transform-origin: top right;
+        transform: skewY(-30deg);
+
+        &::before {
+          content: '';
+          position: absolute;
+          width: calc(var(--spacer-sm) * 2 + var(--spacer-2xs));
+          top: var(--spacer-md);
+          left: var(--spacer-sm);
+          bottom: 0;
+          background: repeating-linear-gradient(
+            to right,
+            color-mix(
+              in srgb,
+              transparent var(--opacity-percentage-8),
+              var(--color-primary-reverse)
+            ),
+            color-mix(
+              in srgb,
+              transparent var(--opacity-percentage-8),
+              var(--color-primary-reverse)
+            ) var(--spacer-2xs),
+            transparent var(--spacer-2xs),
+            transparent var(--spacer-sm));
+          mask-image: linear-gradient(
+            to bottom,
+            transparent,
+            33%,
+            black
+          );
+        }
+      }
+
+      &--back-2 {
+        width: 10%;
+        height: 85%;
+        left: 20%;
+        background: linear-gradient(
+          to bottom,
+          transparent,
+          color-mix(
+            in srgb,
+            transparent var(--opacity-percentage-6),
+            var(--color-primary-reverse),
+          ));
+      }
+
+      &--back-3 {
+        width: 25%;
+        height: 25%;
+        right: 25%;
+        background: linear-gradient(
+          to bottom,
+          color-mix(
+            in srgb,
+            transparent var(--opacity-percentage-9),
+            var(--color-primary-reverse),
+          ),
+          color-mix(
+            in srgb,
+            transparent var(--opacity-percentage-7),
+            var(--color-primary-reverse),
+          ));
+      }
+
+      &--back-4 {
+        width: 22%;
+        height: 62%;
+        right: var(--spacer-up-xl-2xl);
+        background: linear-gradient(
+          to bottom,
+          color-mix(
+            in srgb,
+            transparent var(--opacity-percentage-9),
+            var(--color-secondary-darker),
+          ),
+          33%,
+          color-mix(
+            in srgb,
+            transparent var(--opacity-percentage-6),
+            var(--color-secondary-darker),
+          ));
+        transform-origin: top right;
+        transform: skewY(-30deg);
+
+        &::before {
+          content: '';
+          position: absolute;
+          width: calc(var(--spacer-base) * 2 + var(--spacer-2xs));
+          top: var(--spacer-base);
+          right: var(--spacer-base);
+          bottom: 0;
+          background: repeating-linear-gradient(
+            to left,
+            color-mix(
+              in srgb,
+              transparent var(--opacity-percentage-6),
+              var(--color-tertiary-darker)
+            ),
+            color-mix(
+              in srgb,
+              transparent var(--opacity-percentage-6),
+              var(--color-tertiary-darker)
+            ) var(--spacer-2xs),
+            transparent var(--spacer-2xs),
+            transparent var(--spacer-base));
+          mask-image: linear-gradient(
+            to bottom,
+            transparent,
+            black
+          );
+        }
+      }
+
+      &--back-5 {
+        width: 6%;
+        height: 95%;
+        right: 21%;
+        background: linear-gradient(
+          to bottom,
+          transparent,
+          67%,
+          color-mix(
+            in srgb,
+            transparent var(--opacity-percentage-7),
+            var(--color-tertiary-base),
+          ));
+        transform-origin: top right;
+        transform: skewY(-30deg);
+      }
+
+      &--back-6 {
+        width: 15%;
+        height: 95%;
+        right: var(--spacer-up-md-lg);
+        background: linear-gradient(
+          to bottom,
+          color-mix(
+            in srgb,
+            transparent var(--opacity-percentage-9),
+            var(--color-secondary-lighter),
+          ),
+          67%,
+          color-mix(
+            in srgb,
+            transparent var(--opacity-percentage-7),
+            var(--color-tertiary-base),
+          ));
+        transform-origin: top left;
+        transform: skewY(30deg);
+      }
+    }
+
+    @media screen and (orientation: landscape) {
+      aspect-ratio: 8/5;
+    }
+  }
+
+  &__ground {
+    &::before {
+      content: "";
+      width: 100%;
+      border-top: var(--spacer-2xs) solid var(--color-accent-lighter);
+      position: absolute;
+      top: calc(var(--spacer-2xs) * -.5);
+      box-shadow: 
+        0
+        0
+        var(--spacer-2xs)
+        1px
+        color-mix(
+          in srgb,
+          transparent var(--opacity-percentage-6),
+          var(--color-accent-lighter)
+        );
+    }
+    
+    &__shape {
+      width: calc(100% - var(--spacer-base) * 2);
+      aspect-ratio: var(--triangle-aspect-ratio-lg);
+      position: absolute;
+      left: var(--spacer-base);
+      background: linear-gradient(
+        to bottom,
+        color-mix(
+          in srgb,
+          transparent var(--opacity-percentage-8),
+          var(--color-accent-base)
+        ),
+        33%,
+        transparent);
+      clip-path: polygon(100% 0, 0 0, 50% 100%);
+    }
+  }
+
+  &__logo-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: var(--spacer-3xl);
+    aspect-ratio: 1;
+    position: absolute;
+    bottom: calc(var(--horizon-position) - var(--spacer-3xl) * .5);
+    left: calc(50% - var(--spacer-3xl) * .5);
+    z-index: var(--z-index-base-increase);
+    // opacity: 0;
+    // transform-origin: 33% 50%;
+    // scale: 0;
+    // animation: 
+    //   fade-in .8s ease-in-out .125s 1 forwards,
+    //   scale-in .35s ease-in 1 forwards,
+    //   spin .65s cubic-bezier(0.5, 1, 0.89, 1) .125s 1 forwards;
+
+    // @keyframes spin {
+    //   to { rotate: 1turn; }
+    // }
+
+    // @keyframes fade-in {
+    //   to {
+    //     opacity: 1;
+    //   }
+    // }
+
+    // @keyframes scale-in {
+    //   to {
+    //     scale: 1;
+    //   }
+    // }
+  }
+
+  @include breakpoint-m-landscape-up {
+    --horizon-position: 33%;
+  }
+}

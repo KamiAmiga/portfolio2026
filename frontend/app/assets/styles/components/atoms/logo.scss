@@ -1,8 +1,9 @@
 @use '../../abstracts/' as *;
 
 .logo {
-  width: 100%;
-  aspect-ratio: $triangle-aspect-ratio-sm;
+  max-width: 100%;
+  height: 100%;
+  aspect-ratio: var(--triangle-aspect-ratio-sm);
   position: relative;
   clip-path: polygon(0 0, 100% 50%, 0 100%);
   background: linear-gradient(
@@ -20,7 +21,7 @@
 
   &::before {
     width: 50%;
-    padding-bottom: 56.94%;
+    aspect-ratio: var(--triangle-aspect-ratio-sm);
     top: 50%;
     left: 25%;
     background-color: var(--color-primary-base);
@@ -29,7 +30,7 @@
 
   &::after {
     width: 20%;
-    padding-bottom: 22.222%;
+    aspect-ratio: var(--triangle-aspect-ratio-sm);
     left: 16.5%;
     bottom: 50%;
     background-color: var(--color-primary-reverse);

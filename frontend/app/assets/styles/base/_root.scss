@@ -46,4 +46,8 @@
   @each $level, $value in $z-index {
     --z-index-#{$level}: #{$value};
   }
+
+  @each $level, $value in $triangle-aspect-ratios {
+    --triangle-aspect-ratio-#{$level}: #{$value};
+  }
 }

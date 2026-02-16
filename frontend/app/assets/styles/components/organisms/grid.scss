@@ -8,19 +8,19 @@
   padding-inline: var(--spacer-md);
   grid-template-columns: 1fr;
 
-  @media screen and (min-width: map.get($breakpoints, m)) {
+  @include breakpoint-m-up {
     padding-inline: var(--spacer-3xl);
     grid-template-columns: repeat(6, 1fr);
     column-gap: var(--spacer-base);
   }
 
-  @media screen and (min-width: map.get($breakpoints, l)) {
+  @include breakpoint-l-up {
     column-gap: var(--spacer-lg);
   }
 
   &--full {
     > * {
-      @media screen and (min-width: map.get($breakpoints, m)) {
+      @include breakpoint-m-up {
         grid-column: span 6;
       }
     }
@@ -28,7 +28,7 @@
 
   &--halves {
     > * {
-      @media screen and (min-width: map.get($breakpoints, m)) {
+      @include breakpoint-m-up {
         grid-column: span 3;
       }
     }
@@ -36,7 +36,7 @@
 
   &--thirds {
     > * {
-      @media screen and (min-width: map.get($breakpoints, m)) {
+      @include breakpoint-m-up {
         grid-column: span 2;
       }
     }

@@ -1,4 +1,5 @@
 @use "sass:map";
+@use './sizes' as *;
 @use './typography' as *;
 
 //
@@ -41,5 +42,28 @@
 
   @each $key, $value in $settings {
     #{$key}: $value;
+  }
+}
+
+
+//
+// Media-queries
+//
+
+@mixin breakpoint-m-up {
+  @media screen and (min-width: map.get($breakpoints, m)) {
+    @content;
+  }
+}
+
+@mixin breakpoint-m-landscape-up {
+  @media screen and (min-width: map.get($breakpoints, m)) and (orientation: landscape) {
+    @content;
+  }
+}
+
+@mixin breakpoint-l-up {
+  @media screen and (min-width: map.get($breakpoints, l)) {
+    @content;
   }
 }
