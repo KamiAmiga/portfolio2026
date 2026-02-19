@@ -35,17 +35,25 @@ if (seoMeta) {
     </Grid>
 
     <div class="illustration">
+      <div class="illustration__skyline illustration__skyline--1"/>
+      <div class="illustration__skyline illustration__skyline--2"/>
+      <div class="illustration__skyline illustration__skyline--3"/>
+      <div class="illustration__skyline illustration__skyline--4"/>
+
       <div class="illustration__cityscape">
-        <div class="illustration__cityscape__shape illustration__cityscape__shape--back-1" />
-        <div class="illustration__cityscape__shape illustration__cityscape__shape--back-2" />
-        <div class="illustration__cityscape__shape illustration__cityscape__shape--back-3" />
-        <div class="illustration__cityscape__shape illustration__cityscape__shape--back-4" />
-        <div class="illustration__cityscape__shape illustration__cityscape__shape--back-5" />
-        <div class="illustration__cityscape__shape illustration__cityscape__shape--back-6" />
+        <div class="illustration__cityscape__shape illustration__cityscape__shape--back-1"/>
+        <div class="illustration__cityscape__shape illustration__cityscape__shape--back-2"/>
+        <div class="illustration__cityscape__shape illustration__cityscape__shape--back-3"/>
+        <div class="illustration__cityscape__shape illustration__cityscape__shape--back-4"/>
+        <div class="illustration__cityscape__shape illustration__cityscape__shape--back-5"/>
+        <div class="illustration__cityscape__shape illustration__cityscape__shape--back-6"/>
+        <div class="illustration__cityscape__shape illustration__cityscape__shape--front-1"/>
+        <div class="illustration__cityscape__shape illustration__cityscape__shape--front-2"/>
+        <div class="illustration__cityscape__lights"/>
       </div>
 
       <div class="illustration__ground">
-        <div class="illustration__ground__shape"></div>
+        <div class="illustration__ground__shape"/>
       </div>
 
       <div class="illustration__logo-wrapper">
