@@ -12,11 +12,13 @@
   },
   "pluginOptions": {},
   "attributes": {
+    "intro": {
+      "type": "blocks"
+    },
     "experience": {
-      "displayName": "Experience",
       "type": "component",
-      "repeatable": true,
-      "component": "about.experience"
+      "component": "about.experience",
+      "repeatable": true
     },
     "skills": {
       "type": "relation",
@@ -24,24 +26,24 @@
       "target": "api::skill.skill"
     },
     "interests": {
-      "displayName": "Interest",
       "type": "component",
-      "repeatable": true,
-      "component": "about.interest"
+      "component": "about.interest",
+      "repeatable": true
     },
     "social_links": {
-      "displayName": "Social link",
       "type": "component",
-      "repeatable": true,
-      "component": "about.social-link"
+      "component": "about.social-link",
+      "repeatable": true
+    },
+    "resume": {
+      "type": "component",
+      "component": "about.resume",
+      "repeatable": true
     },
     "seo": {
       "type": "component",
-      "repeatable": false,
-      "component": "shared.seo"
-    },
-    "intro": {
-      "type": "blocks"
+      "component": "shared.seo",
+      "repeatable": false
     }
   }
 }

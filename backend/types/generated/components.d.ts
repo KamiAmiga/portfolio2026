@@ -24,6 +24,17 @@ export interface AboutInterest extends Struct.ComponentSchema {
   };
 }
 
+export interface AboutResume extends Struct.ComponentSchema {
+  collectionName: 'components_about_resumes';
+  info: {
+    displayName: 'Resume';
+  };
+  attributes: {
+    file: Schema.Attribute.Media<'files'> & Schema.Attribute.Required;
+    name: Schema.Attribute.String;
+  };
+}
+
 export interface AboutSocialLink extends Struct.ComponentSchema {
   collectionName: 'components_about_social_links';
   info: {
@@ -170,6 +181,7 @@ declare module '@strapi/strapi' {
     export interface ComponentSchemas {
       'about.experience': AboutExperience;
       'about.interest': AboutInterest;
+      'about.resume': AboutResume;
       'about.social-link': AboutSocialLink;
       'project.color': ProjectColor;
       'project.project-main-image': ProjectProjectMainImage;
