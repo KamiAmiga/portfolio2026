@@ -1,4 +1,8 @@
 <script lang="ts" setup>
+import { gsap } from "gsap";
+import { SplitText } from "gsap/SplitText";
+import { CustomEase } from "gsap/CustomEase";
+
 definePageMeta({
   layout: 'no-smooth-scroll',
 })
@@ -22,23 +26,198 @@ if (seoMeta) {
     ogDescription: seoMeta.metaDescription ?? '',
   })
 }
+
+const home = ref();
+let ctx: gsap.Context;
+
+const titleLargeWordsEase = CustomEase.create("titleLargeWords", ".5, 1, .89, 1")
+
+onMounted(() => {
+  const masterTimeline = gsap.timeline()
+
+  const initTimeline = (gsapContext: gsap.Context) => {
+    const timeline = gsap.timeline()
+
+    timeline
+      .from(gsapContext.selector?.('.title, .illustration__skylines, .illustration__ground, .illustration__cityscape'), {
+        autoAlpha: 0
+      })
+
+    return timeline
+  }
+
+  const logoTimeline = (gsapContext: gsap.Context) => {
+    const timeline = gsap.timeline()
+
+    timeline
+      .to(gsapContext.selector?.('.illustration__logo-wrapper'), {
+        rotation: '+=180deg',
+        immediateRender: true
+      })
+      .to(gsapContext.selector?.('.illustration__logo-wrapper'), {
+        keyframes: [
+          {scale: 1, duration: .25, ease: "power2.in"},
+          {rotation: '+=180deg', duration: .5, ease: CustomEase.create("logoSpinEase", ".5, 1, .89, 1"), delay: -.2},
+          {opacity: 1, duration: .4, ease: "power2.inOut", delay: -.5}
+        ],
+      })
+
+    return timeline
+  }
+
+  const titleTimeline = (gsapContext: gsap.Context) => {
+    const timeline = gsap.timeline()
+    const splitTitleSmall = SplitText.create(gsapContext.selector?.('.title__small'), {
+      type: "chars",
+      mask: "lines"
+    });
+    const splitTitleLarge = SplitText.create(gsapContext.selector?.('.title__large'), {
+      type: "words",
+      wordsClass: 'title__large__word++'
+    });
+
+    timeline
+      .from(splitTitleSmall.chars, {
+        opacity: 0,
+        y: '1.5em',
+        duration: .25,
+        ease: "power2.inOut",
+        stagger: .015
+      }, '-=.25')
+      .from([splitTitleLarge.words.at(0)], {
+        opacity: 0,
+        y: '-50%',
+        duration: .25,
+        ease: titleLargeWordsEase
+      }, '<')
+      .from([splitTitleLarge.words?.at(2)], {
+        opacity: 0,
+        y: '50%',
+        duration: .25,
+        ease: titleLargeWordsEase
+      }, '<')
+      .from([splitTitleLarge.words?.at(1)], {
+        width: 0,
+        height: 0,
+        margin: 0,
+        opacity: 0,
+        scale: 0,
+        duration: .3,
+        ease: "back.out(1.5)"
+      }, '+=.66')
+      .to([splitTitleLarge.words?.at(1)], {
+        '--bg-shape-opacity': 1,
+        '--bg-shape-rotation': '.125turn',
+        duration: .2,
+        ease: "power2.out"
+      }, '-=80%')
+
+    return timeline
+  }
+
+  const groundTimeline = (gsapContext: gsap.Context) => {
+    const timeline = gsap.timeline()
+
+    timeline
+      .from(gsapContext.selector?.('.illustration__ground'), {
+        scaleX: 0,
+        duration: .3,
+        ease: "circ.out"
+      }, '-=50%')
+      .from(gsapContext.selector?.('.illustration__ground__shape'), {
+        opacity: 0,
+        y: '-100%',
+        duration: .3,
+        ease: "circ.out"
+      }, '-=66%')
+
+    return timeline
+  }
+
+  const cityscapeTimeline = (gsapContext: gsap.Context) => {
+    const timeline = gsap.timeline()
+
+    timeline
+      .to(gsapContext.selector?.('.illustration__cityscape'), {
+        opacity: 1,
+        duration: .2,
+        ease: "power3.inOut",
+      })
+      .from(gsapContext.selector?.('.illustration__cityscape__shape--back-1, .illustration__cityscape__shape--back-5'), {
+        opacity: .5,
+        y: '+130%',
+        duration: .4,
+        ease: "power2.out",
+      }, '<')
+      .from(gsapContext.selector?.('.illustration__cityscape__shape--back-2, .illustration__cityscape__shape--back-6, .illustration__cityscape__shape--back-4, .illustration__cityscape__shape--back-3'), {
+        opacity: .5,
+        y: '+130%',
+        duration: .4,
+        ease: "power2.out",
+        stagger: .05
+      }, '-=50%')
+      .from(gsapContext.selector?.('.illustration__cityscape__shape--front-1, .illustration__cityscape__shape--front-2'), {
+        opacity: 0,
+        y: '+130%',
+        duration: .4,
+        ease: "power2.out",
+      })
+      .from(gsapContext.selector?.('.illustration__cityscape__lights'), {
+        opacity: 0,
+        duration: .6,
+        ease: "power2.out",
+      })
+
+    return timeline
+  }
+
+  const skylinesTimeline = (gsapContext: gsap.Context) => {
+    const timeline = gsap.timeline()
+
+    timeline
+      .from(gsapContext.selector?.('.illustration__skyline'), {
+        clipPath: 'inset(0 0 0 100%)',
+        opacity: 0,
+        duration: .4,
+        ease: "power2.in",
+        stagger: .1
+      }, '-=100%')
+
+    return timeline
+  }
+  
+  ctx = gsap.context((self) => {
+    masterTimeline
+      .add(initTimeline(self))
+      .add(logoTimeline(self))
+      .add(titleTimeline(self))
+      .add(groundTimeline(self))
+      .add(cityscapeTimeline(self))
+      .add(skylinesTimeline(self))
+  }, home.value);
+});
+
+onUnmounted(() => {
+  ctx.revert();
+});
 </script>
 
 <template>
-  <div v-if="homeData">
+  <div ref="home" v-if="homeData">
     <Grid splitting="full" class="title-wrapper">
       <h1 class="title">
         <div class="title__small font-sans--md-capitalized">{{ homeData.title }}</div>
-        <div class="title__large font-sans--2xl">
-          {{ homeData.subtitle }}</div>
+        <div class="title__large font-sans--2xl">{{ homeData.subtitle }}</div>
       </h1>
     </Grid>
 
     <div class="illustration">
-      <div class="illustration__skyline illustration__skyline--1"/>
-      <div class="illustration__skyline illustration__skyline--2"/>
-      <div class="illustration__skyline illustration__skyline--3"/>
-      <div class="illustration__skyline illustration__skyline--4"/>
+      <div class="illustration__skylines">
+        <div class="illustration__skyline illustration__skyline--1"/>
+        <div class="illustration__skyline illustration__skyline--2"/>
+        <div class="illustration__skyline illustration__skyline--3"/>
+        <div class="illustration__skyline illustration__skyline--4"/>
+      </div>
 
       <div class="illustration__cityscape">
         <div class="illustration__cityscape__shape illustration__cityscape__shape--back-1"/>
@@ -63,6 +242,6 @@ if (seoMeta) {
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @use '../assets/styles/pages/homepage' as *;
 </style>

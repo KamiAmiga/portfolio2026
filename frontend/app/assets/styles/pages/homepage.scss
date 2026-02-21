@@ -6,12 +6,80 @@
     bottom: calc(var(--spacer-xl) + env(safe-area-inset-bottom));
   }
 
+  visibility: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: var(--spacer-xs);
   width: 100%;
   text-align: center;
+
+  &__large {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    min-height: calc(var(--line-height-sm) * 3.1em);
+
+    &__word {
+      position: relative;
+      z-index: var(--z-index-base-increase);
+
+      &2 {
+        height: calc(var(--line-height-sm) * 1em);
+        aspect-ratio: 1;
+        z-index: var(--z-index-base);
+        margin: calc(var(--spacer-base) * -.75);
+  
+        &::before,
+        &::after {
+          content: '';
+          position: absolute;
+          opacity: var(--bg-shape-opacity, 0);
+          transform: rotate(var(--bg-shape-rotation, 0));
+        }
+  
+        &::before {
+          inset: 0;
+          z-index: var(--z-index-base-decrease);
+          background: no-repeat linear-gradient(
+            60deg,
+            color-mix(
+              in srgb,
+              transparent var(--opacity-percentage-7),
+              var(--color-secondary-darker)
+            ),
+            color-mix(
+              in srgb,
+              transparent var(--opacity-percentage-9),
+              var(--color-secondary-darker)
+            ) 80%,
+          );
+        }
+  
+        &::after {
+          inset: var(--spacer-2xs);
+          border: 1px solid color-mix(
+            in srgb,
+            transparent var(--opacity-percentage-9),
+            var(--color-secondary-lighter)
+          );
+        }
+
+        @include breakpoint-m-landscape-up {
+          margin: 0;
+        }
+      }
+    }
+
+    @include breakpoint-m-landscape-up {
+      flex-direction: row;
+      gap: var(--spacer-2xs);
+      min-height: calc(var(--line-height-sm) * 1.1em);
+    }
+  }
 }
 
 .illustration {
@@ -21,6 +89,10 @@
   inset: 0;
   overflow: hidden;
   z-index: var(--z-index-base-decrease);
+
+  &__skylines {
+    visibility: hidden;
+  }
 
   &__skyline {
     height: 0;
@@ -133,9 +205,10 @@
   &__cityscape,
   &__ground {
     width: min(calc(100% - var(--spacer-md) * 2), 40rem);
+    aspect-ratio: var(--triangle-aspect-ratio-lg);
     position: absolute;
     left: 50%;
-    bottom: var(--horizon-position);
+    overflow-y: clip;
     transform: translateX(-50%);
 
     @include breakpoint-m-landscape-up {
@@ -144,8 +217,8 @@
   }
 
   &__cityscape {
-    overflow: hidden;
-    aspect-ratio: var(--triangle-aspect-ratio-lg);
+    visibility: hidden;
+    bottom: var(--horizon-position);
 
     &__shape {
       position: absolute;
@@ -416,12 +489,16 @@
   }
 
   &__ground {
+    visibility: hidden;
+    top: calc(100% - var(--horizon-position) - var(--spacer-xs));
+    transform-origin: top center;
+
     &::before {
       content: "";
       width: 100%;
       border-top: var(--spacer-2xs) solid var(--color-accent-lighter);
       position: absolute;
-      top: calc(var(--spacer-2xs) * -.5);
+      top: calc(var(--spacer-xs) - var(--spacer-2xs) * .5);
       box-shadow: 
         0
         0
@@ -439,6 +516,7 @@
       aspect-ratio: var(--triangle-aspect-ratio-lg);
       position: absolute;
       left: var(--spacer-base);
+      top: var(--spacer-xs);
       background: linear-gradient(
         to bottom,
         color-mix(
@@ -462,29 +540,9 @@
     bottom: calc(var(--horizon-position) - var(--spacer-3xl) * .5);
     left: calc(50% - var(--spacer-3xl) * .5);
     z-index: var(--z-index-base-increase);
-    // opacity: 0;
-    // transform-origin: 33% 50%;
-    // scale: 0;
-    // animation: 
-    //   fade-in .8s ease-in-out .125s 1 forwards,
-    //   scale-in .35s ease-in 1 forwards,
-    //   spin .65s cubic-bezier(0.5, 1, 0.89, 1) .125s 1 forwards;
-
-    // @keyframes spin {
-    //   to { rotate: 1turn; }
-    // }
-
-    // @keyframes fade-in {
-    //   to {
-    //     opacity: 1;
-    //   }
-    // }
-
-    // @keyframes scale-in {
-    //   to {
-    //     scale: 1;
-    //   }
-    // }
+    opacity: 0;
+    transform-origin: 33% 50%;
+    transform: scale(0);
   }
 
   @include breakpoint-m-landscape-up {
