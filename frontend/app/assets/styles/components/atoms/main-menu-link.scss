@@ -1,7 +1,7 @@
 .main-menu-link {
   position: relative;
   display: block;
-  padding: var(--spacer-sm) 0;
+  padding-block-end: var(--spacer-xs);
   text-decoration: none;
 
   &::after {
@@ -10,7 +10,7 @@
     width: min(66%, var(--spacer-xl));
     height: var(--spacer-2xs);
     position: absolute;
-    bottom: var(--spacer-xs);
+    bottom: 0;
     background-color: var(--color-accent-base);
     box-shadow:
       0

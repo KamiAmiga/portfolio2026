@@ -3,7 +3,7 @@
 
 .main-menu {
   width: 100%;
-  padding-block: var(--spacer-base);
+  padding-block: calc(var(--spacer-base) * .75);
   position: fixed;
   top: 0;
   left: 0;
@@ -27,7 +27,7 @@
 
     &__item {
       &--home {
-        height: var(--font-size-xl);
+        height: var(--font-size-lg);
         aspect-ratio: var(--triangle-aspect-ratio-sm);
         margin-inline-end: auto;
         color: var(--color-primary-reverse);
