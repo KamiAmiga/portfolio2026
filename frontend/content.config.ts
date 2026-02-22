@@ -37,9 +37,6 @@ const jsonRichTextParagraphNode = z.object({
 const seoSchema = z.object({
   metaTitle: z.string(),
   metaDescription: z.string(),
-  metaImage: z.object({
-    data: strapiImageSchema
-  })
 })
 
 const linkSchema = z.object({

@@ -14,12 +14,12 @@
   &::before {
     background: radial-gradient(
       circle at center 45%,
-      transparent 80%,
+      transparent 85%,
       color-mix(
         in srgb,
         transparent var(--opacity-percentage-6),
         var(--color-primary-darker)
-      ) 90%
+      ) 95%
     );
   }
 

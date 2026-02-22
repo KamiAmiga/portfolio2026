@@ -16,16 +16,7 @@ if (!homeData.value) {
   })
 }
 
-const seoMeta = homeData?.value?.seo
-
-if (seoMeta) {  
-  useSeoMeta({
-    title: seoMeta.metaTitle,
-    description: seoMeta.metaDescription,
-    ogTitle: seoMeta.metaTitle ?? '',
-    ogDescription: seoMeta.metaDescription ?? '',
-  })
-}
+useSeoFromPageData(homeData?.value?.seo)
 
 const home = ref();
 const mouseParallaxIsActive = ref(false)
