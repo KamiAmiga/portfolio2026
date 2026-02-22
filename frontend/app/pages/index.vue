@@ -28,18 +28,59 @@ if (seoMeta) {
 }
 
 const home = ref();
+const mouseParallaxIsActive = ref(false)
 let ctx: gsap.Context;
 
 const titleLargeWordsEase = CustomEase.create("titleLargeWords", ".5, 1, .89, 1")
 
-onMounted(() => {
-  const masterTimeline = gsap.timeline()
+const mouseMoveParallax = (event: MouseEvent) => {
+  if (!mouseParallaxIsActive.value) return
 
+  const mouseX = event.clientX;
+  const mouseY = event.clientY;
+
+  gsap
+    .to(ctx.selector?.('.illustration-foreground'), {
+      x: (mouseX / window.innerWidth - 0.5) * 16,
+      y: (mouseY / window.innerHeight - 0.5) * 16,
+      delay: 0.2,
+      ease: "power3.out",
+      overwrite: "auto"
+    })
+
+  gsap
+    .to(ctx.selector?.('.illustration__cityscape__shape'), {
+      x: (mouseX / window.innerWidth - 0.5) * -8,
+      y: (mouseY / window.innerHeight) * 16,
+      delay: 0.1,
+      ease: "power2.out",
+      overwrite: "auto"
+    })
+
+  gsap
+    .to(ctx.selector?.('.illustration__logo-wrapper, .illustration__ground'), {
+      x: (mouseX / window.innerWidth - 0.5) * 8,
+      delay: 0.1,
+      ease: "power2.out",
+      overwrite: "auto"
+    })
+  
+  gsap
+    .to(ctx.selector?.('.illustration-background'), {
+      x: (mouseX / window.innerWidth - 0.5) * 6,
+      y: (mouseY / window.innerHeight - 0.5) * 6,
+      delay: 0.1,
+      ease: "power2.out",
+      overwrite: "auto"
+    });
+}
+
+onMounted(() => {
   const initTimeline = (gsapContext: gsap.Context) => {
     const timeline = gsap.timeline()
 
     timeline
-      .from(gsapContext.selector?.('.title, .illustration__skylines, .illustration__ground, .illustration__cityscape'), {
+      .from(gsapContext.selector?.('.title, .illustration-background, .illustration__ground, .illustration__cityscape'), {
         autoAlpha: 0
       })
 
@@ -48,13 +89,14 @@ onMounted(() => {
 
   const logoTimeline = (gsapContext: gsap.Context) => {
     const timeline = gsap.timeline()
+    const logoWrapper = gsapContext.selector?.('.illustration__logo-wrapper')
 
     timeline
-      .to(gsapContext.selector?.('.illustration__logo-wrapper'), {
+      .to(logoWrapper, {
         rotation: '+=180deg',
         immediateRender: true
       })
-      .to(gsapContext.selector?.('.illustration__logo-wrapper'), {
+      .to(logoWrapper, {
         keyframes: [
           {scale: 1, duration: .25, ease: "power2.in"},
           {rotation: '+=180deg', duration: .5, ease: CustomEase.create("logoSpinEase", ".5, 1, .89, 1"), delay: -.2},
@@ -69,11 +111,13 @@ onMounted(() => {
     const timeline = gsap.timeline()
     const splitTitleSmall = SplitText.create(gsapContext.selector?.('.title__small'), {
       type: "chars",
-      mask: "lines"
+      mask: "lines",
+      aria: "hidden"
     });
     const splitTitleLarge = SplitText.create(gsapContext.selector?.('.title__large'), {
       type: "words",
-      wordsClass: 'title__large__word++'
+      wordsClass: 'title__large__word++',
+      aria: "hidden"
     });
 
     timeline
@@ -161,7 +205,7 @@ onMounted(() => {
         y: '+130%',
         duration: .4,
         ease: "power2.out",
-      })
+      }, '-=50%')
       .from(gsapContext.selector?.('.illustration__cityscape__lights'), {
         opacity: 0,
         duration: .6,
@@ -178,13 +222,19 @@ onMounted(() => {
       .from(gsapContext.selector?.('.illustration__skyline'), {
         clipPath: 'inset(0 0 0 100%)',
         opacity: 0,
-        duration: .4,
+        duration: .6,
         ease: "power2.in",
         stagger: .1
-      }, '-=100%')
+      })
 
     return timeline
   }
+
+  const masterTimeline = gsap.timeline({
+    onComplete: () => {
+      mouseParallaxIsActive.value = true
+    }
+  })
   
   ctx = gsap.context((self) => {
     masterTimeline
@@ -193,12 +243,15 @@ onMounted(() => {
       .add(titleTimeline(self))
       .add(groundTimeline(self))
       .add(cityscapeTimeline(self))
-      .add(skylinesTimeline(self))
+      .add(skylinesTimeline(self), '-=.9')
   }, home.value);
+
+  document.addEventListener("mousemove", mouseMoveParallax);
 });
 
 onUnmounted(() => {
   ctx.revert();
+  document.removeEventListener("mousemove", mouseMoveParallax);
 });
 </script>
 
@@ -206,37 +259,41 @@ onUnmounted(() => {
   <div ref="home" v-if="homeData">
     <Grid splitting="full" class="title-wrapper">
       <h1 class="title">
+        <span class="sr-only">{{ homeData.title }} {{ homeData.subtitle }}</span>
+
         <div class="title__small font-sans--md-capitalized">{{ homeData.title }}</div>
         <div class="title__large font-sans--2xl">{{ homeData.subtitle }}</div>
       </h1>
     </Grid>
 
     <div class="illustration">
-      <div class="illustration__skylines">
+      <div class="illustration-background">
         <div class="illustration__skyline illustration__skyline--1"/>
         <div class="illustration__skyline illustration__skyline--2"/>
         <div class="illustration__skyline illustration__skyline--3"/>
         <div class="illustration__skyline illustration__skyline--4"/>
       </div>
 
-      <div class="illustration__cityscape">
-        <div class="illustration__cityscape__shape illustration__cityscape__shape--back-1"/>
-        <div class="illustration__cityscape__shape illustration__cityscape__shape--back-2"/>
-        <div class="illustration__cityscape__shape illustration__cityscape__shape--back-3"/>
-        <div class="illustration__cityscape__shape illustration__cityscape__shape--back-4"/>
-        <div class="illustration__cityscape__shape illustration__cityscape__shape--back-5"/>
-        <div class="illustration__cityscape__shape illustration__cityscape__shape--back-6"/>
-        <div class="illustration__cityscape__shape illustration__cityscape__shape--front-1"/>
-        <div class="illustration__cityscape__shape illustration__cityscape__shape--front-2"/>
-        <div class="illustration__cityscape__lights"/>
-      </div>
-
-      <div class="illustration__ground">
-        <div class="illustration__ground__shape"/>
-      </div>
-
-      <div class="illustration__logo-wrapper">
-        <Logo />
+      <div class="illustration-foreground">
+        <div class="illustration__cityscape">
+          <div class="illustration__cityscape__shape illustration__cityscape__shape--back-1"/>
+          <div class="illustration__cityscape__shape illustration__cityscape__shape--back-2"/>
+          <div class="illustration__cityscape__shape illustration__cityscape__shape--back-3"/>
+          <div class="illustration__cityscape__shape illustration__cityscape__shape--back-4"/>
+          <div class="illustration__cityscape__shape illustration__cityscape__shape--back-5"/>
+          <div class="illustration__cityscape__shape illustration__cityscape__shape--back-6"/>
+          <div class="illustration__cityscape__shape illustration__cityscape__shape--front-1"/>
+          <div class="illustration__cityscape__shape illustration__cityscape__shape--front-2"/>
+          <div class="illustration__cityscape__lights"/>
+        </div>
+  
+        <div class="illustration__ground">
+          <div class="illustration__ground__shape"/>
+        </div>
+  
+        <div class="illustration__logo-wrapper">
+          <Logo />
+        </div>
       </div>
     </div>
   </div>

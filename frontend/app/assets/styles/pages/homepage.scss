@@ -90,8 +90,14 @@
   overflow: hidden;
   z-index: var(--z-index-base-decrease);
 
-  &__skylines {
-    visibility: hidden;
+  &-background,
+  &-foreground {
+    position: absolute;
+    inset: 0;
+  }
+
+  &-background {
+    visibility: hidden; 
   }
 
   &__skyline {
