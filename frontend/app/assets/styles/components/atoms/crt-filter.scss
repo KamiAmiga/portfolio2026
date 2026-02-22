@@ -12,6 +12,18 @@
   }
 
   &::before {
+    background: radial-gradient(
+      circle at center 45%,
+      transparent 80%,
+      color-mix(
+        in srgb,
+        transparent var(--opacity-percentage-6),
+        var(--color-primary-darker)
+      ) 90%
+    );
+  }
+
+  &::after {
     background: linear-gradient(
       to bottom,
       transparent 50%,
@@ -22,17 +34,5 @@
       ) 50%
     );
     background-size: 100% 4px;
-  }
-
-  &::after {
-    background: radial-gradient(
-      circle,
-      transparent 80%,
-      color-mix(
-        in srgb,
-        transparent var(--opacity-percentage-6),
-        var(--color-primary-darker)
-      ) 95%
-    );
   }
 }
