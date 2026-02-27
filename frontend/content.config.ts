@@ -148,12 +148,8 @@ const projectSchema = z.object({
   skills: z.object({
     data: z.array(skillSchema)
   }),
-  cover_image_portrait: z.object({
-    data: strapiImageSchema
-  }),
-  cover_image_landscape: z.object({
-    data: strapiImageSchema
-  }),
+  cover_image_portrait: strapiImageSchema,
+  cover_image_landscape: strapiImageSchema,
   seo: seoSchema
 })
 

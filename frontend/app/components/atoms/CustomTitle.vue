@@ -60,6 +60,6 @@ const splittedTitle = props.level === 'main'
   </component>
 </template>
 
-<style lang="scss">
-@use "~/assets/styles/components/atoms/title";
+<style lang="scss" scoped>
+@use "~/assets/styles/components/atoms/custom-title";
 </style>
