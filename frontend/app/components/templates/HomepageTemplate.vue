@@ -20,7 +20,7 @@ const mouseMoveParallax = (event: MouseEvent) => {
 
   gsap
     .to(ctx.selector?.('.illustration-foreground'), {
-      x: (mouseX / window.innerWidth - 0.5) * 16,
+      x: (mouseX / window.innerWidth - 0.5) * 10,
       y: (mouseY / window.innerHeight - 0.5) * 16,
       delay: 0.2,
       ease: "power3.out",
@@ -29,7 +29,7 @@ const mouseMoveParallax = (event: MouseEvent) => {
 
   gsap
     .to(ctx.selector?.('.illustration__cityscape__shape'), {
-      x: (mouseX / window.innerWidth - 0.5) * -8,
+      x: (mouseX / window.innerWidth - 0.5) * -6,
       y: (mouseY / window.innerHeight) * 16,
       delay: 0.1,
       ease: "power2.out",
@@ -46,8 +46,8 @@ const mouseMoveParallax = (event: MouseEvent) => {
   
   gsap
     .to(ctx.selector?.('.illustration-background'), {
-      x: (mouseX / window.innerWidth - 0.5) * 6,
-      y: (mouseY / window.innerHeight - 0.5) * 6,
+      x: (mouseX / window.innerWidth - 0.5) * 4,
+      y: (mouseY / window.innerHeight - 0.5) * 4,
       delay: 0.1,
       ease: "power2.out",
       overwrite: "auto"
@@ -95,7 +95,6 @@ onMounted(() => {
     });
     const splitTitleLarge = SplitText.create(gsapContext.selector?.('.title__large'), {
       type: "words",
-      wordsClass: 'title__large__word++',
       aria: "hidden"
     });
 
@@ -127,7 +126,7 @@ onMounted(() => {
         scale: 0,
         duration: .3,
         ease: "back.out(1.5)"
-      }, '+=.66')
+      }, '+=.8')
       .to([splitTitleLarge.words?.at(1)], {
         '--bg-shape-opacity': 1,
         '--bg-shape-rotation': '.125turn',
@@ -146,7 +145,7 @@ onMounted(() => {
         scaleX: 0,
         duration: .3,
         ease: "circ.out"
-      }, '-=50%')
+      }, '-=.05')
       .from(gsapContext.selector?.('.illustration__ground__shape'), {
         opacity: 0,
         y: '-100%',
@@ -175,7 +174,7 @@ onMounted(() => {
       .from(gsapContext.selector?.('.illustration__cityscape__shape--back-2, .illustration__cityscape__shape--back-6, .illustration__cityscape__shape--back-4, .illustration__cityscape__shape--back-3'), {
         opacity: .5,
         y: '+130%',
-        duration: .4,
+        duration: .35,
         ease: "power2.out",
         stagger: .05
       }, '-=50%')
@@ -203,8 +202,8 @@ onMounted(() => {
         opacity: 0,
         duration: .6,
         ease: "power2.in",
-        stagger: .1
-      })
+        stagger: .2
+      }, '+=.2')
 
     return timeline
   }
@@ -278,6 +277,6 @@ onUnmounted(() => {
   </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @use '/assets/styles/components/templates/homepage' as *;
 </style>

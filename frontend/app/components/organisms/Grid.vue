@@ -1,6 +1,6 @@
 <script setup lang="ts">
 interface Props {
-  splitting?: 'full' | 'halves' | 'thirds',
+  splitting?: 'full' | 'halves' | 'thirds'
   tag?: string
 }
 
@@ -16,6 +16,6 @@ const props = withDefaults(defineProps<Props>(), {
 </component>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @use '~/assets/styles/components/organisms/grid' as *;
 </style>

@@ -13,6 +13,6 @@ const props = defineProps<{
 </NuxtLink>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @use '~/assets/styles/components/atoms/main-menu-link' as *;
 </style>

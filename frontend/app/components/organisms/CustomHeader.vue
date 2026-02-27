@@ -16,7 +16,7 @@ const props = withDefaults(defineProps<Props>(), {
   </section>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .header {
   padding-top: 50vh;
 }

@@ -26,6 +26,6 @@ const props = defineProps<{
 </nav>
 </template>
 
-<style lang="scss">
-@use '~/assets/styles/components/molecules/main-menu'
+<style lang="scss" scoped>
+@use '~/assets/styles/components/molecules/main-menu' as *;
 </style>

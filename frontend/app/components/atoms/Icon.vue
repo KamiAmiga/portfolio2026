@@ -16,6 +16,6 @@ const props = withDefaults(defineProps<Props>(), {
   class="icon" />
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @use '~/assets/styles/components/atoms/icon' as *;
 </style>

@@ -23,11 +23,11 @@
     position: relative;
     min-height: calc(var(--line-height-sm) * 3.1em);
 
-    &__word {
+    > * {
       position: relative;
       z-index: var(--z-index-base-increase);
 
-      &2 {
+      &:nth-child(2) {
         height: calc(var(--line-height-sm) * 1em);
         aspect-ratio: 1;
         z-index: var(--z-index-base);
