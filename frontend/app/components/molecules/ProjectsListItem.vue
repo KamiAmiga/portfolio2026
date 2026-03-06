@@ -25,7 +25,7 @@ const props = defineProps<{
     <div class="project-item__link__title">
       <div class="project-item__link__title__decorator" />
 
-      <CustomTitle :content="project.name" level='main' tag="h2" />
+      <CustomTitle :content="project.name" level='main' tag="h2" enforceVisibility />
     </div>
 
 
