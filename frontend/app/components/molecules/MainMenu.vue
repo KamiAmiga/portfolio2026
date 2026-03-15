@@ -9,7 +9,7 @@ const props = defineProps<{
 
 <template>
 <nav role="navigation" aria-label="Menu principal" class="main-menu">
-  <Grid splitting="full">
+  <Grid splitting="full" :withTopPadding="false" :withBottomPadding="false">
     <ul class="main-menu__list">
       <li class="main-menu__list__item main-menu__list__item--home">
         <NuxtLink to="/">

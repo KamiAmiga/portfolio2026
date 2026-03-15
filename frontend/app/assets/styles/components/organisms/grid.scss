@@ -8,12 +8,13 @@
   grid-template-columns: 1fr;
 
   @include breakpoint-m-up {
-    padding-inline: var(--spacer-3xl);
+    padding-inline: var(--spacer-up-lg-xl);
     grid-template-columns: repeat(6, 1fr);
     column-gap: var(--spacer-base);
   }
 
   @include breakpoint-l-up {
+    padding-inline: var(--spacer-3xl);
     column-gap: var(--spacer-lg);
   }
 
@@ -38,6 +39,16 @@
       @include breakpoint-m-up {
         grid-column: span 2;
       }
+    }
+  }
+
+  &--padding {
+    &-top {
+      padding-block-start: var(--spacer-3xl);
+    }
+
+    &-bottom {
+      padding-block-end: var(--spacer-3xl);
     }
   }
 }

@@ -7,14 +7,16 @@ interface Props {
   level: 'main' | 'second'
   tag?: 'div' | 'h1' | 'h2' | 'h3' | 'h4'
   enforceVisibility?: boolean
+  animSelfTrigger?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  tag: 'div' 
+  tag: 'div',
+  animSelfTrigger: false
 })
-
-const title = ref();
-let ctx: gsap.Context;
+const emit = defineEmits(["titleTimeline"])
+const title = ref()
+let ctx: gsap.Context
 
 const classes = computed(() => {
   return [
@@ -74,7 +76,7 @@ onMounted(() => {
       }
       : {
         scaleX: 0,
-        duration: .3,
+        duration: .15,
         ease: "power2.out",
       }
 
@@ -87,7 +89,7 @@ onMounted(() => {
     return timeline
   }
 
-  const titleContentTimeline = (text: Element[]) => {
+  const titleContentTimeline = (text: Element[], type: 'main' | 'second') => {
     const timeline = gsap.timeline()
     
     timeline
@@ -97,7 +99,8 @@ onMounted(() => {
         duration: .3,
         ease: "power2.inOut",
         stagger: .02
-      })
+      },
+    type === 'second' ? '<' : undefined)
 
     return timeline
   }
@@ -113,25 +116,29 @@ onMounted(() => {
 
     timeline.add(initTimeline())
 
+    if (!props.animSelfTrigger) {
+      timeline.pause()
+    }
+
     if (props.level === 'main') {
       timeline
         .add(titleMainBackgroundAnim(self))
         .add(titleBorderBoldAnim(self, 'main'))
-        .add(titleContentTimeline(splitTitle.chars))
+        .add(titleContentTimeline(splitTitle.chars, 'main'))
         .add(titleBorderLightAnim(self, 'main'))
     } else {
       timeline
         .add(titleBorderLightAnim(self, 'second'))
-        .add(titleContentTimeline(splitTitle.words))
+        .add(titleContentTimeline(splitTitle.words, 'second'))
         .add(titleBorderBoldAnim(self, 'second'))
     }
+    emit("titleTimeline", timeline);
   }, title.value);
-
-});
+})
 
 onUnmounted(() => {
-  ctx.revert();
-});
+  ctx.revert()
+})
 </script>
 
 <template>

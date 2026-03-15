@@ -235,7 +235,11 @@ onUnmounted(() => {
 
 <template>
   <div ref="home">
-    <Grid splitting="full" class="title-wrapper">
+    <Grid
+      splitting="full"
+      :withTopPadding="false"
+      :withBottomPadding="false"
+      class="title-wrapper">
       <h1 class="title">
         <span class="sr-only">{{ data.title }} {{ data.subtitle }}</span>
 

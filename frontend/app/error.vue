@@ -6,7 +6,7 @@ const props = defineProps<{ error: NuxtError }>()
 
 <template>
   <div>
-    <h1>{{ error.statusCode }}</h1>
+    <h1>{{ error.status }}</h1>
     <NuxtLink to="/">Retour à l'accueil</NuxtLink>
   </div>
 </template>

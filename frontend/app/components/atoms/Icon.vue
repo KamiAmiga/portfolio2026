@@ -12,10 +12,9 @@ const props = withDefaults(defineProps<Props>(), {
 <template>
 <nuxt-icon
   :name="name"
-  :class="`icon--${size}`"
-  class="icon" />
+  :class="`nuxt-icon--${size}`" />
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @use '~/assets/styles/components/atoms/icon' as *;
 </style>

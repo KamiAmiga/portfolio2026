@@ -1,0 +1,88 @@
+@use 'sass:map';
+@use '../../abstracts/' as *;
+
+$categories:
+  "language" map.get($theme-colors, fourth),
+  "development" map.get($theme-colors, tertiary),
+  "art" map.get($theme-colors, secondary),
+  "web" map.get($theme-colors, accent);
+
+.skill-item {
+  --category-color-base: var(--color-accent-base);
+  --category-color-darker: var(--color-accent-darker);
+  --category-color-lighter: var(--color-accent-lighter);
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacer-sm);
+  aspect-ratio: 1;
+  padding:
+    var(--spacer-sm)
+    calc(var(--spacer-sm) + var(--spacer-2xs))
+    calc(var(--spacer-sm) + var(--spacer-xs))
+    calc(var(--spacer-sm) + var(--spacer-2xs));
+  position: relative;
+  background: linear-gradient(
+    to top right,
+    color-mix(
+      in srgb,
+      transparent var(--opacity-percentage-5),
+      var(--category-color-darker)
+    ),
+    33%,
+    color-mix(
+      in srgb,
+      transparent var(--opacity-percentage-9),
+      var(--category-color-base)
+    ) 75%);
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: .125rem;
+    z-index: var(--z-index-base-increase);
+    border: 1px solid color-mix(
+        in srgb,
+        transparent var(--opacity-percentage-7),
+        var(--category-color-lighter)
+      );
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: .125rem;
+    z-index: var(--z-index-base);
+    border: .125rem solid color-mix(
+        in srgb,
+        transparent var(--opacity-percentage-7),
+        var(--category-color-base)
+      );
+    filter: blur(.125rem);
+  }
+
+  &__main-icon {
+    margin-top: auto;
+  }
+
+  &__level {
+    align-self: flex-end;
+    order: -1;
+  }
+
+  @each $name, $category-color in $categories {
+    &--#{$name} {
+      --category-color-base: #{map.get($category-color, base)};
+      --category-color-darker: #{map.get($category-color, darker)};
+      --category-color-lighter: #{map.get($category-color, lighter)};
+    }
+
+    &:not(.skill-item--#{$name}) + .skill-item--#{$name} {
+      grid-column: 1;
+
+      @include breakpoint-m-up {
+        grid-column: unset;
+      }
+    }
+  }
+}

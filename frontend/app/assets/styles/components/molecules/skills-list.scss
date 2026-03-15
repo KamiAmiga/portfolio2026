@@ -1,0 +1,41 @@
+@use '../../abstracts/' as *;
+
+.skills-list {
+  --column-width: minmax(max(8rem, var(--spacer-up-3xl-4xl)), 1fr);
+
+  display: grid;
+  grid-template-columns: repeat(auto-fill, var(--column-width));
+  gap: var(--spacer-xs);
+  visibility: hidden;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+
+  &__filler {
+    display: none;
+
+    &--1 {
+      @include breakpoint-m-up {
+        display: block;
+        grid-column: 1 / span 1;
+        grid-row-start: 4;
+      }
+    }
+
+    &--2 {
+      @include breakpoint-m-up {
+        display: block;
+        grid-column: 3 / span 2;
+      }
+    }
+  } 
+  
+  @include breakpoint-m-up {      
+    width: min-content;
+    grid-template-columns: repeat(7, var(--column-width));
+    grid-template-rows: repeat(4, var(--column-width));
+    grid-auto-flow: column;
+    margin: 0 auto;
+  }
+}
