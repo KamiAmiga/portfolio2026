@@ -53,15 +53,7 @@ const props = defineProps<{
   
   <custom-section v-if="data?.social_links" title="Contacts">
     <template v-slot:content>
-      <ul>
-        <li v-for="link in data?.social_links"
-          :key="link.id">
-          <a :href="link.url" target="_blank" :aria-label="`${link.name} - nouvel onglet`">
-            <Icon :name="link.icon_name" />
-            <div>{{ link.name }}</div>
-          </a>
-        </li>
-      </ul>
+      <SocialLinksList :social-links="data.social_links"/>
     </template>
   </custom-section>
 </Grid>
