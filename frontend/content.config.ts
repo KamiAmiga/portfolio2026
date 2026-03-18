@@ -1,7 +1,8 @@
 import { defineCollection, defineContentConfig, z } from '@nuxt/content'
 
-const strapiImageSchema = z.object({
+const strapiFileSchema = z.object({
   id: z.number(),
+  documentId: z.string(),
   alternativeText: z.string(),
   caption: z.string(),
   ext: z.string(),
@@ -57,7 +58,7 @@ const skillSchema = z.object({
 const homeSchema = z.object({
   title: z.string(),
   highlight_medias: z.object({
-    data: z.array(strapiImageSchema)
+    data: z.array(strapiFileSchema)
   }),
   subtitle: z.string(),
   seo: seoSchema
@@ -90,6 +91,13 @@ const aboutSchema = z.object({
       icon_name: z.string()
     })
   ),
+  resume: z.array(
+    z.object({
+      id: z.number(),
+      name: z.string(),
+      file: strapiFileSchema
+    })
+  ),
   seo: seoSchema
 })
 
@@ -116,7 +124,7 @@ const projectSchema = z.object({
       id: z.number(),
       images: z.object({
         id: z.number(),
-        data: z.array(strapiImageSchema)
+        data: z.array(strapiFileSchema)
       }),
       type: z.enum([
         "ui-mobile_desktop",
@@ -133,7 +141,7 @@ const projectSchema = z.object({
       id: z.number(),
       typo_name: z.string(),
       typo_visual: z.object({
-        data: strapiImageSchema
+        data: strapiFileSchema
       })
     })
   ),
@@ -143,13 +151,13 @@ const projectSchema = z.object({
     color_name: z.string()
   })),
   secondary_images: z.object({
-    data: z.array(strapiImageSchema)
+    data: z.array(strapiFileSchema)
   }),
   skills: z.object({
     data: z.array(skillSchema)
   }),
-  cover_image_portrait: strapiImageSchema,
-  cover_image_landscape: strapiImageSchema,
+  cover_image_portrait: strapiFileSchema,
+  cover_image_landscape: strapiFileSchema,
   seo: seoSchema
 })
 

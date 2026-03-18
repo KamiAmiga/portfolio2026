@@ -27,5 +27,11 @@ export default defineNuxtConfig({
       'xl': 1920
     },
   },
-  modules: ['@nuxt/content', '@nuxt/image', 'nuxt-icons', 'nuxt-strapi-blocks-renderer']
+  modules: [
+    '@nuxt/content',
+    '@nuxt/image',
+    'nuxt-icons',
+    'nuxt-strapi-blocks-renderer',
+    '@tresjs/nuxt'
+  ]
 })

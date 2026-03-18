@@ -15,6 +15,8 @@ const routesSettings = [
       'skills',
       'interests',
       'social_links',
+      'resume',
+      'resume.file',
       'seo',
       'seo.metaImage'
     ]
