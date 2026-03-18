@@ -18,15 +18,10 @@ const props = defineProps<{
     <div>{{ skill.name }}</div>
 
     <template v-if="skill.level">
-      <template v-if="skill.level == 1">
-        <span class="sr-only">Niveau correct</span>
-        <Icon class="skill-item__level icon" name="star" />
-      </template>
-
-      <template v-else>
-        <span class="sr-only">Bon niveau</span>
-        <Icon class="skill-item__level icon" name="stars" />
-      </template>
+      <Icon
+        class="skill-item__level icon"
+        :name="skill.level == 1 ? 'star' : 'stars'"
+        :ariaLabel="skill.level == 1 ? 'Niveau correct' : 'Bon niveau'" />
     </template>
   </li>
 </template>

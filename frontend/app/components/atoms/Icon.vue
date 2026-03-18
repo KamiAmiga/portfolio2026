@@ -2,6 +2,7 @@
 interface Props {
   name: string,
   size?: 'sm' | 'base' | 'md' | 'lg',
+  ariaLabel?: string,
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -12,7 +13,10 @@ const props = withDefaults(defineProps<Props>(), {
 <template>
 <nuxt-icon
   :name="name"
-  :class="`nuxt-icon--${size}`" />
+  :class="`nuxt-icon--${size}`"
+  :aria-label="ariaLabel ?? null"
+  :aria-hidden="ariaLabel ? null : true"
+  focusable="false" />
 </template>
 
 <style lang="scss">
