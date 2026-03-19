@@ -1,0 +1,22 @@
+.header {
+  display:flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  position: relative;
+  z-index: var(--z-index-base);
+
+  &--small {
+    height: max(50svh, 15rem);
+  }
+
+  &--full-screen {
+    height: 100svh;
+  }
+
+  &__background {
+    position: absolute;
+    inset: 0 0 var(--spacer-xs) 0;
+    z-index: var(--z-index-base-decrease);
+    overflow: hidden;
+  }
+}

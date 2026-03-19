@@ -2,22 +2,26 @@
 interface Props {
   title: string
   titleTag?: 'div' | 'h1' | 'h2' | 'h3' | 'h4'
+  size?: 'small' | 'full-screen'
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  titleTag: 'h1' 
+  titleTag: 'h1',
+  size: 'full-screen'
 })
 </script>
 
 <template>
-  <section class="header">
-    <slot name="background"></slot>
-    <custom-title :content="title" level="main" :tag="titleTag" />
-  </section>
+  <header class="header" :class="`header--${size}`">
+    <div class="header__background">
+      <slot name="background"></slot>
+    </div>
+    <Grid :withTopPadding="false" :withBottomPadding="false">
+      <CustomTitle :content="title" level="main" :tag="titleTag" :animSelfTrigger="true" />
+    </Grid>
+  </header>
 </template>
 
 <style lang="scss" scoped>
-.header {
-  padding-top: 50vh;
-}
+@use "~/assets/styles/components/organisms/custom-header" as *;
 </style>

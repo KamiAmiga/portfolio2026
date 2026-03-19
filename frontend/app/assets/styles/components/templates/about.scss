@@ -1,0 +1,122 @@
+.about-header {
+  &__background {
+    display: grid;
+    place-items: center;
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      150deg,
+      color-mix(
+        in srgb,
+        transparent var(--opacity-percentage-6),
+        var(--color-secondary-darker)
+      ),
+      color-mix(
+        in srgb,
+        transparent var(--opacity-percentage-9),
+        var(--color-secondary-darker)
+      ) 50%);
+
+    &__skylines {
+      transform: rotate(-30deg);
+
+      &::before,
+      &::after,
+      & {
+        width: 100vw;
+        height: 0;
+        border-top-width: 2px;
+        position: absolute;
+        z-index: var(--z-index-base-decrease);
+        transform-origin: left center;
+      }
+
+      &--1 {
+        border-top-style: solid;
+        border-top-color: var(--color-secondary-darker);
+        bottom: calc(50% - var(--spacer-4xl) / 2 + var(--spacer-base));
+        left: calc(50% - var(--spacer-4xl) / 2 - var(--spacer-base));
+  
+        &::before,
+        &::after {
+          content: '';
+          border-top-style: dashed;
+        }
+  
+        &::before {
+          top: -10vh;
+          left: -50%;
+          border-top-color: 
+            color-mix(
+              in srgb,
+              transparent var(--opacity-percentage-9),
+              var(--color-primary-reverse)
+            );
+        }
+  
+        &::after {
+          top: var(--spacer-xl);
+          left: var(--spacer-2xl);
+          border-top-color: 
+            color-mix(
+              in srgb,
+              transparent var(--opacity-percentage-6),
+              var(--color-secondary-darker)
+            );
+        }
+      }
+
+      &--2 {
+        border-top-style: solid;
+        border-top-color: 
+          color-mix(
+            in srgb,
+            transparent var(--opacity-percentage-7),
+            var(--color-secondary-lighter)
+          );
+        top: max(20vh, var(--spacer-4xl));
+        left: 0;
+
+        &::before {
+          content: '';
+          border-top-style: dashed;
+          border-top-color: 
+            color-mix(
+              in srgb,
+              transparent var(--opacity-percentage-8),
+              var(--color-primary-reverse)
+            );
+          bottom: 2rem;
+        }
+      }
+
+      &--3 {
+        border-top-style: solid;
+        border-top-color: 
+          color-mix(
+            in srgb,
+            transparent var(--opacity-percentage-8),
+            var(--color-primary-reverse)
+          );
+        bottom: 0;
+        left: 85%;
+
+        &::before {
+          content: '';
+          border-top-style: dashed;
+          border-top-color: 
+            color-mix(
+              in srgb,
+              transparent var(--opacity-percentage-9),
+              var(--color-primary-reverse)
+            );
+          top: 1.5rem;
+        }
+      }
+    }
+
+    &__logo {
+      height: var(--spacer-4xl);
+    }
+  }
+}
