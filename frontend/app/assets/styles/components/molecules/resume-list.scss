@@ -1,0 +1,98 @@
+@use '../../abstracts/' as *;
+
+.resume-list {
+  --focus-shape-scale: 1;
+
+  display: flex;
+  flex-direction: column;
+  row-gap: var(--spacer-md);
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+  
+  &__link {
+    display: block;
+    width: fit-content;
+    padding: var(--spacer-base) var(--spacer-xl);
+    border: var(--spacer-sm) solid transparent;
+    position: relative;
+    text-align: center;
+    color: var(--color-primary-reverse);
+    text-decoration: none;
+    background: no-repeat linear-gradient(
+      150deg,
+      color-mix(
+        in srgb,
+        transparent var(--opacity-percentage-3),
+        var(--color-secondary-darker)
+      ),
+      var(--spacer-3xl),
+      color-mix(
+        in srgb,
+        transparent var(--opacity-percentage-8),
+        var(--color-secondary-darker)
+      ) 40%,
+    );
+    background-repeat: no-repeat;
+    background-clip: padding-box;
+    background-position: 50%;
+    background-size: 200% 100%;
+    transition: background-position .25s ease-out;
+
+    &::before,
+    &::after {
+      --displacement: calc(var(--spacer-sm) * -1);
+
+      content: "";
+      display: block;
+      width: var(--spacer-lg);
+      height: var(--spacer-lg);
+      position: absolute;
+      transform: scale(var(--focus-shape-scale));
+      transform-origin: top left;
+      transition:
+        --displacement .25s ease-in,
+        width .25s ease-out,
+        height .25s ease-out,
+        border-color .25s ease-in-out;
+    }
+
+    &::before {
+      border-top: 1px solid var(--color-secondary-lighter);
+      border-left: 1px solid var(--color-secondary-lighter);
+      top: var(--displacement);
+      left: var(--displacement);
+    }
+
+    &::after {
+      border-right: 1px solid var(--color-secondary-lighter);
+      border-bottom: 1px solid var(--color-secondary-lighter);
+      right: var(--displacement);
+      bottom: var(--displacement);
+    }
+
+    &:hover,
+    &:focus {
+      background-position: 0;
+
+      &::before,
+      &::after {
+        --displacement: calc(var(--spacer-sm) * .5);
+
+        width: calc(100% - var(--spacer-sm));
+        height: calc(100% - var(--spacer-sm));
+        border-color: color-mix(
+          in srgb,
+          transparent var(--opacity-percentage-6),
+          var(--color-primary-reverse));
+      }
+    }
+  }
+
+  @include breakpoint-m-up {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    column-gap: var(--spacer-2xl);
+  }
+}

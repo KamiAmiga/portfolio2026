@@ -27,22 +27,23 @@
         display: block;
         width: var(--spacer-lg);
         height: var(--spacer-lg);
-        border-top: 1px solid var(--color-accent-base);
-        border-left: 1px solid var(--color-accent-base);
         position: absolute;
         transform: scale(var(--focus-shape-scale));
         transform-origin: top left;
       }
 
       &::before {
+        border-top: 1px solid var(--color-accent-base);
+        border-left: 1px solid var(--color-accent-base);
         top: calc(var(--spacer-sm) * -1);
         left: calc(var(--spacer-sm) * -1);
       }
 
       &::after {
+        border-right: 1px solid var(--color-accent-base);
+        border-bottom: 1px solid var(--color-accent-base);
         right: calc(var(--spacer-sm) * -1);
         bottom: calc(var(--spacer-sm) * -1);
-        transform: rotate(180deg) scale(var(--focus-shape-scale));
       }
     }
   }

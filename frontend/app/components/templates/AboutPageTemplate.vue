@@ -73,13 +73,7 @@ const props = defineProps<{
 <Grid>
   <CustomSection v-if="data?.resume" title="CV">
     <template v-slot:content>
-      <ul>
-        <li v-for="resume in data.resume" :key="resume.id">
-          <a :href="resume.file.url">
-            {{ resume.name }}
-          </a>
-        </li>
-      </ul>
+      <ResumeList :resume="data.resume" />
     </template>
   </CustomSection>
 </Grid>
