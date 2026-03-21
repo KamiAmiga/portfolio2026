@@ -19,7 +19,9 @@ const props = defineProps<{
 </CustomHeader>
 
 <Grid>
-  <StrapiBlocksText v-if="data?.intro" :nodes="data.intro" />
+  <RichtextWrapper :withFocus="true">
+    <StrapiBlocksText v-if="data?.intro" :nodes="data.intro" />
+  </RichtextWrapper>
 </Grid>
 
 <Grid>

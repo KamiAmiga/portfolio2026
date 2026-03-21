@@ -1,0 +1,49 @@
+@use '../../abstracts/' as *;
+
+.richtext-wrapper {
+  visibility: hidden;
+  max-width: 60rem;
+
+  &--with-focus {
+    --focus-shape-scale: 1;
+
+    @include breakpoint-m-up {
+      display: inline-block;
+      border: var(--spacer-sm) solid transparent;
+      padding: var(--spacer-md);
+      position: relative;
+      background: linear-gradient(
+        150deg,
+        color-mix(in srgb, transparent var(--opacity-percentage-6), var(--color-accent-darker)),
+        15%,
+        transparent 30%
+      );
+      background-repeat: no-repeat;
+      background-clip: padding-box;
+
+      &::before,
+      &::after {
+        content: "";
+        display: block;
+        width: var(--spacer-lg);
+        height: var(--spacer-lg);
+        border-top: 1px solid var(--color-accent-base);
+        border-left: 1px solid var(--color-accent-base);
+        position: absolute;
+        transform: scale(var(--focus-shape-scale));
+        transform-origin: top left;
+      }
+
+      &::before {
+        top: calc(var(--spacer-sm) * -1);
+        left: calc(var(--spacer-sm) * -1);
+      }
+
+      &::after {
+        right: calc(var(--spacer-sm) * -1);
+        bottom: calc(var(--spacer-sm) * -1);
+        transform: rotate(180deg) scale(var(--focus-shape-scale));
+      }
+    }
+  }
+}
