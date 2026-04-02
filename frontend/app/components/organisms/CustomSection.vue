@@ -44,7 +44,7 @@ onUnmounted(() => {
       :tag="titleTag"
       @title-timeline="onTitleTimeline" />
 
-    <div>
+    <div class="section__content">
       <slot name="content"></slot>
     </div>
   </section>

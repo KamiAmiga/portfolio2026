@@ -52,14 +52,8 @@ const props = defineProps<{
 
 <Grid splitting="halves">
   <CustomSection v-if="data?.interests" title="Intérêts">
-    <template>
-      <ul>
-        <li v-for="interest in data.interests"
-          :key="interest.id">
-          <Icon :name="interest.icon_name" />
-          <div>{{ interest.name }}</div>
-        </li>
-      </ul>
+    <template v-slot:content>
+      <InterestsList :interests="data.interests" />
     </template>
   </CustomSection>
   

@@ -14,7 +14,6 @@ $categories:
 
   display: flex;
   flex-direction: column;
-  gap: var(--spacer-sm);
   aspect-ratio: 1;
   padding:
     var(--spacer-sm)
@@ -63,6 +62,7 @@ $categories:
 
   &__main-icon {
     margin-top: auto;
+    margin-bottom: var(--spacer-sm);
   }
 
   &__level {

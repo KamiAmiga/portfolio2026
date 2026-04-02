@@ -1,0 +1,118 @@
+.interests {
+  --radius: 8.5rem;
+  --opacity: 1;
+
+  visibility: hidden;
+  height: 100%;
+  min-height: calc((var(--spacer-4xl) + var(--spacer-lg)) * 2);
+  position: relative;
+
+  &,
+  &__center-of-gravity,
+  &__list {
+    display: grid;
+    place-content: center;
+  }
+
+  &::before,
+  &::after {
+    content: "";
+    aspect-ratio: 1;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    opacity: var(--opacity);
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+  }
+
+  &::before {
+    width: calc(var(--radius) * 2 + var(--spacer-xs));
+    border: 1px solid color-mix(
+      in srgb,
+      transparent var(--opacity-percentage-7),
+      var(--color-secondary-base)
+    );
+  }
+
+  &::after {
+    width: calc(var(--radius) * 2 - var(--spacer-sm));
+    border: 2px dashed color-mix(
+      in srgb,
+      transparent var(--opacity-percentage-8),
+      var(--color-secondary-base)
+    );
+    z-index: var(--z-index-base-decrease);
+  }
+
+  &__center-of-gravity {
+    --shadow-opacity: 1;
+
+    width: var(--spacer-3xl);
+    aspect-ratio: 1;
+    grid-area: 1/1;
+    border: var(--spacer-2xs) solid var(--color-secondary-base);
+    background-color: color-mix(
+      in srgb,
+      transparent var(--opacity-percentage-8),
+      var(--color-secondary-darker)
+    );
+    box-shadow: 
+      0
+      0
+      var(--spacer-sm)
+      1px
+      color-mix(
+        in srgb,
+        transparent calc(var(--opacity-percentage-5) * var(--shadow-opacity)),
+        var(--color-secondary-lighter)
+      ),
+      inset
+      0
+      0
+      var(--spacer-xs)
+      0
+      color-mix(
+        in srgb,
+        transparent var(--opacity-percentage-3),
+        var(--color-secondary-lighter)
+      );
+    border-radius: 50%;
+  }
+
+  &__list {
+    grid-area: 1/1;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+
+    &__item {
+      --scale: 1;
+      --rotate: 0;
+
+      grid-area: 1/1;
+      position: relative;
+      transform: translateX(calc(cos((var(--angle) - 90deg)) * var(--radius)))
+        translateY(calc(sin((var(--angle) - 90deg)) * var(--radius)))
+        scale(var(--scale))
+        rotate(0deg);
+      background-color: var(--color-primary-base);
+      padding: var(--spacer-sm);
+      border-radius: 50%;
+      rotate: var(--rotate);
+      
+      &__label {
+        display: flex;
+        align-items: center;
+        width: max-content;
+        aspect-ratio: 1;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translateX(calc(cos((var(--angle) - 90deg)) * var(--spacer-xl) - 50%))
+          translateY(calc(sin((var(--angle) - 90deg)) * var(--spacer-xl) - 50%));
+        translate: var(--translateX) 0;
+      }
+    }
+  }
+}

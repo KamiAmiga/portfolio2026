@@ -6,6 +6,7 @@
   box-sizing: border-box;
   padding-inline: var(--spacer-md);
   grid-template-columns: 1fr;
+  row-gap: var(--spacer-3xl);
 
   @include breakpoint-m-up {
     padding-inline: var(--spacer-up-lg-xl);

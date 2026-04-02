@@ -1,7 +1,7 @@
 <script setup lang="ts">
 interface Props {
   name: string,
-  size?: 'sm' | 'base' | 'md' | 'lg',
+  size?: 'sm' | 'base' | 'md' | 'lg' | 'xl',
   ariaLabel?: string,
 }
 

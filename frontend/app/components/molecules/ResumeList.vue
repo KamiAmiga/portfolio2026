@@ -42,7 +42,10 @@ onUnmounted(() => {
 <template>
 <ul class="resume-list" ref="resumeList">
   <li v-for="resumeItem in resume" :key="resumeItem.id">
-    <a class="resume-list__link font-sans--base-capitalized" :href="resumeItem.file.url">
+    <a
+      class="resume-list__link font-sans--base-capitalized"
+      target="_blank"
+      :href="resumeItem.file.url">
       {{ resumeItem.name }}
     </a>
   </li>

@@ -6,6 +6,7 @@ $icon-sizes: (
   base: map.get($font-sizes, base),
   md: map.get($font-sizes, md),
   lg: map.get($font-sizes, lg),
+  xl: map.get($font-sizes, xl),
 );
 
 .nuxt-icon {
