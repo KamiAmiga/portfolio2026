@@ -27,17 +27,7 @@ const props = defineProps<{
 <Grid>
   <CustomSection v-if="data?.experience" title="Parcours">
     <template v-slot:content>
-      <ul>
-        <li 
-          v-for="historyItem in data.experience"
-          :key="historyItem.id">
-          <Icon :name="historyItem.category === 'school' ? 'scholar' : 'bag'" />
-          <h3>{{ historyItem.name }}</h3>
-          <div v-if="historyItem.place || historyItem.date">
-            {{ historyItem.place }}, {{ historyItem.date }}
-          </div>
-        </li>
-      </ul>
+      <HistoryList :history="data.experience" />
     </template>
   </CustomSection>
 </Grid>

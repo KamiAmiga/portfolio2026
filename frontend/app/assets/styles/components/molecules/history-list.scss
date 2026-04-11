@@ -1,0 +1,216 @@
+@use '../../abstracts/' as *;
+
+.history-list {
+  --inset-block-end: 100%;
+  
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  margin: 0;
+  visibility: hidden;
+  list-style-type: none;
+  clip-path: inset(0 0 var(--inset-block-end) 0);
+
+  &__item {
+    $self: &;
+
+    --border-width: .125rem;
+    --border-adjust: calc(var(--border-width) * .5);
+    --border-style: var(--border-width) solid var(--item-color);
+    --icon-width: var(--spacer-xl);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex: 0 0 calc(var(--line-height-base) * 6.25rem);
+    width: calc(50% - var(--spacer-md));
+    padding-block: var(--spacer-base);
+    position: relative;
+
+    &::before {
+      content: "";
+      display: block;
+      width: 0;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+
+      @include breakpoint-l-up {
+        width: auto;
+        bottom: unset;
+      }
+    }
+
+    &#{$self}--junction::before {
+      width: var(--icon-width);
+
+      @include breakpoint-l-up {
+        width: auto;
+        height: calc(var(--icon-width) + var(--spacer-base));
+      }
+    }
+
+    &--school {
+      --item-color: var(--color-secondary-base);
+      align-self: flex-start;
+      padding-inline-end: calc(var(--icon-width) * .5 + var(--spacer-sm));
+      text-align: end;
+
+      &::before {
+        border-inline-start: var(--border-style);
+        left: calc(100% - (var(--border-width)) * .5);
+
+        @include breakpoint-l-up {
+          top: calc(100% - (var(--border-width)) * .5);
+          left: 0;
+          right: 0;
+        }
+      }
+
+      &#{$self}--junction::before {
+        top: -100%;
+        border-block-end: var(--border-style);
+        border-bottom-left-radius: var(--spacer-base);
+        transform: skewY(30deg);
+
+        @include breakpoint-l-up {
+          top: calc(100% - (var(--border-width)) * .5);
+          left: -100%;
+          right: 0;
+          border-inline-start: none;
+          border-inline-end: var(--border-style);
+          border-top-right-radius: var(--spacer-base);
+          transform: skewX(30deg);
+        }
+      }
+
+      @include breakpoint-l-up {
+        text-align: unset;
+        padding-inline: calc(var(--icon-width) * .5 + var(--spacer-md)) 0;
+      }
+    }
+
+    &--work {
+      --item-color: var(--color-tertiary-base);
+
+      align-self: flex-end;
+      padding-inline-start: calc(var(--icon-width) * .5 + var(--spacer-base));
+
+      &::before {
+        border-inline-end: var(--border-style);
+        right: calc(100% - (var(--border-width)) * .5);
+
+        @include breakpoint-l-up {
+          top: calc(var(--border-width) * -.5);
+          left: 0;
+          right: 0;
+        }
+      }
+
+      &#{$self}--junction::before {
+        bottom: -100%;
+        border-block-start: var(--border-style);
+        border-top-right-radius: var(--spacer-base);
+        transform: skewY(30deg);
+
+        @include breakpoint-l-up {
+          top: unset;
+          bottom: calc(100% - (var(--border-width)) * .5);
+          left: 0;
+          right: -100%;
+          border-inline-start: var(--border-style);
+          border-inline-end: none;
+          border-bottom-left-radius: var(--spacer-base);
+          transform: skewX(30deg);
+        }
+      }
+
+      @include breakpoint-l-up {
+        margin-inline: calc(var(--spacer-3xl) * -1) calc(22rem + var(--icon-width) + var(--spacer-base));
+        text-align: end;
+        padding-inline: 0 calc(var(--icon-width) * .5 + var(--spacer-md));
+      }
+    }
+
+    &__icon {
+      display: grid;
+      place-items: center;
+      width: var(--icon-width);
+      aspect-ratio: 1;
+      position: absolute;
+      top: 50%;
+      color: var(--color-primary-base);
+      border: .125rem solid var(--item-color);
+      background-color: var(--color-primary-reverse);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+
+      #{$self}--school & {
+        left: 100%;
+
+        @include breakpoint-l-up {
+          top: 100%;
+          left: 50%;
+        }
+      }
+
+      #{$self}--work & {
+        left: 0;
+
+        @include breakpoint-l-up {
+          top: 0;
+          left: 50%;
+        }
+      }
+    }
+
+    @include breakpoint-l-up {
+      flex: 0 0 calc(100% / var(--history-length));
+      height: 22rem;
+      writing-mode: sideways-lr;
+    }
+
+    &__description {
+      --translate: 20px;
+
+      #{$self}--school & {
+        transform: translateX(calc(var(--translate) * -1));
+      }
+      
+      #{$self}--work & {
+        transform: translateX(var(--translate));
+      }
+
+      @include breakpoint-l-up {
+        #{$self}--school & {
+          transform: translateY(calc(var(--translate) * -1));
+        }
+        
+        #{$self}--work & {
+          transform: translateY(var(--translate));
+        }
+      }
+
+      &-wrapper {
+        @include breakpoint-l-up {
+          #{$self}--school & {
+            transform: translateX(var(--spacer-md)) rotate(60deg);
+            transform-origin: bottom center;
+          }
+          
+          #{$self}--work & {
+            transform: translateX(calc(var(--spacer-md) * -1)) rotate(60deg);
+            transform-origin: top center;
+          }
+        }
+      }
+    }
+  }
+
+  @include breakpoint-l-up {
+    flex-direction: row;
+    justify-content: center;
+    margin-block: -6rem -1rem;
+    clip-path: inset(0 var(--inset-block-end) 0 0);
+  }
+}
