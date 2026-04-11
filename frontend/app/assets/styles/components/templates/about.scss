@@ -2,6 +2,7 @@
   &__background {
     display: grid;
     place-items: center;
+    visibility: hidden;
     position: absolute;
     inset: 0;
     background: linear-gradient(

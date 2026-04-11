@@ -36,6 +36,44 @@ onMounted(() => {
     return timeline
   }
 
+  const iconsTimeline = (gsapContext: gsap.Context) => {
+    const timeline = gsap.timeline()
+
+    timeline
+      .from(gsapContext.selector?.('.history-list__item__icon'), {
+        rotate: '30deg',
+        scale: 0,
+        ease: 'back.out(2.2)',
+        stagger: {
+          amount: .4,
+          ease: 'power1'
+        }
+      })
+      .from(gsapContext.selector?.('.history-list__item__icon'), {
+        opacity: 0,
+        duration: .2,
+        ease: "power2.in",
+      }, '<')
+
+    return timeline
+  }
+
+  const descriptionsTimeline = (gsapContext: gsap.Context) => {
+    const timeline = gsap.timeline({duration: .4})
+
+    timeline
+      .from(gsapContext.selector?.('.history-list__item__description'), {
+        opacity: 0,
+        ease: "power2",
+      })
+      .to(gsapContext.selector?.('.history-list__item__description'), {
+        '--translate': 0,
+        ease: "power3",
+      }, '<-.1')
+
+    return timeline
+  }
+
   ctx = gsap.context((self) => {
     const timeline = gsap.timeline()
 
@@ -43,38 +81,11 @@ onMounted(() => {
       .add(initTimeline())
       .to(historyList.value, {
         '--inset-block-end': 0,
-        duration: .75,
+        duration: .6,
         ease: 'power3.out'
       })
-      .from(self.selector?.('.history-list__item'), {
-        opacity: 0,
-        duration: .5,
-        ease: "power2.out",
-      }, '<')
-      .from(self.selector?.('.history-list__item__icon'), {
-        rotate: '30deg',
-        scale: 0,
-        ease: 'back.out(2.2)',
-        stagger: {
-          amount: .5,
-          ease: 'power1'
-        }
-      })
-      .from(self.selector?.('.history-list__item__icon'), {
-        opacity: 0,
-        duration: .3,
-        ease: "power2.in",
-      }, '<')
-      .from(self.selector?.('.history-list__item__description'), {
-        opacity: 0,
-        duration: .4,
-        ease: "power2",
-      })
-      .to(self.selector?.('.history-list__item__description'), {
-        '--translate': 0,
-        duration: .4,
-        ease: "power3",
-      }, '<-.1')
+      .add(iconsTimeline(self), '-=33%')
+      .add(descriptionsTimeline(self), '-=50%')
 
     ScrollTrigger.create({
       trigger: historyList.value,

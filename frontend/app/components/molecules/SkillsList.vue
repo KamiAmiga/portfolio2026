@@ -44,8 +44,9 @@ onMounted(() => {
     const timeline = gsap.timeline({
       defaults: {
         stagger: {
-          amount: .6,
-          ease: 'power.inOut(1.33)'
+          amount: .5,
+          ease: 'sine'
+          // ease: 'sine.inOut'
         }
       }
     })
@@ -54,13 +55,13 @@ onMounted(() => {
       .add(initTimeline())
       .from(self.selector?.('.skill-item'), {
         opacity: 0,
-        duration: .2,
+        duration: .3,
         ease: 'power2.inOut',
       })
       .from(self.selector?.('.skill-item'), {
         scale: .25,
         duration: .4,
-        ease: 'back.out(2.2)',
+        ease: 'back.out(2.5)',
       }, '<')    
 
     ScrollTrigger.create({

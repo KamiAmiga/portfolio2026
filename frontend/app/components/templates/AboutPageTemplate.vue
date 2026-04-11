@@ -1,15 +1,48 @@
 <script setup lang="ts">
+import { gsap } from "gsap";
 import type { AboutCollectionItem } from '@nuxt/content';
 
 const props = defineProps<{ 
   data: AboutCollectionItem,
 }>()
+
+const headerBackground = ref()
+let ctx: gsap.Context;
+
+onMounted(() => {
+  const initTimeline = () => {
+    const timeline = gsap.timeline()
+
+    timeline
+      .from(headerBackground.value, {
+        autoAlpha: 0
+      })
+
+    return timeline
+  }
+
+  ctx = gsap.context((self) => {
+    const timeline = gsap.timeline()
+
+    timeline    
+      .add(initTimeline())
+      .from(self.selector?.('.about-header__background__logo'), {
+        scale: 0,
+        duration: .25,
+        ease: 'back.out(2.5)',
+      }, '+=.2')
+  }, headerBackground.value)
+})
+
+onUnmounted(() => {
+  ctx.revert()
+})
 </script>
 
 <template>
 <CustomHeader title="A propos" size="small" class="about-header">
   <template v-slot:background>
-    <div class="about-header__background">
+    <div class="about-header__background" ref="headerBackground">
       <div class="about-header__background__skylines about-header__background__skylines--1"/>
       <div class="about-header__background__skylines about-header__background__skylines--2"/>
       <div class="about-header__background__skylines about-header__background__skylines--3"/>

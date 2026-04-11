@@ -18,7 +18,7 @@ onMounted(() => {
       .from(resumeList.value, {
         autoAlpha: 0
       })
-      .from(self.selector?.('.skill-item'), {
+      .from(self.selector?.('.resume-list__link'), {
         '--focus-shape-scale': 0,
         opacity: 0,
         duration: .3,

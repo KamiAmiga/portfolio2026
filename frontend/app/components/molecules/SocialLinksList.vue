@@ -29,11 +29,11 @@ onMounted(() => {
       .add(initTimeline())
       .from(self.selector?.('.social-link-item'), {
         opacity: 0,
-        duration: .35,
+        duration: .55,
       }) 
       .from(self.selector?.('.social-link-item'), {
         x: 24,
-        duration: .34,
+        duration: .53,
         delay: .02,
       }, '<')  
 

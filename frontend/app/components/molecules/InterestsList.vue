@@ -33,7 +33,7 @@ onMounted(() => {
         ease: 'back.out(2.5)',
       })
       .from(gsapContext.selector?.('.interests__list__item'), {
-        '--radius': 0,
+        '--base-radius': 0,
         '--scale': .5,
         '--rotate': '-45deg',
         opacity: 0,

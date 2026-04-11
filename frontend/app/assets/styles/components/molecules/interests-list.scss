@@ -1,9 +1,13 @@
+@use '../../abstracts/' as *;
+
 .interests {
-  --radius: 8.5rem;
+  --base-radius: 8.5rem;
+  --max-radius: 25vw;
   --opacity: 1;
 
   visibility: hidden;
-  height: 100%;
+  width: 100%;
+  aspect-ratio: 1;
   min-height: calc((var(--spacer-4xl) + var(--spacer-lg)) * 2);
   position: relative;
 
@@ -27,7 +31,7 @@
   }
 
   &::before {
-    width: calc(var(--radius) * 2 + var(--spacer-xs));
+    width: calc(min(var(--max-radius), var(--base-radius)) * 2 + var(--spacer-xs));
     border: 1px solid color-mix(
       in srgb,
       transparent var(--opacity-percentage-7),
@@ -36,7 +40,7 @@
   }
 
   &::after {
-    width: calc(var(--radius) * 2 - var(--spacer-sm));
+    width: calc(min(var(--max-radius), var(--base-radius)) * 2 - var(--spacer-sm));
     border: 2px dashed color-mix(
       in srgb,
       transparent var(--opacity-percentage-8),
@@ -46,8 +50,6 @@
   }
 
   &__center-of-gravity {
-    --shadow-opacity: 1;
-
     width: var(--spacer-3xl);
     aspect-ratio: 1;
     grid-area: 1/1;
@@ -64,7 +66,7 @@
       1px
       color-mix(
         in srgb,
-        transparent calc(var(--opacity-percentage-5) * var(--shadow-opacity)),
+        transparent (var(--opacity-percentage-5)),
         var(--color-secondary-lighter)
       ),
       inset
@@ -92,8 +94,8 @@
 
       grid-area: 1/1;
       position: relative;
-      transform: translateX(calc(cos((var(--angle) - 90deg)) * var(--radius)))
-        translateY(calc(sin((var(--angle) - 90deg)) * var(--radius)))
+      transform: translateX(calc(cos((var(--angle) - 90deg)) * min(var(--max-radius), var(--base-radius))))
+        translateY(calc(sin((var(--angle) - 90deg)) * min(var(--max-radius), var(--base-radius))))
         scale(var(--scale))
         rotate(0deg);
       background-color: var(--color-primary-base);
@@ -109,10 +111,15 @@
         position: absolute;
         top: 50%;
         left: 50%;
-        transform: translateX(calc(cos((var(--angle) - 90deg)) * var(--spacer-xl) - 50%))
+        transform: translateX(calc(cos((var(--angle) - 90deg)) * var(--spacer-2xl) - 50%))
           translateY(calc(sin((var(--angle) - 90deg)) * var(--spacer-xl) - 50%));
         translate: var(--translateX) 0;
       }
     }
+  }
+
+  @include breakpoint-l-up {
+    height: 100%;
+    aspect-ratio: unset;
   }
 }

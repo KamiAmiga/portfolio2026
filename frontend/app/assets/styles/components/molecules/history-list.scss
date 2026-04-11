@@ -182,6 +182,8 @@
       }
 
       @include breakpoint-l-up {
+        --translate: 30px;
+
         #{$self}--school & {
           transform: translateY(calc(var(--translate) * -1));
         }
