@@ -2,12 +2,19 @@
 import { gsap } from "gsap";
 import { SplitText } from "gsap/SplitText";
 import { CustomEase } from "gsap/CustomEase";
-import type { HomeCollectionItem } from "@nuxt/content";
+import type { ProjectsCollectionItem, HomeCollectionItem } from "@nuxt/content";
 
-const props = defineProps<{ data: HomeCollectionItem}>()
+const props = defineProps<{ 
+  data: HomeCollectionItem
+  projectsData?: Pick<ProjectsCollectionItem, "slug" | "cover_image_portrait">[]
+}>()
 
 const home = ref();
+const cityScapeWrapper = useTemplateRef('cityScapeWrapper')
+const frontCityscapeShape1 = useTemplateRef('cityscapeShape1')
+const frontCityscapeShape2 = useTemplateRef('cityscapeShape2')
 const mouseParallaxIsActive = ref(false)
+const cityScapeAnimComplete = ref(false)
 let ctx: gsap.Context;
 
 const titleLargeWordsEase = CustomEase.create("titleLargeWords", ".5, 1, .89, 1")
@@ -62,6 +69,7 @@ onMounted(() => {
       .from(gsapContext.selector?.('.title, .illustration-background, .illustration__ground, .illustration__cityscape'), {
         autoAlpha: 0
       })
+      // .set('.illustration', { perspective: 650 })
 
     return timeline
   }
@@ -157,7 +165,11 @@ onMounted(() => {
   }
 
   const cityscapeTimeline = (gsapContext: gsap.Context) => {
-    const timeline = gsap.timeline()
+    const timeline = gsap.timeline({
+      onComplete: () => {
+        cityScapeAnimComplete.value = true
+      }
+    })
 
     timeline
       .to(gsapContext.selector?.('.illustration__cityscape'), {
@@ -224,12 +236,37 @@ onMounted(() => {
       .add(skylinesTimeline(self), '-=.9')
   }, home.value);
 
-  document.addEventListener("mousemove", mouseMoveParallax);
+  // https://tympanus.net/codrops/2025/01/20/vfx-js-webgl-effects-made-easy/
+  // https://tympanus.net/codrops/2025/01/22/webgl-shader-techniques-for-dynamic-image-transitions/
+
+  // TODO : refine
+  // https://codepen.io/GreenSock/pen/qBzaNQy
+  // const outerRX = gsap.quickTo(".illustration-background, .illustration-foreground", "rotationX", { ease: "power3" });
+  // const outerRY = gsap.quickTo(".illustration-background, .illustration-foreground", "rotationY", { ease: "power3" });
+  // const innerX = gsap.quickTo(".illustration__cityscape, .illustration__logo-wrapper, .illustration__ground", "x", { ease: "power3" });
+  // const innerY = gsap.quickTo(".illustration__cityscape, .illustration__logo-wrapper, .illustration__ground", "y", { ease: "power3" });
+  // const cityScapeFrontX = gsap.quickTo(".illustration__cityscape__shape--front", "x", { ease: "power3" });
+  // const cityScapeFrontY = gsap.quickTo(".illustration__cityscape__shape--front", "y", { ease: "power3" });
+  // const cityScapeBackX = gsap.quickTo(".illustration__cityscape__shape--back", "x", { ease: "power3" });
+  // const cityScapeBackY = gsap.quickTo(".illustration__cityscape__shape--back", "y", { ease: "power3" });
+
+  // document.addEventListener("pointermove", (e) => {
+  //   outerRX(gsap.utils.interpolate(4, -4, e.y / window.innerHeight));
+  //   outerRY(gsap.utils.interpolate(-2, 2, e.x / window.innerWidth));
+  //   innerX(gsap.utils.interpolate(-8, 8, e.x / window.innerWidth));
+  //   innerY(gsap.utils.interpolate(-4, 4, e.y / window.innerHeight));
+  //   cityScapeBackX(gsap.utils.interpolate(-4, 4, e.x / window.innerWidth));
+  //   cityScapeBackY(gsap.utils.interpolate(0, 16, e.y / window.innerHeight));
+  //   cityScapeFrontX(gsap.utils.interpolate(-8, 8, e.x / window.innerWidth));
+  //   cityScapeFrontY(gsap.utils.interpolate(0, 24, e.y / window.innerHeight));
+  // });
+
+  // document.addEventListener("mousemove", mouseMoveParallax);
 });
 
-onUnmounted(() => {
+onUnmounted(() => { 
   ctx.revert();
-  document.removeEventListener("mousemove", mouseMoveParallax);
+  // document.removeEventListener("mousemove", mouseMoveParallax);
 });
 </script>
 
@@ -257,16 +294,37 @@ onUnmounted(() => {
       </div>
 
       <div class="illustration-foreground">
-        <div class="illustration__cityscape">
-          <div class="illustration__cityscape__shape illustration__cityscape__shape--back-1"/>
-          <div class="illustration__cityscape__shape illustration__cityscape__shape--back-2"/>
-          <div class="illustration__cityscape__shape illustration__cityscape__shape--back-3"/>
-          <div class="illustration__cityscape__shape illustration__cityscape__shape--back-4"/>
-          <div class="illustration__cityscape__shape illustration__cityscape__shape--back-5"/>
-          <div class="illustration__cityscape__shape illustration__cityscape__shape--back-6"/>
-          <div class="illustration__cityscape__shape illustration__cityscape__shape--front-1"/>
-          <div class="illustration__cityscape__shape illustration__cityscape__shape--front-2"/>
+        <div class="illustration__cityscape" ref="cityScapeWrapper">
+          <div class="illustration__cityscape__shape illustration__cityscape__shape--back illustration__cityscape__shape--back-1"/>
+          <div class="illustration__cityscape__shape illustration__cityscape__shape--back illustration__cityscape__shape--back-2"/>
+          <div class="illustration__cityscape__shape illustration__cityscape__shape--back illustration__cityscape__shape--back-3"/>
+          <div class="illustration__cityscape__shape illustration__cityscape__shape--back illustration__cityscape__shape--back-4"/>
+          <div class="illustration__cityscape__shape illustration__cityscape__shape--back illustration__cityscape__shape--back-5"/>
+          <div class="illustration__cityscape__shape illustration__cityscape__shape--back illustration__cityscape__shape--back-6"/>
+          <div class="illustration__cityscape__shape illustration__cityscape__shape--front illustration__cityscape__shape--front-1" ref="cityscapeShape1"/>
+          <div class="illustration__cityscape__shape illustration__cityscape__shape--front illustration__cityscape__shape--front-2" ref="cityscapeShape2" />
           <div class="illustration__cityscape__lights"/>
+
+          <TresCanvas clear-color="#00000000">
+            <TresPerspectiveCamera
+              :position="[0, 0, 10]"
+              :look-at="[0, 0, 0]"
+            />
+
+            <HomepageMesh 
+              v-if="frontCityscapeShape1 && cityScapeWrapper && cityScapeAnimComplete"
+              :cityScapeWrapper="cityScapeWrapper"
+              :frontCityscapeShape="frontCityscapeShape1"
+              :imgURL="projectsData?.at(0)?.cover_image_portrait.url ?? ''"
+              />
+
+            <HomepageMesh 
+              v-if="frontCityscapeShape2 && cityScapeWrapper && cityScapeAnimComplete"
+              :cityScapeWrapper="cityScapeWrapper"
+              :frontCityscapeShape="frontCityscapeShape2"
+              :imgURL="projectsData?.at(1)?.cover_image_portrait.url ?? ''"
+              />
+          </TresCanvas>
         </div>
   
         <div class="illustration__ground">

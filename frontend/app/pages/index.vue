@@ -4,6 +4,12 @@ definePageMeta({
 })
 
 const { data: homeData } = await useAsyncData(() => queryCollection('home').first())
+const { data: projectsData } = await useAsyncData(
+  'projects-data',
+  () => queryCollection('projects')
+    .select('slug', 'cover_image_portrait')
+    .all()
+)
 
 if (!homeData.value) {
   throw createError({
@@ -16,5 +22,5 @@ useSeoFromPageData(homeData?.value?.seo)
 </script>
 
 <template>
-  <HomepageTemplate v-if="homeData" :data="homeData" />
+  <HomepageTemplate v-if="homeData" :data="homeData" :projectsData="projectsData" />
 </template>
