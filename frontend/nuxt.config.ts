@@ -32,6 +32,18 @@ export default defineNuxtConfig({
     '@nuxt/image',
     'nuxt-icons',
     'nuxt-strapi-blocks-renderer',
-    '@tresjs/nuxt'
-  ]
+  ],
+  vite: {
+    optimizeDeps: {
+      include: [
+        '@vue/devtools-core',
+        '@vue/devtools-kit',
+        'gsap',
+        'gsap/ScrollTrigger',
+        'gsap/ScrollSmoother',
+        'gsap/CustomEase',
+        'gsap/SplitText',
+      ]
+    }
+  }
 })

@@ -4,6 +4,7 @@
   &-wrapper {
     position: fixed;
     bottom: calc(var(--spacer-xl) + env(safe-area-inset-bottom));
+    z-index: var(--z-index-base-increase);
   }
 
   visibility: hidden;
@@ -88,7 +89,7 @@
   position: fixed;
   inset: 0;
   overflow: hidden;
-  z-index: var(--z-index-base-decrease);
+  z-index: var(--z-index-base);
 
   &-background,
   &-foreground {
@@ -227,6 +228,8 @@
     bottom: var(--horizon-position);
 
     &__shape {
+      $self: &;
+
       position: absolute;
       bottom: 0;
 
@@ -403,39 +406,40 @@
       &--front-1 {
         width: calc(30% - var(--spacer-xl));
         height: 67%;
+        container-type: inline-size;
         right: calc(50% + var(--spacer-3xl) * var(--triangle-aspect-ratio-sm) * 0.5 + var(--spacer-sm));
-        background: white;
         z-index: var(--z-index-base-increase);
-        box-shadow:
-          0
-          0
-          var(--spacer-xs)
-          color-mix(
-            in srgb,
-            transparent var(--opacity-percentage-3),
-            var(--color-fourth-lighter)
-          );
-        transform-origin: top left;
-        transform: skewY(30deg);
+
+        &::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          box-shadow:
+            0
+            0
+            var(--spacer-xs)
+            color-mix(
+              in srgb,
+              transparent var(--opacity-percentage-3),
+              var(--color-fourth-lighter)
+            );
+          transform-origin: top left;
+          transform: skewY(30deg);
+        }
       }
 
       &--front-2 {
         width: calc(33% - var(--spacer-xl));
         height: 85%;
+        container-type: inline-size;
         left: calc(50% - var(--spacer-3xl) * var(--triangle-aspect-ratio-sm) * 0.5 + var(--spacer-sm));
         z-index: var(--z-index-base);
-        background: white;
-        box-shadow:
-          0
-          0
-          var(--spacer-xs)
-          color-mix(
-            in srgb,
-            transparent var(--opacity-percentage-3),
-            var(--color-tertiary-lighter)
-          );
-        transform-origin: top right;
-        transform: skewY(-30deg);
+
+        &::before,
+        &::after {
+          transform-origin: top right;
+          transform: skewY(-30deg);
+        }
 
         &::before {
           content: '';
@@ -458,12 +462,88 @@
               transparent var(--opacity-percentage-7),
               var(--color-tertiary-lighter)
             ),
-          )
+          );
+        }
+
+        &::after {
+          content: '';
+          position: absolute;
+          inset: 0;
+          box-shadow:
+            0
+            0
+            var(--spacer-xs)
+            color-mix(
+              in srgb,
+              transparent var(--opacity-percentage-3),
+              var(--color-tertiary-lighter)
+            );
+        }
+      }
+
+      &__inner {
+        position: absolute;
+        inset: 0;
+
+        &__img {
+          position: absolute;
+          inset: 0;
+          z-index: var(--z-index-base);
+
+          &--hidden {
+            opacity: 0;
+            z-index: var(--z-index-base-decrease);
+          }
+
+          &--next {
+            z-index: var(--z-index-base-increase);
+            animation: slideIn 1.5s cubic-bezier(0.76, 0, 0.24, 1) backwards;
+
+            #{$self}--front-2 & {
+              animation-duration: 1.3s;
+              animation-delay: .4s;
+            }
+
+            @keyframes slideIn {
+              from {
+                opacity: .2;
+                transform: translateY(-100%);
+              }
+
+              80% {
+                opacity: 1;
+              }
+
+              to {
+                opacity: 1;
+                transform: translateY(0);
+              }
+            }
+          }
+        }
+
+        #{$self}--front-1 & {
+          clip-path: polygon(
+            0 0,
+            100% calc(100cqi * sin(30deg) / sin(60deg)),
+            100% 100%,
+            0 100%
+          );
+        }
+
+        #{$self}--front-2 & {
+          clip-path: polygon(
+            0 calc(100cqi * sin(30deg) / sin(60deg)),
+            100% 0,
+            100% 100%,
+            0 100%
+          );
         }
       }
     }
 
     &__lights {
+      pointer-events: none;
       position: absolute;
       inset: 0;
       z-index: var(--z-index-base-increase);

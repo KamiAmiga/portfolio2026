@@ -3,12 +3,17 @@ import type {
   StrapiImage,
 } from "@/types/strapiResponsiveImage";
 
-const props = defineProps<{
+interface Props {
   pictureDataDefault: StrapiImage;
   pictureDataPortrait?: StrapiImage;
   format?: "full_screen" | "projects_image";
-  isCover?: boolean
-}>();
+  isCover?: boolean;
+  loading?: 'eager' | 'lazy'
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  loading: 'lazy'
+})
 
 const modifiers = {
   format: 'webp',
@@ -47,6 +52,7 @@ const _srcset = computed(() => {
     <img 
       :src="_srcset?.resizerDefault?.src ?? pictureDataDefault?.url"
       :alt="pictureDataDefault?.alternativeText ?? ''"
+      :loading="loading"
       class="image"
       :class="{'image--cover': isCover}" />
   </picture>
@@ -58,6 +64,7 @@ const _srcset = computed(() => {
     :sizes="imgSizesParams.sizes"
     :format="modifiers.format"
     :quality="modifiers.quality"
+    :loading="loading"
     class="image"
     :class="{'image--cover': isCover}" />
 </template>

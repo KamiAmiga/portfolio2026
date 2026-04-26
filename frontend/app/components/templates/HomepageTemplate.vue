@@ -2,15 +2,41 @@
 import { gsap } from "gsap";
 import { SplitText } from "gsap/SplitText";
 import { CustomEase } from "gsap/CustomEase";
-import type { HomeCollectionItem } from "@nuxt/content";
+import type { HomeCollectionItem, ProjectsCollectionItem } from "@nuxt/content";
 
-const props = defineProps<{ data: HomeCollectionItem}>()
+const props = defineProps<{ 
+  data: HomeCollectionItem,
+  projectsData?: Pick<ProjectsCollectionItem, "name" | "slug" | "cover_image_portrait">[]
+}>()
 
-const home = ref();
+const home = useTemplateRef('home');
 const mouseParallaxIsActive = ref(false)
+const buildingsAnimInterval: Ref<number | null> = ref(null)
+const leftBuildingData = ref(
+  {
+    current: 0,
+    next: 0,
+  }
+)
+const rightBuildingData = ref(
+  {
+    current: 1,
+    next: 1
+  }
+)
 let ctx: gsap.Context;
 
 const titleLargeWordsEase = CustomEase.create("titleLargeWords", ".5, 1, .89, 1")
+
+const getRandomProjectIndex = () => {
+  const randomNumber = Math.floor(Math.random() * (props.projectsData?.length ?? 0))
+
+  if (randomNumber === leftBuildingData.value.current || randomNumber === rightBuildingData.value.current) {
+    getRandomProjectIndex()
+  }
+
+  return randomNumber
+}
 
 const mouseMoveParallax = (event: MouseEvent) => {
   if (!mouseParallaxIsActive.value) return
@@ -55,6 +81,8 @@ const mouseMoveParallax = (event: MouseEvent) => {
 }
 
 onMounted(() => {
+  if (!home.value) return
+
   const initTimeline = (gsapContext: gsap.Context) => {
     const timeline = gsap.timeline()
 
@@ -207,10 +235,18 @@ onMounted(() => {
 
     return timeline
   }
-
+  
   const masterTimeline = gsap.timeline({
     onComplete: () => {
       mouseParallaxIsActive.value = true
+
+      buildingsAnimInterval.value = setInterval(() => {
+        leftBuildingData.value.current = leftBuildingData.value.next
+        leftBuildingData.value.next = getRandomProjectIndex()
+        
+        rightBuildingData.value.current = rightBuildingData.value.next
+        rightBuildingData.value.next = getRandomProjectIndex()
+      }, 7500)
     }
   })
   
@@ -225,11 +261,18 @@ onMounted(() => {
   }, home.value);
 
   document.addEventListener("mousemove", mouseMoveParallax);
+
+  leftBuildingData.value.next = getRandomProjectIndex()
+  rightBuildingData.value.next = getRandomProjectIndex()
 });
 
 onUnmounted(() => {
   ctx.revert();
   document.removeEventListener("mousemove", mouseMoveParallax);
+
+  if(buildingsAnimInterval.value) {
+    clearInterval(buildingsAnimInterval.value)
+  }
 });
 </script>
 
@@ -264,8 +307,45 @@ onUnmounted(() => {
           <div class="illustration__cityscape__shape illustration__cityscape__shape--back-4"/>
           <div class="illustration__cityscape__shape illustration__cityscape__shape--back-5"/>
           <div class="illustration__cityscape__shape illustration__cityscape__shape--back-6"/>
-          <div class="illustration__cityscape__shape illustration__cityscape__shape--front-1"/>
-          <div class="illustration__cityscape__shape illustration__cityscape__shape--front-2"/>
+          <div class="illustration__cityscape__shape illustration__cityscape__shape--front-1">
+            <NuxtLink
+              v-if="projectsData?.at(leftBuildingData.next)"
+              :to="`/projets/${projectsData?.at(leftBuildingData.next)?.slug}`"
+              class="illustration__cityscape__shape__inner">
+              <span class="sr-only">Voir le projet : {{ projectsData.at(leftBuildingData.next)?.name }}</span>
+              
+              <CustomPicture 
+                v-for="(project, index) in projectsData"
+                :key="project?.slug"
+                class="illustration__cityscape__shape__inner__img"
+                :class="{
+                  'illustration__cityscape__shape__inner__img--next': leftBuildingData.next === index,
+                  'illustration__cityscape__shape__inner__img--hidden': leftBuildingData.current !== index && leftBuildingData.next !== index,
+                }"
+                :pictureDataDefault="project.cover_image_portrait"
+                :loading="[leftBuildingData.current, leftBuildingData.next].includes(index) ? 'eager' : 'lazy'"
+                :isCover="true" />
+            </NuxtLink>
+          </div>
+          <div class="illustration__cityscape__shape illustration__cityscape__shape--front-2">
+            <NuxtLink
+              v-if="projectsData?.at(rightBuildingData.next)"
+              :to="`/projets/${projectsData?.at(rightBuildingData.next)?.slug}`"
+              class="illustration__cityscape__shape__inner">
+              <span class="sr-only">Voir le projet : {{ projectsData.at(rightBuildingData.next) }}</span>
+              <CustomPicture 
+                v-for="(project, index) in projectsData"
+                :key="project?.slug"
+                class="illustration__cityscape__shape__inner__img"
+                :class="{
+                  'illustration__cityscape__shape__inner__img--next': rightBuildingData.next === index,
+                  'illustration__cityscape__shape__inner__img--hidden': rightBuildingData.current !== index && rightBuildingData.next !== index,
+                }"
+                :pictureDataDefault="project.cover_image_portrait"
+                :loading="[rightBuildingData.current, rightBuildingData.next].includes(index) ? 'eager' : 'lazy'"
+                :isCover="true" />
+            </NuxtLink>
+          </div>
           <div class="illustration__cityscape__lights"/>
         </div>
   
