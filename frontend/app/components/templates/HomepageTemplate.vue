@@ -326,6 +326,13 @@ onUnmounted(() => {
                 :loading="[leftBuildingData.current, leftBuildingData.next].includes(index) ? 'eager' : 'lazy'"
                 :isCover="true" />
             </NuxtLink>
+
+            <span
+              v-if="projectsData?.at(leftBuildingData.next)?.name"
+              aria-hidden="true"
+              class="illustration__cityscape__shape__name font-mono--sm">
+              {{ projectsData.at(leftBuildingData.next)?.name }}
+            </span>
           </div>
           <div class="illustration__cityscape__shape illustration__cityscape__shape--front-2">
             <NuxtLink
@@ -333,6 +340,7 @@ onUnmounted(() => {
               :to="`/projets/${projectsData?.at(rightBuildingData.next)?.slug}`"
               class="illustration__cityscape__shape__inner">
               <span class="sr-only">Voir le projet : {{ projectsData.at(rightBuildingData.next) }}</span>
+              
               <CustomPicture 
                 v-for="(project, index) in projectsData"
                 :key="project?.slug"
@@ -345,6 +353,13 @@ onUnmounted(() => {
                 :loading="[rightBuildingData.current, rightBuildingData.next].includes(index) ? 'eager' : 'lazy'"
                 :isCover="true" />
             </NuxtLink>
+
+            <span
+              v-if="projectsData?.at(rightBuildingData.next)?.name"
+              aria-hidden="true"
+              class="illustration__cityscape__shape__name font-mono--sm">
+              {{ projectsData.at(rightBuildingData.next)?.name }}
+            </span>
           </div>
           <div class="illustration__cityscape__lights"/>
         </div>
