@@ -1,8 +1,4 @@
 <script lang="ts" setup>
-definePageMeta({
-  layout: 'no-smooth-scroll',
-})
-
 const { data: homeData } = await useAsyncData(() => queryCollection('home').first())
 const { data: projectsData } = await useAsyncData(
   'projects-data',

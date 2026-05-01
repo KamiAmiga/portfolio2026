@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { ScrollSmoother } from "gsap/ScrollSmoother";
 import { CustomEase } from "gsap/CustomEase";
+import 'lenis/dist/lenis.css'
 
-gsap.registerPlugin(ScrollTrigger, ScrollSmoother, CustomEase);
+gsap.registerPlugin(ScrollTrigger, CustomEase);
 
 const mainID = "main"
 const menuLinks = [
@@ -21,14 +21,13 @@ const menuLinks = [
 
 <template>
   <CrtFilter />
+  
   <SkipLink :targetID="mainID" />
   
   <MainMenu :links="menuLinks" />
 
   <main role="main" :id="mainID">
-    <NuxtLayout>
-      <NuxtPage />
-    </NuxtLayout>
+    <NuxtPage />
   </main>
 </template>
 
