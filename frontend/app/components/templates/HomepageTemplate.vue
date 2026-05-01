@@ -10,7 +10,10 @@ const props = defineProps<{
 }>()
 
 const home = useTemplateRef('home');
+const leftBuilding = useTemplateRef('leftBuilding');
+const rightBuilding = useTemplateRef('rightBuilding');
 const mouseParallaxIsActive = ref(false)
+const menuVisible = ref(false)
 const buildingsAnimInterval: Ref<number | null> = ref(null)
 const leftBuildingData = ref(
   {
@@ -38,16 +41,40 @@ const getRandomProjectIndex = () => {
   return randomNumber
 }
 
-const mouseMoveParallax = (event: MouseEvent) => {
-  if (!mouseParallaxIsActive.value) return
+const cityscapeShapeNamesAnim = (mousePos: {x: number, y: number}, targetShape: 'left' | 'right') => {
+  const targetBuildingBoundingBox = targetShape === 'left'
+    ? leftBuilding.value?.getBoundingClientRect()
+    : rightBuilding.value?.getBoundingClientRect()
 
-  const mouseX = event.clientX;
-  const mouseY = event.clientY;
+  const targetBuildingClass = targetShape === 'left'
+    ? 'illustration__cityscape__shape--front-1'
+    : 'illustration__cityscape__shape--front-2'
+
+  gsap
+    .to(ctx.selector?.(`.${targetBuildingClass} .illustration__cityscape__shape__name`), {
+      x: Math.max(
+        Math.min(
+          mousePos.x - (targetBuildingBoundingBox?.left ?? 0),
+          targetBuildingBoundingBox?.right ?? 0),
+        0),
+      y: Math.max(
+        Math.min(
+          mousePos.y - (targetBuildingBoundingBox?.top ?? 0),
+          targetBuildingBoundingBox?.bottom ?? 0),
+        0),
+      delay: 0.1,
+      ease: "power3.out",
+      overwrite: "auto"
+    })
+}
+
+const illustrationParallaxAnim = (mousePos: {x: number, y: number}) => {
+  if (!mouseParallaxIsActive.value) return
 
   gsap
     .to(ctx.selector?.('.illustration-foreground'), {
-      x: (mouseX / window.innerWidth - 0.5) * 10,
-      y: (mouseY / window.innerHeight - 0.5) * 16,
+      x: (mousePos.x / window.innerWidth - 0.5) * 10,
+      y: (mousePos.y / window.innerHeight - 0.5) * 16,
       delay: 0.2,
       ease: "power3.out",
       overwrite: "auto"
@@ -55,8 +82,8 @@ const mouseMoveParallax = (event: MouseEvent) => {
 
   gsap
     .to(ctx.selector?.('.illustration__cityscape__shape'), {
-      x: (mouseX / window.innerWidth - 0.5) * -6,
-      y: (mouseY / window.innerHeight) * 16,
+      x: (mousePos.x / window.innerWidth - 0.5) * -6,
+      y: (mousePos.y / window.innerHeight) * 16,
       delay: 0.1,
       ease: "power2.out",
       overwrite: "auto"
@@ -64,7 +91,7 @@ const mouseMoveParallax = (event: MouseEvent) => {
 
   gsap
     .to(ctx.selector?.('.illustration__logo-wrapper, .illustration__ground'), {
-      x: (mouseX / window.innerWidth - 0.5) * 8,
+      x: (mousePos.x / window.innerWidth - 0.5) * 8,
       delay: 0.1,
       ease: "power2.out",
       overwrite: "auto"
@@ -72,12 +99,21 @@ const mouseMoveParallax = (event: MouseEvent) => {
   
   gsap
     .to(ctx.selector?.('.illustration-background'), {
-      x: (mouseX / window.innerWidth - 0.5) * 4,
-      y: (mouseY / window.innerHeight - 0.5) * 4,
+      x: (mousePos.x / window.innerWidth - 0.5) * 4,
+      y: (mousePos.y / window.innerHeight - 0.5) * 4,
       delay: 0.1,
       ease: "power2.out",
       overwrite: "auto"
     });
+}
+
+const mouseMoveListener = (event: MouseEvent) => {
+  const mouseX = event.clientX;
+  const mouseY = event.clientY;
+
+  cityscapeShapeNamesAnim({x: mouseX, y: mouseY}, 'left')
+  cityscapeShapeNamesAnim({x: mouseX, y: mouseY}, 'right')
+  illustrationParallaxAnim({x: mouseX, y: mouseY})
 }
 
 onMounted(() => {
@@ -166,7 +202,11 @@ onMounted(() => {
   }
 
   const groundTimeline = (gsapContext: gsap.Context) => {
-    const timeline = gsap.timeline()
+    const timeline = gsap.timeline({
+      onComplete: () => {
+        menuVisible.value = true
+      }
+    })
 
     timeline
       .from(gsapContext.selector?.('.illustration__ground'), {
@@ -260,7 +300,7 @@ onMounted(() => {
       .add(skylinesTimeline(self), '-=.9')
   }, home.value);
 
-  document.addEventListener("mousemove", mouseMoveParallax);
+  document.addEventListener("mousemove", mouseMoveListener);
 
   leftBuildingData.value.next = getRandomProjectIndex()
   rightBuildingData.value.next = getRandomProjectIndex()
@@ -268,7 +308,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   ctx.revert();
-  document.removeEventListener("mousemove", mouseMoveParallax);
+  document.removeEventListener("mousemove", mouseMoveListener);
 
   if(buildingsAnimInterval.value) {
     clearInterval(buildingsAnimInterval.value)
@@ -277,7 +317,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div ref="home">
+  <div ref="home" :data-menu-visible="menuVisible">
     <Grid
       splitting="full"
       :withTopPadding="false"
@@ -307,7 +347,7 @@ onUnmounted(() => {
           <div class="illustration__cityscape__shape illustration__cityscape__shape--back-4"/>
           <div class="illustration__cityscape__shape illustration__cityscape__shape--back-5"/>
           <div class="illustration__cityscape__shape illustration__cityscape__shape--back-6"/>
-          <div class="illustration__cityscape__shape illustration__cityscape__shape--front-1">
+          <div class="illustration__cityscape__shape illustration__cityscape__shape--front-1" ref="leftBuilding">
             <NuxtLink
               v-if="projectsData?.at(leftBuildingData.next)"
               :to="`/projets/${projectsData?.at(leftBuildingData.next)?.slug}`"
@@ -334,7 +374,7 @@ onUnmounted(() => {
               {{ projectsData.at(leftBuildingData.next)?.name }}
             </span>
           </div>
-          <div class="illustration__cityscape__shape illustration__cityscape__shape--front-2">
+          <div class="illustration__cityscape__shape illustration__cityscape__shape--front-2" ref="rightBuilding">
             <NuxtLink
               v-if="projectsData?.at(rightBuildingData.next)"
               :to="`/projets/${projectsData?.at(rightBuildingData.next)?.slug}`"

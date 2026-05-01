@@ -7,6 +7,7 @@
   top: 0;
   left: 0;
   z-index: var(--z-index-nav);
+  opacity: 0;
   background-color: 
     color-mix(
       in srgb,
@@ -14,6 +15,15 @@
       var(--color-primary-base)
     );
   backdrop-filter: blur(var(--spacer-sm));
+  transform: translateY(-100%);
+  transition: transform .3s cubic-bezier(0.25, 1, 0.5, 1),
+    opacity .3s cubic-bezier(0.65, 0, 0.35, 1);
+
+  &:focus-within,
+  body:has([data-menu-visible="true"]) & {
+    opacity: 1;
+    transform: translateY(0);
+  }
 
   &__list {
     display: flex;
