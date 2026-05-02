@@ -38,7 +38,7 @@ onUnmounted(() => {
 
 <template>
   <section class="section" ref="section">
-    <custom-title
+    <CustomTitle
       :content="title"
       level="second"
       :tag="titleTag"

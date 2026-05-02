@@ -3,20 +3,22 @@
 .project-item {
   width: 100vw;
   height: 100vh;
-  padding-block: var(--block-spacing);
+  padding-block-start: var(--block-start-spacing);
+  padding-block-end: var(--block-end-spacing);
   padding-inline-start: var(--spacer-2xl);
   padding-inline-end: var(--spacer-md);
+  visibility: hidden;
 
   &:not(:last-of-type) {
-    margin-inline-end: min(var(--spacer-4xl), 25vw);
+    margin-inline-end: min(var(--spacer-4xl), 10vw);
   }
 
   &__link {
     display: block;
     height: 100%;
     width: 100%;
-    padding-inline-start: var(--spacer-2xl);
-    padding-block-end: var(--spacer-4xl);
+    padding-inline-start: calc(var(--spacer-2xl) + env(safe-area-inset-bottom));
+    padding-block-end: var(--spacer-3xl);
     position: relative;
 
     &__decorator {
@@ -29,13 +31,13 @@
     }
 
     &__title {
-      padding-block-end: var(--spacer-3xl);
+      padding-block-end: calc(var(--spacer-2xl) + env(safe-area-inset-bottom));
       padding-inline-start: var(--spacer-sm);
       padding-inline-end: var(--spacer-md);
       position: absolute;
       left: 0;
       bottom: 0;
-      z-index: 1;
+      z-index: var(--z-index-base-increase);
 
       &::before {
         content: "";
@@ -48,6 +50,8 @@
           in srgb,
           transparent var(--opacity-percentage-8),
           var(--color-primary-reverse));
+        opacity: var(--dashes-opacity);
+        clip-path: inset(var(--dashes-y) 0 0 0);
       }
 
       &__decorator {
@@ -72,13 +76,12 @@
         box-shadow:
           0
           0
-          var(--spacer-xs)
+          var(--spacer-sm)
           color-mix(
             in srgb,
-            transparent var(--opacity-percentage-5),
+            transparent var(--opacity-percentage-4),
             var(--color-accent-lighter)
           );
-        transform: translate(-50%, 50%) rotate(45deg);
 
         &::after {
           content: "";
@@ -101,11 +104,36 @@
     &__image {
       position: relative;
       overflow: hidden;
+      box-shadow:
+        0
+        0
+        0
+        0
+        color-mix(
+          in srgb,
+          transparent var(--opacity-percentage-6),
+          var(--color-secondary-base)
+        );
+      transition: box-shadow .3s cubic-bezier(0.76, 0, 0.24, 1);
+
+      .project-item__link:hover &,
+      .project-item__link:focus & {
+        box-shadow:
+          0
+          0
+          var(--spacer-base)
+          var(--spacer-2xs)
+          color-mix(
+            in srgb,
+            transparent var(--opacity-percentage-6),
+            var(--color-secondary-base)
+          );
+      }
     }
   }
 
   @include breakpoint-m-landscape-up {
     padding-inline-start: max(25vw, var(--spacer-2xl));
-    padding-inline-end: min(10vw, var(--spacer-4xl));
+    padding-inline-end: max(15vw, var(--spacer-4xl));
   }
 }

@@ -9,8 +9,11 @@ const props = defineProps<{
 }>()
 
 const lenisRef = ref()
-const projectsListWrapper = useTemplateRef('projectsListWrapper');
-const projectsListScroller = useTemplateRef('projectsListScroller');
+const projectsList = useTemplateRef('projectsList')
+const projectsListWrapper = useTemplateRef('projectsListWrapper')
+const projectsListScroller = useTemplateRef('projectsListScroller')
+const menuVisible = ref(false)
+const projectsItemsScrollStatus = ref(props.projectsData?.map((_, index) => ({visible: index === 0, preload: index <= 1})) ?? [])
 let ctx: gsap.Context;
 
 watchEffect((onInvalidate) => {
@@ -44,9 +47,7 @@ onMounted(() => {
       horizontalScrollLength = pinWrapWidth - window.innerWidth;
     }
 
-    refresh();
-
-    gsap.to(projectsListScroller.value, {
+    const scrollTween = gsap.to(projectsListScroller.value, {
       scrollTrigger: {
         scrub: true,
         trigger: projectsListWrapper.value,
@@ -58,6 +59,40 @@ onMounted(() => {
       x: () => -horizontalScrollLength,
       ease: "none"
     });
+
+    const projectItems = projectsListWrapper.value?.querySelectorAll('.project-item');
+
+    projectItems?.forEach((projectItem, index) => {
+      gsap.from(projectItem, {
+        scrollTrigger: {
+          trigger: projectItem,
+          start: 'left 75%',
+          end: 'right end',
+          containerAnimation: scrollTween,
+          onEnter: () => {
+            const currentItem = projectsItemsScrollStatus.value[index]
+            const nextItem = projectsItemsScrollStatus.value[index + 1]
+
+            if (currentItem) {
+              currentItem.visible = true
+            }
+            
+            if (nextItem) {
+              nextItem.preload = true
+            }
+          },
+        },
+      });
+    });
+
+    gsap.from(projectsList.value, {
+      autoAlpha: 0,
+      onComplete: (() => {
+        menuVisible.value = true
+      })
+    })
+
+    refresh();
 
     ScrollTrigger.addEventListener("refreshInit", refresh);
   }, projectsListWrapper.value);
@@ -73,13 +108,18 @@ onUnmounted(() => {
 
 <h1 class="sr-only">{{ data?.title }}</h1>
 
-<section v-if="projectsData" class="projects-list-viewport">
+<section
+  v-if="projectsData"
+  ref="projectsList"
+  class="projects-list-viewport"
+  :data-menu-visible="menuVisible">
   <div ref="projectsListWrapper" class="projects-list-wrapper">          
     <ul ref="projectsListScroller" v-if="projectsData" class="projects-list">
       <ProjectsListItem 
-        v-for="project in projectsData"
+        v-for="(project, index) in projectsData"
         :key="project?.slug"
-        :project="project" />
+        :project="project"
+        :visibilityStatus="projectsItemsScrollStatus[index]" />
     </ul>
   </div>
 </section>

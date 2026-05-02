@@ -5,6 +5,7 @@
     width: 100%;
     position: relative;
     overflow: hidden;
+    visibility: hidden;
   }
 
   &-wrapper {
@@ -14,7 +15,8 @@
     will-change: transform;
   }
 
-  --block-spacing: calc(var(--spacer-4xl) + env(safe-area-inset-bottom));
+  --block-start-spacing: calc(var(--spacer-4xl) + env(safe-area-inset-bottom));
+  --block-end-spacing: calc(var(--spacer-3xl) + env(safe-area-inset-bottom));
 
   display: flex;
   flex-wrap: nowrap;
@@ -32,10 +34,10 @@
     background-color: var(--color-accent-base);
     position: absolute;
     left: 0;
-    bottom: var(--block-spacing);
+    bottom: var(--block-end-spacing);
   }
 
   @include breakpoint-m-landscape-up {
-    --block-spacing: calc(var(--spacer-3xl) + env(safe-area-inset-bottom));
+    --block-start-spacing: calc(var(--spacer-3xl) + env(safe-area-inset-bottom));
   }
 }

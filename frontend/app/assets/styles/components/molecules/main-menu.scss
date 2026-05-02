@@ -39,7 +39,10 @@
         height: var(--font-size-lg);
         aspect-ratio: var(--triangle-aspect-ratio-sm);
         margin-inline-end: auto;
-        color: var(--color-primary-reverse);
+        
+        > a {
+          color: var(--color-primary-reverse);
+        }
       }
     }
   }
