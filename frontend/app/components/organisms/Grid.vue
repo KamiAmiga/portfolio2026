@@ -3,14 +3,16 @@ interface Props {
   splitting?: 'full' | 'halves' | 'thirds'
   tag?: string,
   withTopPadding?: boolean,
-  withBottomPadding?: boolean
+  withBottomPadding?: boolean,
+  noGap?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
   splitting: 'full',
   tag: 'div',
   withTopPadding: true,
-  withBottomPadding: true
+  withBottomPadding: true,
+  noGap: false
 })
 </script>
 
@@ -21,7 +23,8 @@ const props = withDefaults(defineProps<Props>(), {
   :class="[
     {
       'grid--padding-top': withTopPadding,
-      'grid--padding-bottom': withBottomPadding
+      'grid--padding-bottom': withBottomPadding,
+      'grid--no-gap': noGap
     },
     `grid--${splitting}`
   ]">

@@ -42,17 +42,23 @@ const _srcset = computed(() => {
       v-if="_srcset?.resizerPortrait"
       :srcset="_srcset.resizerPortrait.srcset"
       :sizes="_srcset.resizerPortrait.sizes"
+      :width="pictureDataPortrait?.width"
+      :height="pictureDataPortrait?.height"
       media="(orientation: portrait)"
       type="image/webp">
     <source
       v-if="_srcset?.resizerDefault"
       :srcset="_srcset.resizerDefault.srcset"
       :sizes="_srcset.resizerDefault.sizes"
+      :width="pictureDataDefault.width"
+      :height="pictureDataDefault.height"
       type="image/webp">
     <img 
       :src="_srcset?.resizerDefault?.src ?? pictureDataDefault?.url"
       :alt="pictureDataDefault?.alternativeText ?? ''"
       :loading="loading"
+      :width="pictureDataDefault.width"
+      :height="pictureDataDefault.height"
       class="image"
       :class="{'image--cover': isCover}" />
   </picture>
@@ -65,6 +71,8 @@ const _srcset = computed(() => {
     :format="modifiers.format"
     :quality="modifiers.quality"
     :loading="loading"
+    :width="pictureDataDefault.width"
+    :height="pictureDataDefault.height"
     class="image"
     :class="{'image--cover': isCover}" />
 </template>

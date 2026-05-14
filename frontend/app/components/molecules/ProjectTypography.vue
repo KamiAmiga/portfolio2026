@@ -57,7 +57,8 @@ onUnmounted(() => {
     <img
       :src="`${font.typo_visual?.url}`"
       :alt="font.typo_name"
-      class="project-typography__item__visual" >
+      class="project-typography__item__visual"
+      loading="lazy" >
   </li>
 </ul>
 </template>

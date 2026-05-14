@@ -6,15 +6,19 @@
   box-sizing: border-box;
   padding-inline: var(--grid-inline-padding);
   grid-template-columns: 1fr;
-  row-gap: var(--spacer-3xl);
 
   @include breakpoint-m-up {
     grid-template-columns: repeat(6, 1fr);
-    column-gap: var(--spacer-base);
+
+    &:not(.grid--no-gap) {
+      column-gap: var(--spacer-base);
+    }
   }
 
   @include breakpoint-l-up {
-    column-gap: var(--spacer-lg);
+    &:not(.grid--no-gap) {
+      column-gap: var(--spacer-lg);
+    }
   }
 
   &--full {
@@ -49,5 +53,9 @@
     &-bottom {
       padding-block-end: var(--spacer-3xl);
     }
+  }
+
+  &:not(.grid--no-gap) {
+    row-gap: var(--spacer-3xl);
   }
 }
