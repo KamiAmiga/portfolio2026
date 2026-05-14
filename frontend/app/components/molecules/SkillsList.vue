@@ -46,7 +46,6 @@ onMounted(() => {
         stagger: {
           amount: .5,
           ease: 'sine'
-          // ease: 'sine.inOut'
         }
       }
     })

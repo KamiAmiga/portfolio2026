@@ -122,10 +122,7 @@ const projectSchema = z.object({
   main_images: z.array(
     z.object({
       id: z.number(),
-      images: z.object({
-        id: z.number(),
-        data: z.array(strapiFileSchema)
-      }),
+      images: z.array(strapiFileSchema),
       type: z.enum([
         "ui-mobile_desktop",
         "ui-desktop",
@@ -150,12 +147,8 @@ const projectSchema = z.object({
     color_code: z.string(),
     color_name: z.string()
   })),
-  secondary_images: z.object({
-    data: z.array(strapiFileSchema)
-  }),
-  skills: z.object({
-    data: z.array(skillSchema)
-  }),
+  secondary_images: z.array(strapiFileSchema),
+  skills: z.array(skillSchema),
   cover_image_portrait: strapiFileSchema,
   cover_image_landscape: strapiFileSchema,
   seo: seoSchema

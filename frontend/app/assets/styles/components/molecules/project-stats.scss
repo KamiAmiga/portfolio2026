@@ -1,0 +1,97 @@
+@use '../../abstracts/' as *;
+
+.project-stats {
+  padding-block-start: var(--spacer-2xl);
+  padding-block-end: var(--spacer-lg);
+  border-bottom: 1px solid var(--color-primary-lighter-1);
+  margin: 0;
+
+  &__property {
+    margin-bottom: var(--spacer-base);
+    color: var(--color-accent-lighter);
+
+    @include breakpoint-m-up {
+      margin-bottom: var(--spacer-sm);
+      color: var(--color-accent-darker);
+    }
+
+    &:not(:first-child) {
+      margin-top: var(--spacer-lg);
+    }
+  }
+
+  &__value {
+    margin: 0;
+
+    &__skills-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      column-gap: var(--spacer-base);
+      row-gap: var(--spacer-lg);
+      padding: 0;
+      margin: var(--spacer-lg) 0 0 0;
+      list-style-type: none;
+      text-align: center;
+
+      @include breakpoint-m-up {
+        margin-block-start: var(--spacer-md);
+        row-gap: var(--spacer-md);
+      }
+    }
+
+    &__skill {
+      --icon-shape-rotate: 45deg;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      &__icon {
+        padding: var(--spacer-base);
+        position: relative;
+
+        &::before {
+          content: '';
+          position: absolute;
+          inset: var(--spacer-sm);
+          border: 1px solid var(--border-color);
+          transform: rotate(var(--icon-shape-rotate));
+          background: linear-gradient(
+            to bottom right,
+            transparent,
+            color-mix(
+              in srgb,
+              transparent var(--opacity-percentage-8),
+              var(--bg-color)
+            ),
+          )
+        }
+      }
+
+      &--art {
+        --border-color: var(--color-secondary-base);
+        --bg-color: var(--color-secondary-darker);
+      }
+
+      &--development {
+        --border-color: var(--color-tertiary-base);
+        --bg-color: var(--color-tertiary-darker);
+      }
+
+      &:only-child {
+        flex-direction: row;
+        gap: var(--spacer-sm);
+      }
+    }
+
+    @include breakpoint-m-up {
+      color: var(--color-primary-lighter-1);
+    }
+  }
+
+  @include breakpoint-m-up {
+    padding: var(--spacer-xl) var(--spacer-lg);
+    border-bottom: none;
+    background: var(--color-primary-reverse);
+  }
+}
