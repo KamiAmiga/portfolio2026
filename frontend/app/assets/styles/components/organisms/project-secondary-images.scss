@@ -1,7 +1,5 @@
-.project-secondary-images {
-  visibility: hidden;
-  
-  &__image-wrapper {
+.project-secondary-image {
+  &-wrapper {
     background-color: var(--color-secondary-darker);
   }
 }

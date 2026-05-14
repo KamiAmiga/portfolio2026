@@ -20,13 +20,13 @@ onMounted(() => {
       .from(projectSecondaryImages.value, {
         autoAlpha: 0
       })
-      .from(self.selector?.('.project-secondary-images__image-wrapper'), {
+      .from(self.selector?.('.project-secondary-image-wrapper'), {
         clipPath: 'inset(0 0 100% 0)',
         duration: .5,
         ease: 'circ.inOut',
         stagger: .1
       })
-      .from(self.selector?.('.project-secondary-images__image'), {
+      .from(self.selector?.('.project-secondary-image'), {
         opacity: 0,
         clipPath: 'inset(0 0 100% 0)',
         duration: .4,
@@ -48,14 +48,14 @@ onUnmounted(() => {
 </script>
 
 <template>
-<div ref="projectSecondaryImages" class="project-secondary-images">
+<div ref="projectSecondaryImages" class="autoalpha">
   <Grid splitting="halves" :noGap="true">
     <div
       v-for="secondaryImg in secondaryImgs"
       :key="secondaryImg.id"
-      class="project-secondary-images__image-wrapper">
+      class="project-secondary-image-wrapper">
       <CustomPicture 
-        class="project-secondary-images__image"
+        class="project-secondary-image"
         :picture-data-default="secondaryImg" />
     </div>
   </Grid>

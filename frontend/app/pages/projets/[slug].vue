@@ -18,8 +18,8 @@ const { data: surroundings } = await useAsyncData('surround', () => {
       { 
         fields: [
           'name',
+          'slug',
           'cover_image_landscape',
-          'cover_image_portrait'
         ]
       }
     )
@@ -29,16 +29,5 @@ const { data: surroundings } = await useAsyncData('surround', () => {
 
 
 <template>
-  <template v-if="projectData">
-    <div class="test">{{ projectData.name }}</div>
-    <div v-if="surroundings?.[0]">
-      {{ surroundings[0]?.title }}
-    </div>
-    <div v-if="surroundings?.[1]">
-      {{ surroundings[1]?.title }}
-    </div>
-  </template>
+<ProjectPageTemplate v-if="projectData" :data="projectData" :surroundings="surroundings" />
 </template>
-
-<style lang="scss">
-</style>
