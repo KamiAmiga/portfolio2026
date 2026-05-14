@@ -1,0 +1,39 @@
+.project-colors {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: var(--spacer-lg);
+  visibility: hidden;
+  padding: 0;
+  margin: 0;
+
+  &__item {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-end;
+    column-gap: var(--spacer-lg);
+
+    &__swatch {
+      display: block;
+      width: var(--spacer-2xl);
+      aspect-ratio: 1;
+      flex-grow: 0;
+      flex-shrink: 0;
+      position: relative;
+      background-color: var(--swatch-color);
+      transform-origin: top left;
+
+      &::after {
+        content: "";
+        display: block;
+        width: var(--spacer-lg);
+        height: var(--spacer-lg);
+        border-right: 1px solid var(--color-primary-lighter-2);
+        border-bottom: 1px solid var(--color-primary-lighter-2);
+        position: absolute;
+        right: calc(var(--spacer-sm) * -1);
+        bottom: calc(var(--spacer-sm) * -1);
+        opacity: var(--opacity-6);
+      }
+    }
+  }
+}
