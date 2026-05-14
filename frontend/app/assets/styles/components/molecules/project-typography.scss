@@ -1,0 +1,40 @@
+.project-typography {
+  display: grid;
+  grid-template-columns: 1fr;
+  row-gap: var(--spacer-lg);
+  visibility: hidden;
+  width: fit-content;
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+
+  &__item {
+    padding-block-end: var(--spacer-xs);
+    padding-inline-end: var(--spacer-2xl);
+    border-bottom: 2px solid color-mix(
+      in srgb,
+      transparent var(--opacity-percentage-7),
+      var(--color-fourth-base)
+    );
+    position: relative;
+    overflow: hidden;
+    clip-path: inset(0 0 0 0);
+
+    &::after {
+      content: "";
+      display: block;
+      width: 100%;
+      border-bottom: 2px dashed color-mix(
+        in srgb,
+        transparent var(--opacity-percentage-9),
+        var(--color-fourth-lighter)
+      );
+      position: absolute;
+      bottom: var(--spacer-xs);
+    }
+
+    &__visual {
+      max-height: 2.5rem;
+    }
+  }
+}

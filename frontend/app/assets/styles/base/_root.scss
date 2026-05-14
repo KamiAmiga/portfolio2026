@@ -50,4 +50,16 @@
   @each $level, $value in $triangle-aspect-ratios {
     --triangle-aspect-ratio-#{$level}: #{$value};
   }
+
+  --grid-block-padding: var(--spacer-3xl);
+  --grid-inline-padding: var(--spacer-md);
+  --grid-width: calc(100vw - var(--grid-inline-padding) * 2);
+
+  @include breakpoint-m-up {
+    --grid-inline-padding: var(--spacer-up-lg-xl);
+  }
+
+  @include breakpoint-l-up {
+    --grid-inline-padding: var(--spacer-3xl);
+  }
 }

@@ -85,13 +85,11 @@ onMounted(() => {
     const { belowMd, aboveMd } = context.conditions as {belowMd: boolean, aboveMd: boolean};
 
     if (belowMd) {
-      console.log('mobile ?')
       timeline = gsap.timeline({paused: true})
         .add(contentTimeline(context))
     }
 
     if (aboveMd) {
-      console.log('desktop ?')
       timeline = gsap.timeline({paused: true})
         .add(containerTimeline())
         .add(contentTimeline(context))

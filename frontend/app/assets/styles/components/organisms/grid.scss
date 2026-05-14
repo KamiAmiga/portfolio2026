@@ -4,18 +4,16 @@
   display: grid;
   width: 100%;
   box-sizing: border-box;
-  padding-inline: var(--spacer-md);
+  padding-inline: var(--grid-inline-padding);
   grid-template-columns: 1fr;
   row-gap: var(--spacer-3xl);
 
   @include breakpoint-m-up {
-    padding-inline: var(--spacer-up-lg-xl);
     grid-template-columns: repeat(6, 1fr);
     column-gap: var(--spacer-base);
   }
 
   @include breakpoint-l-up {
-    padding-inline: var(--spacer-3xl);
     column-gap: var(--spacer-lg);
   }
 

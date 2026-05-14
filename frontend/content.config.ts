@@ -137,9 +137,7 @@ const projectSchema = z.object({
     z.object({
       id: z.number(),
       typo_name: z.string(),
-      typo_visual: z.object({
-        data: strapiFileSchema
-      })
+      typo_visual: strapiFileSchema
     })
   ),
   colors: z.array(z.object({

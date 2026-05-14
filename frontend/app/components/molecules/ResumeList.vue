@@ -3,14 +3,16 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import type { AboutCollectionItem } from '@nuxt/content';
 
-const resumeList = ref()
-let ctx: gsap.Context;
-
-const props = defineProps<{
+defineProps<{
   resume: AboutCollectionItem["resume"]
 }>();
 
+const resumeList = useTemplateRef('resumeList')
+let ctx: gsap.Context;
+
 onMounted(() => {
+  if (!resumeList.value) return
+  
   ctx = gsap.context((self) => {
     const timeline = gsap.timeline()
 
