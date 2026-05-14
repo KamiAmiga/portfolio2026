@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { gsap } from "gsap";
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from "gsap/SplitText";
 
 const props = withDefaults(
@@ -30,7 +31,7 @@ onMounted(() => {
       .from(splitText.lines, {
         opacity: 0,
         y: '1.5em',
-        duration: .6,
+        duration: .5,
         ease: "power3.out",
         stagger: .1
       })
@@ -43,6 +44,12 @@ onMounted(() => {
           ease: "power3.inOut"
         }, '<')
     ]}
+
+    ScrollTrigger.create({
+      trigger: wrapper.value,
+      once: true,
+      animation: timeline
+    });
   }, wrapper.value);
 })
 
