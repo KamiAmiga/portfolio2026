@@ -1,0 +1,78 @@
+@use '../../abstracts/' as *;
+
+.header {
+  position: relative;
+  top: 0;
+  width: 100%;
+  height: 200vh;
+  visibility: hidden;
+  background: linear-gradient(
+    to top,
+    color-mix(
+      in srgb,
+      transparent var(--opacity-percentage-3),
+      var(--color-secondary-darker)
+    ),
+    transparent
+  );
+
+  &-sticky {
+    width: 100%;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    overflow-x: clip;
+  }
+}
+
+
+.intro {
+  display: grid;
+  position: relative;
+  
+  @include breakpoint-m-up {
+    grid-template-columns: min(33%, 25rem) 1fr;
+    margin-bottom: -8rem;
+  }
+}
+
+.title-wrapper {
+  position: absolute;
+  bottom: calc(var(--spacer-xs) * -1);
+  z-index: 8;
+}
+
+.title {
+  position: relative;
+  left: min(var(--grid-width) * .33, 25rem);
+  transform: translateX(
+    calc(min(var(--grid-width) * .33, 25rem) * var(--xDisplacement)))
+}
+
+.desc {
+  padding-block-start: var(--spacer-2xl);
+
+  @include breakpoint-m-up {
+    padding: var(--spacer-2xl) var(--spacer-2xl) 0 var(--spacer-2xl);
+  }
+}
+
+.main-imgs {
+  display: grid;
+  grid-template-columns: 1fr;
+  row-gap: calc(var(--grid-block-padding) * 2);
+  padding-block: var(--spacer-up-2xl-3xl);
+  padding-inline: var(--grid-inline-padding);
+
+  @include breakpoint-m-up {
+    grid-template-columns: var(--grid-inline-padding) 1fr var(--grid-inline-padding);
+
+    > * {
+      grid-column-end: span 2;
+  
+      &:nth-child(odd) {
+        grid-column-start: 2;
+      }
+    }
+  }
+}

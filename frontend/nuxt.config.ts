@@ -22,9 +22,10 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   image: {
     screens: {
-      'md': 640,
-      'lg': 1280,
-      'xl': 1920
+      'xs': 480,
+      'sm': 640,
+      'md': 960,
+      'lg': 1280
     },
   },
   modules: [

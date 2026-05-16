@@ -134,12 +134,12 @@ onUnmounted(() => {
   <section 
     v-if="data?.main_images?.at(0)"
     class="main-imgs">
-    <div 
-      v-for="mainImage in data.main_images"
+    <ProjectMainImage 
+      v-for="(mainImage, index) in data.main_images"
       :key="mainImage.id"
-      class="main-img">
-      <CustomPicture v-if="mainImage.images[0]" :picture-data-default="mainImage.images[0]" />
-    </div>
+      :images="mainImage.images"
+      :type="mainImage.type"
+      :index="index" />
   </section>
 </div>
 

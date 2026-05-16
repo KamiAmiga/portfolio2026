@@ -1,0 +1,91 @@
+@use '../../abstracts/' as *;
+
+
+.project-main-image {
+  $self: &;
+
+  &--ui-mobile_desktop {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &--ui-mobile {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: var(--spacer-up-xl-2xl);
+  }
+
+  &--design-print {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &__image {
+    max-height: 120vh;
+
+    &-wrapper {
+      background-color: var(--color-accent-darker);
+
+      #{$self}--ui-mobile & {
+        max-width: 50%;
+
+        @include breakpoint-m-up {
+          max-width: 33%;
+        }
+      }
+    
+      &:first-child {
+        #{$self}--ui-mobile_desktop & {
+          margin-inline-end: 20%;
+        }
+    
+        #{$self}--ui-mobile & {
+          margin-block-start: var(--spacer-up-2xl-3xl);
+        }
+
+        &:not(:last-child) {
+          #{$self}--design-print & {
+            position: relative;
+            z-index: var(--z-index-base-increase);
+            margin-inline-end: var(--spacer-up-xl-2xl);
+            box-shadow: 
+              0
+              0
+              var(--spacer-sm)
+              calc(var(--spacer-2xs) * -1)
+              color-mix(
+                in srgb,
+                transparent var(--opacity-percentage-7),
+                var(--color-primary-base)
+              );
+          }
+        }
+      }
+    
+      &:nth-child(2) {
+        #{$self}--ui-mobile_desktop & {
+          max-width: 33%;
+          margin-block-start: -20%;
+          margin-inline-start: auto;
+          box-shadow: 
+            0
+            0
+            var(--spacer-sm)
+            calc(var(--spacer-2xs) * -1)
+            color-mix(
+              in srgb,
+              transparent var(--opacity-percentage-7),
+              var(--color-primary-base)
+            );
+        }
+
+        #{$self}--design-print & {
+          margin-block-start: calc(var(--spacer-base) * -1);
+          margin-inline-start: var(--spacer-up-xl-2xl);
+        }
+      }
+    }
+  }
+}

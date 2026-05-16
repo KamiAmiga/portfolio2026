@@ -57,9 +57,6 @@ const skillSchema = z.object({
 
 const homeSchema = z.object({
   title: z.string(),
-  highlight_medias: z.object({
-    data: z.array(strapiFileSchema)
-  }),
   subtitle: z.string(),
   seo: seoSchema
 })

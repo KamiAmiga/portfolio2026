@@ -47,7 +47,10 @@ onUnmounted(() => {
   <NuxtLink
     :to="`/projets/${slug}`"
     class="project-next-link">
-    <CustomPicture class="project-next-link__image" :pictureDataDefault="coverImg" />
+    <CustomPicture 
+      class="project-next-link__image"
+      :isCover="true"
+      :pictureDataDefault="coverImg" />
 
     <div class="project-next-link__label">
       <div class="project-next-link__label__line-wrapper">

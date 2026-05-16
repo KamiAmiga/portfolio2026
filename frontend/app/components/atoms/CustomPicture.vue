@@ -6,7 +6,12 @@ import type {
 interface Props {
   pictureDataDefault: StrapiImage;
   pictureDataPortrait?: StrapiImage;
-  format?: "full_screen" | "projects_image";
+  format?: 
+    "full_screen" 
+    | "full_grid" 
+    | "half_grid" 
+    | "third_grid" 
+    | "fourth_grid";
   isCover?: boolean;
   loading?: 'eager' | 'lazy'
 }
@@ -21,8 +26,25 @@ const modifiers = {
 }
 
 const img = useImage()
+
+const imgSizesPerFormat = () => {
+  const defaultSizes = 'xs:100vw sm:100vw md:100vw lg:100vw'
+  switch(props.format) {
+    case 'half_grid':
+      return 'xs:100vw sm:100vw md:50vw lg:50vw'
+    case 'third_grid':
+      return 'xs:66vw sm:66vw md:33vw lg:33vw'
+    case 'fourth_grid':
+      return 'xs:33vw sm:33vw md:25vw lg:25vw'
+    case 'full_screen':
+    case 'full_grid':
+    default:
+      return defaultSizes
+  }
+
+}
 const imgSizesParams = {
-  sizes: 'md:100vw lg:100vw xl:100vw',
+  sizes: imgSizesPerFormat(),
   modifiers
 }
 

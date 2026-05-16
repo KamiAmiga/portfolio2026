@@ -36,7 +36,7 @@ onMounted(() => {
 
     ScrollTrigger.create({
       trigger: projectSecondaryImages.value,
-      once: false,
+      once: true,
       animation: timeline,
     });
   }, projectSecondaryImages.value)
@@ -56,6 +56,8 @@ onUnmounted(() => {
       class="project-secondary-image-wrapper">
       <CustomPicture 
         class="project-secondary-image"
+        format="half_grid"
+        :is-cover="true"
         :picture-data-default="secondaryImg" />
     </div>
   </Grid>
