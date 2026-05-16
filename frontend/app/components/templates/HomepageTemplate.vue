@@ -6,7 +6,7 @@ import type { HomeCollectionItem, ProjectsCollectionItem } from "@nuxt/content";
 
 const props = defineProps<{ 
   data: HomeCollectionItem,
-  projectsData?: Pick<ProjectsCollectionItem, "name" | "slug" | "cover_image_portrait">[]
+  projectsData?: Pick<ProjectsCollectionItem, "title" | "slug" | "cover_image_portrait">[]
 }>()
 
 const home = useTemplateRef('home');
@@ -352,7 +352,7 @@ onUnmounted(() => {
               v-if="projectsData?.at(leftBuildingData.next)"
               :to="`/projets/${projectsData?.at(leftBuildingData.next)?.slug}`"
               class="illustration__cityscape__shape__inner">
-              <span class="sr-only">Voir le projet : {{ projectsData.at(leftBuildingData.next)?.name }}</span>
+              <span class="sr-only">Voir le projet : {{ projectsData.at(leftBuildingData.next)?.title }}</span>
               
               <CustomPicture 
                 v-for="(project, index) in projectsData"
@@ -368,10 +368,10 @@ onUnmounted(() => {
             </NuxtLink>
 
             <span
-              v-if="projectsData?.at(leftBuildingData.next)?.name"
+              v-if="projectsData?.at(leftBuildingData.next)?.title"
               aria-hidden="true"
               class="illustration__cityscape__shape__name font-mono--sm">
-              {{ projectsData.at(leftBuildingData.next)?.name }}
+              {{ projectsData.at(leftBuildingData.next)?.title }}
             </span>
           </div>
           <div class="illustration__cityscape__shape illustration__cityscape__shape--front-2" ref="rightBuilding">
@@ -395,10 +395,10 @@ onUnmounted(() => {
             </NuxtLink>
 
             <span
-              v-if="projectsData?.at(rightBuildingData.next)?.name"
+              v-if="projectsData?.at(rightBuildingData.next)?.title"
               aria-hidden="true"
               class="illustration__cityscape__shape__name font-mono--sm">
-              {{ projectsData.at(rightBuildingData.next)?.name }}
+              {{ projectsData.at(rightBuildingData.next)?.title }}
             </span>
           </div>
           <div class="illustration__cityscape__lights"/>

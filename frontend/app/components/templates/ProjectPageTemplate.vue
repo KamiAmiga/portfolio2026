@@ -51,6 +51,9 @@ onMounted(() => {
       .from(gsapContext.selector?.('.header'), {
         autoAlpha: 0
       })
+      .set(gsapContext.selector?.('.title'), {
+        '--xDisplacement': -1,
+      })
 
     return timeline
   }
@@ -62,6 +65,19 @@ onMounted(() => {
 
     timeline
       .add(initTimeline(self))
+
+    scrollTimeline.from('.header img', {
+        scale: 1.1,
+        ease: 'none'
+      }, 0)
+      .to('.header img', {
+        opacity: .4
+      }, '50%')
+      .fromTo('.title', {
+        '--xDisplacement': -1
+      }, {
+        '--xDisplacement': 0
+      }, '50%')
 
     ScrollTrigger.create({
       trigger: headerWrapper.value,
@@ -91,7 +107,7 @@ onUnmounted(() => {
   
       <Grid class="title-wrapper" :withTopPadding="false" :withBottomPadding="false">
         <CustomTitle 
-          :content="data.name"
+          :content="data.title"
           class="title"
           level="main"
           enforceVisibility

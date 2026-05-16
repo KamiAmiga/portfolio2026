@@ -3,7 +3,7 @@ import { gsap } from "gsap";
 import type { ProjectsCollectionItem } from "@nuxt/content";
 
 const props = defineProps<{ 
-  project: Pick<ProjectsCollectionItem, "name" | "slug" | "cover_image_portrait" | "cover_image_landscape">
+  project: Pick<ProjectsCollectionItem, "title" | "slug" | "cover_image_portrait" | "cover_image_landscape">
   visibilityStatus?: {visible: boolean, preload: boolean}
 }>()
 
@@ -130,7 +130,7 @@ onUnmounted(() => {
       <div class="project-item__link__title__decorator" />
 
       <CustomTitle
-        :content="project.name"
+        :content="project.title"
         level='main'
         tag="h2"
         enforceVisibility

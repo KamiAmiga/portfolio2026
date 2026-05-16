@@ -3,7 +3,7 @@ const { data: homeData } = await useAsyncData(() => queryCollection('home').firs
 const { data: projectsData } = await useAsyncData(
   'projects-data',
   () => queryCollection('projects')
-    .select('name', 'slug', 'cover_image_portrait')
+    .select('title', 'slug', 'cover_image_portrait')
     .all()
 )
 

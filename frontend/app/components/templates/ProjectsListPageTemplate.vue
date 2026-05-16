@@ -5,7 +5,7 @@ import type { ProjectsListCollectionItem, ProjectsCollectionItem } from "@nuxt/c
 
 const props = defineProps<{ 
   data: ProjectsListCollectionItem,
-  projectsData?: Pick<ProjectsCollectionItem, "name" | "slug" | "year" | "cover_image_portrait" | "cover_image_landscape">[]
+  projectsData?: Pick<ProjectsCollectionItem, "title" | "slug" | "cover_image_portrait" | "cover_image_landscape">[]
 }>()
 
 const lenisRef = ref()

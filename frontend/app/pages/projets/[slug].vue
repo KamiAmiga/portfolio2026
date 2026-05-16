@@ -17,7 +17,7 @@ const { data: surroundings } = await useAsyncData('surround', () => {
       route.path,
       { 
         fields: [
-          'name',
+          'title',
           'slug',
           'cover_image_landscape',
         ]

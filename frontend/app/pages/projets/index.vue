@@ -4,7 +4,7 @@ const { data: projectsData } = await useAsyncData(
   'projects-data',
   () => queryCollection('projects')
     .order('year', 'DESC')
-    .select('name', 'year', 'slug', 'cover_image_landscape', 'cover_image_portrait')
+    .select('title', 'slug', 'cover_image_landscape', 'cover_image_portrait')
     .all()
 )
 
