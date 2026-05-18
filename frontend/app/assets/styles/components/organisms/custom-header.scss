@@ -15,8 +15,12 @@
 
   &__background {
     position: absolute;
-    inset: 0 0 var(--spacer-xs) 0;
+    inset: 0;
     z-index: var(--z-index-base-decrease);
     overflow: hidden;
+  }
+
+  &__title {
+    margin-bottom: calc(var(--spacer-xs) * -1);
   }
 }

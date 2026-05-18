@@ -35,6 +35,12 @@ export default defineNuxtConfig({
     'nuxt-icons',
     'nuxt-strapi-blocks-renderer',
   ],
+  nitro: {
+    prerender: {
+      crawlLinks: true,
+      routes: ["/"],
+    }
+  },
   vite: {
     optimizeDeps: {
       include: [

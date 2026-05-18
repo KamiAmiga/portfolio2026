@@ -9,7 +9,6 @@ const props = defineProps<{
 }>()
 
 const lenisRef = ref()
-const globalWrapper = useTemplateRef('globalWrapper')
 const headerWrapper = useTemplateRef('headerWrapper')
 const menuVisible = ref(false)
 let ctx: gsap.Context;
@@ -37,7 +36,7 @@ watchEffect((onInvalidate) => {
 })
 
 onMounted(() => {
-  if (!globalWrapper.value) return
+  if (!headerWrapper.value) return
 
   const initTimeline = (gsapContext: gsap.Context) => {
     const timeline = gsap.timeline({
@@ -48,11 +47,11 @@ onMounted(() => {
     })
 
     timeline
-      .from(gsapContext.selector?.('.header'), {
+      .from(headerWrapper.value, {
         autoAlpha: 0
       })
-      .set(gsapContext.selector?.('.title'), {
-        '--xDisplacement': -1,
+      .set(gsapContext.selector?.('.project-header__title'), {
+        '--displacement-factor': -1,
       })
 
     return timeline
@@ -62,33 +61,72 @@ onMounted(() => {
     const timeline = gsap.timeline()
 
     const scrollTimeline = gsap.timeline()
+    const titleWrapperTimeline = gsap.timeline({paused: true})
+    const lastTimeline = gsap.timeline()
 
     timeline
       .add(initTimeline(self))
 
-    scrollTimeline.from('.header img', {
+    scrollTimeline
+      .from('.project-header img', {
         scale: 1.1,
         ease: 'none'
       }, 0)
-      .to('.header img', {
-        opacity: .4
-      }, '50%')
-      .fromTo('.title', {
-        '--xDisplacement': -1
+      .to('.project-header img', {
+        opacity: .25,
+        ease: 'none'
+      }, '<')
+      .to('.project-header__bg', {
+        '--overlay-opacity': 1,
+        ease: 'none'
+      }, '<')
+
+    lastTimeline
+      .to('.project-header img', {
+        y: '50%',
+        ease: 'none'
+      })
+
+    titleWrapperTimeline
+      .fromTo('.project-header__title', {
+        '--displacement-factor': -1
       }, {
-        '--xDisplacement': 0
-      }, '50%')
+        '--displacement-factor': 0,
+        duration: .5,
+        ease: 'circ.inOut'
+      })
 
     ScrollTrigger.create({
       trigger: headerWrapper.value,
       scrub: true,
       once: false,
+      start: '15% top',
+      end: 'bottom top',
       animation: scrollTimeline
     });
-  }, globalWrapper.value);
+
+    ScrollTrigger.create({
+      trigger: headerWrapper.value,
+      scrub: true,
+      once: false,
+      start: '50% top',
+      end: 'bottom top',
+      animation: lastTimeline
+    });
+
+    ScrollTrigger.create({
+      trigger: headerWrapper.value,
+      once: false,
+      start: 'top -50%',
+      onEnter: () => titleWrapperTimeline.play(),
+      onLeaveBack: () => titleWrapperTimeline.reverse()
+    });
+  }, headerWrapper.value);
 })
 
-onUnmounted(() => {
+onUnmounted(() => { 
+  if (!headerWrapper.value) return
+  
   ctx.revert();
 });
 </script>
@@ -96,34 +134,36 @@ onUnmounted(() => {
 <template>
 <VueLenis root ref="lenisRef" :options="{ autoRaf: false }" />
 
-<div ref="globalWrapper">
-  <div ref="headerWrapper" class="header" :data-menu-visible="menuVisible">
-    <div class="header-sticky">
-      <CustomPicture 
-        v-if="data.cover_image_landscape"
-        :picture-data-default="data.cover_image_landscape"
-        :picture-data-portrait="data.cover_image_portrait"
-        :is-cover="true" />
+<div>
+  <div ref="headerWrapper" class="project-header autoalpha" :data-menu-visible="menuVisible">
+    <div class="project-header__sticky-wrapper">
+      <div class="project-header__bg">
+        <CustomPicture 
+          v-if="data.cover_image_landscape"
+          :picture-data-default="data.cover_image_landscape"
+          :picture-data-portrait="data.cover_image_portrait"
+          :is-cover="true" />
+      </div>
   
-      <Grid class="title-wrapper" :withTopPadding="false" :withBottomPadding="false">
+      <div class="project-header__title-wrapper">
         <CustomTitle 
           :content="data.title"
-          class="title"
+          class="project-header__title"
           level="main"
           enforceVisibility
           @title-timeline="onTitleTimeline" />
-      </Grid>
+      </div>
     </div>
   </div>
   
   <Grid :withTopPadding="false">
-    <div class="intro">
+    <div class="project-intro">
       <ProjectStats 
         v-if="data.year || data.skills?.at(0)"
         :year="data.year"
         :skills="data.skills" />
     
-      <div class="desc" v-if="data?.description">
+      <div class="project-intro__desc" v-if="data?.description">
         <RichtextWrapper>
           <StrapiBlocksText :nodes="data.description" />
         </RichtextWrapper>
@@ -133,7 +173,7 @@ onUnmounted(() => {
 
   <section 
     v-if="data?.main_images?.at(0)"
-    class="main-imgs">
+    class="project-main-imgs">
     <ProjectMainImage 
       v-for="(mainImage, index) in data.main_images"
       :key="mainImage.id"

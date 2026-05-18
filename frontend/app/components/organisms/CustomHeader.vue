@@ -3,6 +3,7 @@ interface Props {
   title: string
   titleTag?: 'div' | 'h1' | 'h2' | 'h3' | 'h4'
   size?: 'small' | 'full-screen'
+  enforceTitleVisibility?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -16,8 +17,9 @@ const props = withDefaults(defineProps<Props>(), {
     <div class="header__background">
       <slot name="background"></slot>
     </div>
+
     <Grid :withTopPadding="false" :withBottomPadding="false">
-      <CustomTitle :content="title" level="main" :tag="titleTag" :animSelfTrigger="true" />
+      <CustomTitle class="header__title" :content="title" level="main" :tag="titleTag" :animSelfTrigger="true" :enforceVisibility="enforceTitleVisibility" />
     </Grid>
   </header>
 </template>

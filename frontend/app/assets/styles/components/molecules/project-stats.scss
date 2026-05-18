@@ -33,6 +33,10 @@
       list-style-type: none;
       text-align: center;
 
+      &:not(:has(:nth-child(2))) {
+        grid-template-columns: 1fr;
+      }
+
       @include breakpoint-m-up {
         margin-block-start: var(--spacer-md);
         row-gap: var(--spacer-md);

@@ -109,7 +109,7 @@ onMounted(() => {
     const timeline = gsap.timeline()
 
     const splitTitle = SplitText.create(self.selector?.('.title__content'), {
-      type: props.level === 'main' ? "chars" : "words",
+      type: props.level === 'main' ? "chars,words" : "words",
       mask: "lines",
       aria: "hidden"
     });

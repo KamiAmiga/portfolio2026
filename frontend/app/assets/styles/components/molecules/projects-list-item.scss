@@ -5,12 +5,12 @@
   height: 100vh;
   padding-block-start: var(--block-start-spacing);
   padding-block-end: var(--block-end-spacing);
-  padding-inline-start: var(--spacer-2xl);
+  padding-inline-start: var(--spacer-up-xl-2xl);
   padding-inline-end: var(--spacer-md);
   visibility: hidden;
 
   &:not(:last-of-type) {
-    margin-inline-end: min(var(--spacer-4xl), 10vw);
+    margin-inline-end: max(var(--spacer-4xl), 10vw);
   }
 
   &__link {

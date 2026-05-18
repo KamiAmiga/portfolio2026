@@ -25,6 +25,8 @@ const { data: surroundings } = await useAsyncData('surround', () => {
     )
     .order('year', 'DESC')
 })
+
+useSeoFromPageData(projectData?.value?.seo)
 </script>
 
 
