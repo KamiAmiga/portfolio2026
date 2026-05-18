@@ -10,7 +10,7 @@ const { data: projectsData } = await useAsyncData(
 if (!homeData.value) {
   throw createError({
     status: 404,
-    statusText: 'Page Not Found',
+    statusText: `Oups, cette page n'existe pas !`,
   })
 }
 

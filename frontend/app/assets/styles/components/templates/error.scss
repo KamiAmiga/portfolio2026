@@ -1,0 +1,66 @@
+@use '../../abstracts/' as *;
+@use "~/assets/styles/components/atoms/link";
+
+.error {
+  height: 100svh;
+  justify-items: center;
+  grid-template-rows: auto 1fr;
+
+  @include breakpoint-m-up {
+    align-items: center;
+    grid-template-rows: auto;
+  }
+
+  &__visual {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    align-items: center;
+
+    @include breakpoint-m-up {
+      width: 50%;
+    }
+
+    &__shape,
+    &__status {
+      grid-column: 1 / span 1;
+      grid-row: 1 / span 1;
+    }
+
+    &__shape {
+      aspect-ratio: var(--triangle-aspect-ratio-sm);
+      clip-path: polygon(0 0, 100% 50%, 0 100%);
+      background: linear-gradient(
+        to right,
+        color-mix(
+          in srgb,
+          transparent var(--opacity-percentage-7),
+          var(--color-secondary-base)
+        ),
+        color-mix(
+          in srgb,
+          transparent var(--opacity-percentage-9),
+          var(--color-secondary-darker)
+        ));
+    }
+
+    &__status {
+      position: relative;
+      text-align: center;
+    }
+  }
+
+  &__text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacer-lg);
+    text-align: center;
+
+    @include breakpoint-m-up {
+      grid-column: span 4;
+      align-items: start;
+      text-align: start;
+    }
+  }
+}

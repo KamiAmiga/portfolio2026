@@ -4,7 +4,7 @@ const { data: aboutData } = await useAsyncData('about', () => queryCollection('a
 if (!aboutData.value) {
   throw createError({
     status: 404,
-    statusText: 'Page Not Found',
+    statusText: `Oups, cette page n'existe pas !`,
   })
 }
 

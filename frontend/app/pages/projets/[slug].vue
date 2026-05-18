@@ -7,7 +7,7 @@ const { data: projectData } = await useAsyncData(route.path, () => {
 if (!projectData.value) {
   throw createError({
     status: 404,
-    statusText: 'Page Not Found',
+    statusText: `Oups, cette page n'existe pas !`,
   })
 }
 
