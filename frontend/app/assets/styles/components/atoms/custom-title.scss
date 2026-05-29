@@ -107,7 +107,7 @@
     
   &--main {
     width: fit-content;
-    padding: var(--spacer-sm) var(--spacer-xl) calc(var(--spacer-sm) + var(--spacer-xs)) var(--spacer-2xl);
+    padding: var(--spacer-sm) var(--spacer-up-lg-xl) calc(var(--spacer-sm) + var(--spacer-xs)) var(--spacer-up-xl-2xl);
     position: relative;
     overflow: hidden;
   }

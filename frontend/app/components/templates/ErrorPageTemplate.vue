@@ -80,7 +80,7 @@ onUnmounted(() => {
     class="error">
     <div class="error__visual">
       <div class="error__visual__shape"></div>
-      <div class="error__visual__status font-sans--2xl">{{ error.status }} ?</div>
+      <div class="error__visual__status font-sans--3xl">{{ error.status }} ?</div>
     </div>
   
     <div class="error__text">

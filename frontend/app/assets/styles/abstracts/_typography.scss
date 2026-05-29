@@ -5,18 +5,17 @@
 
 //
 // Font-sizes calculated from:
-// https://utopia.fyi/type/calculator?c=400,16,1.25,1600,20,1.25,6,1,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l&g=s,l,xl,12
+// https://utopia.fyi/type/calculator/?c=400,16,1.2,1600,20,1.25,6,1,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l&g=s,l,xl,12
 //
 
 $font-sizes: (
-  sm: clamp(0.8rem, 0.7333rem + 0.2667vw, 1rem),
+  sm: clamp(0.8333rem, 0.7778rem + 0.2222vw, 1rem),
   base: clamp(1rem, 0.9167rem + 0.3333vw, 1.25rem),
-  md: clamp(1.25rem, 1.1458rem + 0.4167vw, 1.5625rem),
-  lg: clamp(1.9531rem, 1.7904rem + 0.651vw, 2.4414rem),
-  xl: clamp(2.4414rem, 2.238rem + 0.8138vw, 3.0518rem),
-  2xl: clamp(3.0518rem, 2.7974rem + 1.0173vw, 3.8147rem),
-  3xl: clamp(3.8147rem, 3.4968rem + 1.2716vw, 4.7684rem),
-  4xl: clamp(4.7684rem, 4.371rem + 1.5895vw, 5.9605rem)
+  md: clamp(1.2rem, 1.0792rem + 0.4833vw, 1.5625rem),
+  lg: clamp(1.44rem, 1.269rem + 0.6842vw, 1.9531rem),
+  xl: clamp(1.728rem, 1.4902rem + 0.9512vw, 2.4414rem),
+  2xl: clamp(2.0736rem, 1.7475rem + 1.3042vw, 3.0518rem),
+  3xl: clamp(2.4883rem, 2.0462rem + 1.7685vw, 3.8147rem),
 );
 
 $font-families: (
@@ -106,13 +105,6 @@ $font-sans: (
   ),
   3xl: (
     font-size: map.get($font-sizes, 3xl),
-    color: map.get($theme-colors, primary, reverse),
-    font-weight: 600,
-    line-height: map.get($line-heights, sm),
-    letter-spacing: map.get($letter-spacings, xs),
-  ),
-  4xl: (
-    font-size: map.get($font-sizes, 4xl),
     color: map.get($theme-colors, primary, reverse),
     font-weight: 600,
     line-height: map.get($line-heights, sm),

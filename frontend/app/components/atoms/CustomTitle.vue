@@ -22,7 +22,7 @@ const classes = computed(() => {
   return [
     'title',
     `title--${props.level}`,
-    props.level === 'main' ? 'font-sans--2xl' : 'font-sans--xl',
+    props.level === 'main' ? 'font-sans--3xl' : 'font-sans--2xl',
     props.enforceVisibility && props.level === 'main' && 'title--added-bg'
   ].join(' ')
 })

@@ -17,8 +17,8 @@
     display: block;
     height: 100%;
     width: 100%;
-    padding-inline-start: calc(var(--spacer-2xl) + env(safe-area-inset-bottom));
-    padding-block-end: var(--spacer-3xl);
+    padding-inline-start: var(--spacer-up-xl-2xl);
+    padding-block-end: calc(var(--spacer-3xl) + env(safe-area-inset-bottom));
     position: relative;
 
     &__decorator {
