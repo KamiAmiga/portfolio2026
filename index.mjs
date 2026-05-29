@@ -23,7 +23,7 @@ const routesSettings = [
   },
   {
     name: 'shops-page',
-    populate: ['shops_list', 'social_links', 'seo', 'seo.metaImage']
+    populate: ['shops_list', 'shops_list.preview_image', 'social_links', 'seo', 'seo.metaImage']
   },
   {
     name: 'projects-list-page',

@@ -40,8 +40,8 @@ const seoSchema = z.object({
   metaDescription: z.string(),
 })
 
-const linkSchema = z.object({
-  id: z.string(),
+const socialLinkSchema = z.object({
+  id: z.number(),
   name: z.string(),
   url: z.string(),
   icon_name: z.string()
@@ -80,14 +80,7 @@ const aboutSchema = z.object({
       icon_name: z.string()
     })
   ),
-  social_links: z.array(
-    z.object({
-      id: z.number(),
-      name: z.string(),
-      url: z.string(),
-      icon_name: z.string()
-    })
-  ),
+  social_links: z.array(socialLinkSchema),
   resume: z.array(
     z.object({
       id: z.number(),
@@ -106,8 +99,13 @@ const projectsListSchema = z.object({
 const shopsSchema = z.object({
   title: z.string(),
   subtitle: z.string(),
-  shops_list: z.array(linkSchema),
-  social_links: z.array(linkSchema),
+  shops_list: z.array(z.object({
+    id: z.number(),
+    name: z.string(),
+    url: z.string(),
+    preview_image: strapiFileSchema
+  })),
+  social_links: z.array(socialLinkSchema),
   seo: seoSchema
 })
 

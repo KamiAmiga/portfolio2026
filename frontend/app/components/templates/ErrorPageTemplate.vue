@@ -86,7 +86,7 @@ onUnmounted(() => {
     <div class="error__text">
       <div>
         <h1 class="error__text__status font-sans--xl">
-          {{ error.statusText }}
+          {{ error.status === 404 ? `Oups, cette page n'existe pas !` : error.statusText }}
         </h1>
       </div>
       <NuxtLink to="/" class="link">Retour à l'accueil</NuxtLink>

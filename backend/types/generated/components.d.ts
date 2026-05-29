@@ -159,20 +159,9 @@ export interface ShopsShopItem extends Struct.ComponentSchema {
     displayName: 'Shop item';
   };
   attributes: {
-    icon_name: Schema.Attribute.String;
     name: Schema.Attribute.String;
+    preview_image: Schema.Attribute.Media<'images' | 'files'>;
     url: Schema.Attribute.String;
-  };
-}
-
-export interface ShopsShopItemPreview extends Struct.ComponentSchema {
-  collectionName: 'components_shops_shop_item_previews';
-  info: {
-    displayName: 'Shop item preview';
-  };
-  attributes: {
-    image: Schema.Attribute.Media<'images'> & Schema.Attribute.Required;
-    link: Schema.Attribute.String & Schema.Attribute.Required;
   };
 }
 
@@ -189,7 +178,6 @@ declare module '@strapi/strapi' {
       'shared.meta-social': SharedMetaSocial;
       'shared.seo': SharedSeo;
       'shops.shop-item': ShopsShopItem;
-      'shops.shop-item-preview': ShopsShopItemPreview;
     }
   }
 }

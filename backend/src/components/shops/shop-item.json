@@ -9,11 +9,16 @@
     "name": {
       "type": "string"
     },
-    "icon_name": {
-      "type": "string"
-    },
     "url": {
       "type": "string"
+    },
+    "preview_image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files"
+      ]
     }
   }
 }

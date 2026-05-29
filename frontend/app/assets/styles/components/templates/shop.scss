@@ -1,0 +1,158 @@
+@use '../../abstracts/' as *;
+
+.header {
+  justify-items: center;
+  text-align: center;
+  gap: var(--spacer-base);
+
+  &__logo {
+    transform: translateX(10%);
+    position: relative;
+
+    &-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: var(--spacer-4xl);
+      padding: var(--spacer-md);
+      aspect-ratio: 1;
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(
+        150deg,
+        color-mix(
+          in srgb,
+          transparent var(--opacity-percentage-6),
+          var(--color-secondary-darker)
+        ),
+        color-mix(
+          in srgb,
+          transparent var(--opacity-percentage-9),
+          var(--color-secondary-darker)
+        ) 50%);
+      border-radius: 50%;
+      box-shadow:
+        0
+        1px
+        var(--spacer-xs)
+        var(--spacer-2xs)
+        color-mix(
+          in srgb,
+          transparent var(--opacity-percentage-8),
+          var(--color-secondary-lighter));
+    }
+    
+    &-skyline {
+      height: 2px;
+      background-color: var(--color-secondary-darker);
+      transform:
+        translate(var(--spacer-md), var(--spacer-md))
+        rotate(-30deg);
+
+      &::before,
+      &::after,
+      & {
+        width: 100%;
+        position: absolute;
+        left: 0;
+        bottom: 50%;
+        transform-origin: left center;
+      }
+
+      &::before,
+      &::after {
+        content: '';
+        height: 1px;
+        background-size: .675rem;
+        background-repeat: repeat;
+      }
+
+      &::before {
+        opacity: var(--opacity-5);
+        background-image: linear-gradient(
+          to right,
+          var(--color-primary-reverse) 50%,
+          transparent 50%
+        );
+        transform: translate(calc(var(--spacer-xl) * -1), calc(var(--spacer-md) * -1));
+      }
+
+      &::after {
+        opacity: var(--opacity-8);
+        background-image: linear-gradient(
+          to right,
+          var(--color-secondary-darker) 50%,
+          transparent 50%
+        );
+        transform: translate(var(--spacer-lg), var(--spacer-xl));
+      }
+    }
+  }
+}
+
+.shops-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  padding: var(--spacer-lg) 0 0 0;
+  margin: 0;
+  list-style-type: none;
+  gap: var(--spacer-lg);
+
+  @include breakpoint-m-up {
+    grid-template-columns: repeat(2, 1fr);
+    padding-block-start: 0;
+  }
+
+  &__item {
+    position: relative;
+
+    @include breakpoint-m-up {
+      padding: var(--spacer-lg);
+    }
+
+    &__image {
+      position: relative;
+      box-shadow:
+        0
+        0
+        0
+        0
+        color-mix(
+          in srgb,
+          transparent var(--opacity-percentage-6),
+          var(--color-secondary-base)
+        );
+      transition: box-shadow .3s cubic-bezier(0.76, 0, 0.24, 1);
+
+      .shops-list__item:hover &,
+      .shops-list__item:focus & {
+        box-shadow:
+          0
+          0
+          var(--spacer-base)
+          var(--spacer-2xs)
+          color-mix(
+            in srgb,
+            transparent var(--opacity-percentage-6),
+            var(--color-secondary-base)
+          );
+      }
+    }
+
+    &__title {
+      position: absolute;
+      left: var(--spacer-base);
+      bottom: calc(var(--spacer-lg) * -1);
+      z-index: var(--z-index-base-increase);
+
+      @include breakpoint-m-up {
+        left: var(--spacer-xl);
+        bottom: 0;
+      }
+    }
+  }
+}
+
+.social-links {
+  padding-block-start: var(--spacer-lg);
+}
