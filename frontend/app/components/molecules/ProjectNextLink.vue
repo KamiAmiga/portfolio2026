@@ -49,6 +49,7 @@ onUnmounted(() => {
     class="project-next-link">
     <CustomPicture 
       class="project-next-link__image"
+      format="full_screen"
       :isCover="true"
       :pictureDataDefault="coverImg" />
 

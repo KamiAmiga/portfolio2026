@@ -142,6 +142,7 @@ onUnmounted(() => {
           v-if="data.cover_image_landscape"
           :picture-data-default="data.cover_image_landscape"
           :picture-data-portrait="data.cover_image_portrait"
+          format="full_screen"
           :is-cover="true" />
       </div>
   

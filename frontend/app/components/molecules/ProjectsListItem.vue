@@ -144,6 +144,7 @@ onUnmounted(() => {
       :pictureDataPortrait="project.cover_image_portrait"
       :isCover="true"
       :loading="visibilityStatus?.preload ? 'eager' : 'lazy'"
+      format="full_grid"
       class="project-item__link__image" />
   </NuxtLink>
 </li>

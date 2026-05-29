@@ -207,6 +207,7 @@ onUnmounted(() => {
               v-if="shopItem.preview_image"
               :pictureDataDefault="shopItem.preview_image"
               :isCover="true"
+              format="half_grid"
               class="shops-list__item__image" />
             <CustomTitle
               :content="shopItem.name"

@@ -364,6 +364,7 @@ onUnmounted(() => {
                 }"
                 :pictureDataDefault="project.cover_image_portrait"
                 :loading="[leftBuildingData.current, leftBuildingData.next].includes(index) ? 'eager' : 'lazy'"
+                format="fourth_grid"
                 :isCover="true" />
             </NuxtLink>
 
@@ -391,6 +392,7 @@ onUnmounted(() => {
                 }"
                 :pictureDataDefault="project.cover_image_portrait"
                 :loading="[rightBuildingData.current, rightBuildingData.next].includes(index) ? 'eager' : 'lazy'"
+                format="fourth_grid"
                 :isCover="true" />
             </NuxtLink>
 
