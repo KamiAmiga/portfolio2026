@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-const { data: homeData } = await useAsyncData(() => queryCollection('home').first())
+const { data: homeData } = await useAsyncData('home-data', () => queryCollection('home').first())
 const { data: projectsData } = await useAsyncData(
-  'projects-data',
+  'home-projects-data',
   () => queryCollection('projects')
     .select('title', 'slug', 'cover_image_portrait')
     .all()

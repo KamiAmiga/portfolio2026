@@ -11,25 +11,29 @@ if (!projectData.value) {
   })
 }
 
-const { data: surroundings } = await useAsyncData('surround', () => {
-  return queryCollectionItemSurroundings(
-      'projects',
-      route.path,
-      { 
-        fields: [
-          'title',
-          'slug',
-          'cover_image_landscape',
-        ]
-      }
-    )
-    .order('year', 'DESC')
-})
+const { data: surroundings } = await useAsyncData(
+  route.params.slug,
+  () => {
+    return queryCollectionItemSurroundings(
+        'projects',
+        route.path,
+        { 
+          before: 0,
+          fields: [
+            'title',
+            'slug',
+            'cover_image_landscape',
+          ]
+        }
+      )
+      .order('year', 'DESC')
+  }
+)
 
 useSeoFromPageData(projectData?.value?.seo)
 </script>
 
 
 <template>
-<ProjectPageTemplate v-if="projectData" :data="projectData" :surroundings="surroundings" />
+<ProjectPageTemplate v-if="projectData" :data="projectData" :surroundings="surroundings[0]" />
 </template>

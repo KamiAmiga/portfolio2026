@@ -5,7 +5,7 @@ import type { ProjectsCollectionItem } from "@nuxt/content";
 
 const props = defineProps<{ 
   data: ProjectsCollectionItem
-  surroundings?: Pick<ProjectsCollectionItem, 'title' | 'slug' | 'cover_image_landscape'>[]
+  surroundings?: Pick<ProjectsCollectionItem, 'title' | 'slug' | 'cover_image_landscape'>
 }>()
 
 const lenisRef = ref()
@@ -201,10 +201,10 @@ onUnmounted(() => {
 <ProjectSecondaryImages v-if="data?.secondary_images?.at(0)" :secondaryImgs="data?.secondary_images" />
 
 <ProjectNextLink
-  v-if="surroundings?.[1]"
-  :title="surroundings[1].title"
-  :slug="surroundings[1].slug"
-  :coverImg="surroundings[1].cover_image_landscape" />
+  v-if="surroundings"
+  :title="surroundings.title"
+  :slug="surroundings.slug"
+  :coverImg="surroundings.cover_image_landscape" />
 </template>
 
 <style lang="scss" scoped>
