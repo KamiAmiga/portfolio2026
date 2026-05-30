@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { gsap } from "gsap";
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { SplitText } from "gsap/SplitText";
 
 const props = withDefaults(
   defineProps<{
@@ -17,24 +16,20 @@ onMounted(() => {
   ctx = gsap.context((self) => {
     const timeline = gsap.timeline()
 
-    const splitText = SplitText.create(self.selector?.('.richtext-wrapper__content'), {
-      type: "words,lines",
-      mask: "lines",
-      autoSplit: true,
-      aria: "hidden"
-    });
-
     timeline
       .from(wrapper.value, {
         autoAlpha: 0
       })
-      .from(splitText.lines, {
-        opacity: 0,
-        y: '1.5em',
-        duration: .5,
-        ease: "power3.out",
-        stagger: .1
+      .from(self.selector?.('.richtext-wrapper__content'), {
+        y: 20,
+        duration: .6,
+        ease: 'expo.out'
       })
+      .from(self.selector?.('.richtext-wrapper__content'), {
+        opacity: 0,
+        duration: .4,
+        ease: 'power3.out'
+      }, '<')
     
     if (props.withFocus) {[
       timeline
@@ -63,10 +58,6 @@ onUnmounted(() => {
     class="richtext-wrapper font-sans--base"
     :class="`${withFocus ? 'richtext-wrapper--with-focus' : ''}`"
     ref="wrapper">
-    <div class="sr-only">
-      <slot />
-    </div>
-
     <div class="richtext-wrapper__content">
       <slot />
     </div>
