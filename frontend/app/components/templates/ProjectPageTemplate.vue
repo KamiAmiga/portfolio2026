@@ -8,7 +8,6 @@ const props = defineProps<{
   surroundings?: Pick<ProjectsCollectionItem, 'title' | 'slug' | 'cover_image_landscape'>
 }>()
 
-const lenisRef = ref()
 const headerWrapper = useTemplateRef('headerWrapper')
 const menuVisible = ref(false)
 let ctx: gsap.Context;
@@ -18,22 +17,6 @@ const onTitleTimeline = (payload: gsap.core.Timeline) => {
   titleTimeline = payload;
 };
 
-watchEffect((onInvalidate) => {
-  if (!lenisRef.value?.lenis) return
-
-  lenisRef.value.lenis.on('scroll', ScrollTrigger.update)
-
-  function update(time:number) {
-    lenisRef.value.lenis.raf(time * 1000)
-  }
-  gsap.ticker.add(update)
-
-  gsap.ticker.lagSmoothing(0)
-
-  onInvalidate(() => {
-    gsap.ticker.remove(update)
-  })
-})
 
 onMounted(() => {
   if (!headerWrapper.value) return
@@ -132,8 +115,6 @@ onUnmounted(() => {
 </script>
 
 <template>
-<VueLenis root ref="lenisRef" :options="{ autoRaf: false }" />
-
 <div>
   <div ref="headerWrapper" class="project-header autoalpha" :data-menu-visible="menuVisible">
     <div class="project-header__sticky-wrapper">

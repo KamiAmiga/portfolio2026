@@ -1,33 +1,14 @@
 <script setup lang="ts">
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { AboutCollectionItem } from '@nuxt/content';
 
 const props = defineProps<{ 
   data: AboutCollectionItem,
 }>()
 
-const lenisRef = ref()
 const headerBackground = useTemplateRef('headerBackground')
 const menuVisible = ref(false)
 let ctx: gsap.Context;
-
-watchEffect((onInvalidate) => {
-  if (!lenisRef.value?.lenis) return
-
-  lenisRef.value.lenis.on('scroll', ScrollTrigger.update)
-
-  function update(time:number) {
-    lenisRef.value.lenis.raf(time * 1000)
-  }
-  gsap.ticker.add(update)
-
-  gsap.ticker.lagSmoothing(0)
-
-  onInvalidate(() => {
-    gsap.ticker.remove(update)
-  })
-})
 
 onMounted(() => {
   if (!headerBackground.value) return
@@ -66,8 +47,6 @@ onUnmounted(() => {
 </script>
 
 <template>
-<VueLenis root ref="lenisRef" :options="{ autoRaf: false }" />
-
 <CustomHeader title="A propos" size="small" class="about-header">
   <template v-slot:background>
     <div class="about-header__background" ref="headerBackground" :data-menu-visible="menuVisible">

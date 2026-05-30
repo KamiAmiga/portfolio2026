@@ -8,7 +8,6 @@ const props = defineProps<{
   projectsData?: Pick<ProjectsCollectionItem, "title" | "slug" | "cover_image_portrait" | "cover_image_landscape">[]
 }>()
 
-const lenisRef = ref()
 const projectsList = useTemplateRef('projectsList')
 const projectsListWrapper = useTemplateRef('projectsListWrapper')
 const projectsListScroller = useTemplateRef('projectsListScroller')
@@ -16,22 +15,6 @@ const menuVisible = ref(false)
 const projectsItemsScrollStatus = ref(props.projectsData?.map((_, index) => ({visible: index === 0, preload: index <= 1})) ?? [])
 let ctx: gsap.Context;
 
-watchEffect((onInvalidate) => {
-  if (!lenisRef.value?.lenis) return
-
-  lenisRef.value.lenis.on('scroll', ScrollTrigger.update)
-
-  function update(time:number) {
-    lenisRef.value.lenis.raf(time * 1000)
-  }
-  gsap.ticker.add(update)
-
-  gsap.ticker.lagSmoothing(0)
-
-  onInvalidate(() => {
-    gsap.ticker.remove(update)
-  })
-})
 
 onMounted(() => {
   if (!projectsListWrapper.value || !projectsListScroller.value) return
@@ -104,8 +87,6 @@ onUnmounted(() => {
 </script>
 
 <template>
-<VueLenis root ref="lenisRef" :options="{ autoRaf: false }" />
-
 <h1 class="sr-only">{{ data?.title }}</h1>
 
 <section
