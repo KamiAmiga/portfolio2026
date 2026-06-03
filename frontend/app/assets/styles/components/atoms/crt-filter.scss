@@ -1,8 +1,14 @@
+@use '../../abstracts/' as *;
+
 .crt-filter {
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: var(--z-index-crt);
+  
+  @include reduced-motion {
+    display: none;
+  }
 
   &::before,
   &::after {

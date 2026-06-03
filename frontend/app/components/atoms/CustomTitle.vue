@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { gsap } from "gsap";
 import { SplitText } from "gsap/SplitText";
+import type { ShallowRef } from "vue";
 
 interface Props {
   content: string
@@ -15,11 +16,11 @@ const props = withDefaults(defineProps<Props>(), {
   animSelfTrigger: false
 })
 const emit = defineEmits(["titleTimeline"])
-const title = ref()
-let ctx: gsap.Context
+const title = useTemplateRef('title') as ShallowRef<HTMLElement>
 
 const classes = computed(() => {
   return [
+    'autoalpha',
     'title',
     `title--${props.level}`,
     props.level === 'main' ? 'font-sans--3xl' : 'font-sans--2xl',
@@ -27,7 +28,13 @@ const classes = computed(() => {
   ].join(' ')
 })
 
-onMounted(() => {
+useGSAP((isReducedMotion, context) => {
+  if (isReducedMotion) {
+    return
+  }
+
+  const timeline = gsap.timeline()
+
   const initTimeline = () => {
     const timeline = gsap.timeline()
 
@@ -104,41 +111,33 @@ onMounted(() => {
 
     return timeline
   }
-  
-  ctx = gsap.context((self) => {
-    const timeline = gsap.timeline()
 
-    const splitTitle = SplitText.create(self.selector?.('.title__content'), {
-      type: props.level === 'main' ? "chars,words" : "words",
-      mask: "lines",
-      aria: "hidden"
-    });
+  const splitTitle = SplitText.create(context.selector?.('.title__content'), {
+    type: props.level === 'main' ? "chars,words" : "words",
+    mask: "lines",
+    aria: "hidden"
+  });
 
-    timeline.add(initTimeline())
+  timeline.add(initTimeline())
 
-    if (!props.animSelfTrigger) {
-      timeline.pause()
-    }
+  if (!props.animSelfTrigger) {
+    timeline.pause()
+  }
 
-    if (props.level === 'main') {
-      timeline
-        .add(titleMainBackgroundAnim(self))
-        .add(titleBorderBoldAnim(self, 'main'))
-        .add(titleContentTimeline(splitTitle.chars, 'main'))
-        .add(titleBorderLightAnim(self, 'main'))
-    } else {
-      timeline
-        .add(titleBorderLightAnim(self, 'second'))
-        .add(titleContentTimeline(splitTitle.words, 'second'))
-        .add(titleBorderBoldAnim(self, 'second'))
-    }
-    emit("titleTimeline", timeline);
-  }, title.value);
-})
-
-onUnmounted(() => {
-  ctx.revert()
-})
+  if (props.level === 'main') {
+    timeline
+      .add(titleMainBackgroundAnim(context))
+      .add(titleBorderBoldAnim(context, 'main'))
+      .add(titleContentTimeline(splitTitle.chars, 'main'))
+      .add(titleBorderLightAnim(context, 'main'))
+  } else {
+    timeline
+      .add(titleBorderLightAnim(context, 'second'))
+      .add(titleContentTimeline(splitTitle.words, 'second'))
+      .add(titleBorderBoldAnim(context, 'second'))
+  }
+  emit("titleTimeline", timeline);
+}, title)
 </script>
 
 <template>
