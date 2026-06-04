@@ -1,53 +1,43 @@
 <script setup lang="ts">
 import { gsap } from "gsap";
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import type { AboutCollectionItem } from '@nuxt/content';
 
 const props = defineProps<{
   socialLinks: AboutCollectionItem["social_links"]
 }>();
 
-const socialLinksList = ref()
-let ctx: gsap.Context;
+const socialLinksList = useTemplateRef('socialLinksList')
 
-onMounted(() => {
-  const initTimeline = () => {
-    const timeline = gsap.timeline()
-
-    timeline
-      .from(socialLinksList.value, {
-        autoAlpha: 0
-      })
-
-    return timeline
+useGSAP((isReducedMotion, context) => {
+  if (isReducedMotion) {
+    return
   }
-
-  ctx = gsap.context((self) => {
-    const timeline = gsap.timeline({defaults: {stagger: .1, ease: 'power2.inOut'}})
-
-    timeline    
-      .add(initTimeline())
-      .from(self.selector?.('.social-link-item'), {
-        opacity: 0,
-        duration: .55,
-      }) 
-      .from(self.selector?.('.social-link-item'), {
-        x: 24,
-        duration: .53,
-        delay: .02,
-      }, '<')  
-
-    ScrollTrigger.create({
+  
+  const timeline = gsap.timeline({
+    defaults: {
+      stagger: .1,
+      ease: 'power2.inOut'
+    },
+    scrollTrigger: {
       trigger: socialLinksList.value,
       once: true,
-      animation: timeline,
-    });
-  }, socialLinksList.value)
-})
+    }
+  })
 
-onUnmounted(() => {
-  ctx.revert()
-})
+  timeline    
+    .from(socialLinksList.value, {
+      autoAlpha: 0
+    })
+    .from(context.selector?.('.social-link-item'), {
+      opacity: 0,
+      duration: .55,
+    }) 
+    .from(context.selector?.('.social-link-item'), {
+      x: 24,
+      duration: .53,
+      delay: .02,
+    }, '<')
+}, socialLinksList)
 </script>
 
 <template>

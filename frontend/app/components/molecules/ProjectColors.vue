@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { gsap } from "gsap";
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import type { ProjectsCollectionItem } from "@nuxt/content";
 
 defineProps<{
@@ -8,47 +7,41 @@ defineProps<{
 }>();
 
 const projectColors = useTemplateRef('projectColors')
-let ctx: gsap.Context;
 
-onMounted(() => {
-  if (!projectColors.value) return
-
-  ctx = gsap.context((self) => {
-    const timeline = gsap.timeline()
-
-    timeline    
-      .from(projectColors.value, {
-        autoAlpha: 0
-      })
-      .from(self.selector?.('.project-colors__item__swatch'), {
-        opacity: 0,
-        scale: 0,
-        duration: .25,
-        ease: 'sine.out',
-        stagger: .08
-      })
-      .from(self.selector?.('.project-colors__item__name'), {
-        opacity: 0,
-        duration: .4,
-        ease: 'power2.inOut',
-        stagger: .05
-      }, '-=75%')
-
-    ScrollTrigger.create({
+useGSAP((isReducedMotion, context) => {
+  if (isReducedMotion) {
+    return
+  }
+  
+  const timeline = gsap.timeline({
+    scrollTrigger: {
       trigger: projectColors.value,
       once: true,
-      animation: timeline,
-    });
-  }, projectColors.value)
-})
-
-onUnmounted(() => {
-  ctx.revert()
-})
+    }
+  })
+  
+  timeline    
+    .from(projectColors.value, {
+      autoAlpha: 0
+    })
+    .from(context.selector?.('.project-colors__item__swatch'), {
+      opacity: 0,
+      scale: 0,
+      duration: .25,
+      ease: 'sine.out',
+      stagger: .08
+    })
+    .from(context.selector?.('.project-colors__item__name'), {
+      opacity: 0,
+      duration: .4,
+      ease: 'power2.inOut',
+      stagger: .05
+    }, '-=75%')
+}, projectColors)
 </script>
 
 <template>
-<ul class="project-colors" ref="projectColors">
+<ul class="project-colors autoalpha" ref="projectColors">
   <li
     v-for="color in colors"
     :key="color.id"

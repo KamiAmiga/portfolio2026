@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { gsap } from "gsap";
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import type { ProjectsCollectionItem } from "@nuxt/content";
 
 const props = defineProps<{
@@ -46,47 +45,40 @@ const imageFormat = (index: number) => {
 }
 
 const projectMainImage = useTemplateRef('projectMainImage')
-let ctx: gsap.Context;
 
-
-onMounted(() => {
-  if (!projectMainImage.value) return
-
-  ctx = gsap.context((self) => {
-    const timeline = gsap.timeline()
-
-    timeline    
-      .from(projectMainImage.value, {
-        autoAlpha: 0
-      })
-      .from(self.selector?.('.project-main-image__image-wrapper'), {
-        clipPath: 'inset(0 0 100% 0)',
-        duration: .5,
-        ease: 'circ.inOut',
-        stagger: .1
-      })
-      .from(self.selector?.('.project-main-image__image'), {
-        opacity: 0,
-        clipPath: 'inset(0 0 100% 0)',
-        duration: .4,
-        ease: 'circ.inOut',
-        stagger: .1
-      }, '-=100%')
-      .set(self.selector?.('.project-main-image__image-wrapper'), {
-        backgroundColor: 'transparent'
-      })
-
-    ScrollTrigger.create({
+useGSAP((isReducedMotion, context) => {
+  if (isReducedMotion) {
+    return
+  }
+  
+  const timeline = gsap.timeline({
+    scrollTrigger: {
       trigger: projectMainImage.value,
       once: true,
-      animation: timeline,
-    });
-  }, projectMainImage.value)
-})
+    }
+  })
 
-onUnmounted(() => {
-  ctx.revert()
-})
+  timeline    
+    .from(projectMainImage.value, {
+      autoAlpha: 0
+    })
+    .from(context.selector?.('.project-main-image__image-wrapper'), {
+      clipPath: 'inset(0 0 100% 0)',
+      duration: .5,
+      ease: 'circ.inOut',
+      stagger: .1
+    })
+    .from(context.selector?.('.project-main-image__image'), {
+      opacity: 0,
+      clipPath: 'inset(0 0 100% 0)',
+      duration: .4,
+      ease: 'circ.inOut',
+      stagger: .1
+    }, '-=100%')
+    .set(context.selector?.('.project-main-image__image-wrapper'), {
+      backgroundColor: 'transparent'
+    })
+}, projectMainImage)
 </script>
 
 <template>

@@ -1,16 +1,31 @@
 <script setup lang="ts">
 import { gsap } from "gsap";
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import type { AboutCollectionItem } from '@nuxt/content';
 
 const props = defineProps<{
   interests: AboutCollectionItem["interests"]
 }>();
 
-const interestsList = ref()
-let ctx: gsap.Context
+const interestsList = useTemplateRef('interestsList')
 
-onMounted(() => {
+useGSAP((isReducedMotion, context) => {
+  if (isReducedMotion) {
+    return
+  }
+  
+  const timeline = gsap.timeline({
+    defaults: {
+      stagger: {
+        amount: .6,
+        ease: 'power.inOut(1.33)'
+      }
+    },
+    scrollTrigger: {
+      trigger: interestsList.value,
+      once: true,
+    }
+  })
+
   const initTimeline = () => {
     const timeline = gsap.timeline()
 
@@ -74,36 +89,15 @@ onMounted(() => {
     return timeline
   }
 
-  ctx = gsap.context((self) => {
-    const timeline = gsap.timeline({
-      defaults: {
-        stagger: {
-          amount: .6,
-          ease: 'power.inOut(1.33)'
-        }
-      }
-    })
-
-    timeline    
-      .add(initTimeline())
-      .add(entryTimeline(self))
-      .add(stillTimeline(self))
-
-    ScrollTrigger.create({
-      trigger: interestsList.value,
-      once: true,
-      animation: timeline,
-    });
-  }, interestsList.value)
-})
-
-onUnmounted(() => {
-  ctx.revert()
-})
+  timeline    
+    .add(initTimeline())
+    .add(entryTimeline(context))
+    .add(stillTimeline(context))
+}, interestsList)
 </script>
 
 <template>
-  <div class="interests" ref="interestsList">
+  <div class="interests autoalpha" ref="interestsList">
     <div class="interests__center-of-gravity">
       <Icon name="heart" size="xl" />
     </div>

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { gsap } from "gsap";
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import type { ProjectsCollectionItem } from "@nuxt/content";
 
 defineProps<{
@@ -8,48 +7,42 @@ defineProps<{
 }>();
 
 const projectTypography = useTemplateRef('projectTypography')
-let ctx: gsap.Context;
 
-onMounted(() => {
-  if (!projectTypography.value) return
-
-  ctx = gsap.context((self) => {
-    const timeline = gsap.timeline()
-
-    timeline    
-      .from(projectTypography.value, {
-        autoAlpha: 0
-      })
-      .from(self.selector?.('.project-typography__item'), {
-        opacity: 0,
-        clipPath: 'inset(0 100% 0 0)',
-        duration: .2,
-        ease: 'circ.inOut',
-        stagger: .1
-      })
-      .from(self.selector?.('.project-typography__item__visual'), {
-        opacity: 0,
-        y: '100%',
-        duration: .3,
-        ease: 'power2.inOut',
-        stagger: .1
-      })
-
-    ScrollTrigger.create({
+useGSAP((isReducedMotion, context) => {
+  if (isReducedMotion) {
+    return
+  }
+  
+  const timeline = gsap.timeline({
+    scrollTrigger: {
       trigger: projectTypography.value,
       once: true,
-      animation: timeline,
-    });
-  }, projectTypography.value)
-})
+    }
+  })
 
-onUnmounted(() => {
-  ctx.revert()
-})
+  timeline    
+    .from(projectTypography.value, {
+      autoAlpha: 0
+    })
+    .from(context.selector?.('.project-typography__item'), {
+      opacity: 0,
+      clipPath: 'inset(0 100% 0 0)',
+      duration: .2,
+      ease: 'circ.inOut',
+      stagger: .1
+    })
+    .from(context.selector?.('.project-typography__item__visual'), {
+      opacity: 0,
+      y: '100%',
+      duration: .3,
+      ease: 'power2.inOut',
+      stagger: .1
+    })
+}, projectTypography)
 </script>
 
 <template>
-<ul class="project-typography" ref="projectTypography">
+<ul class="project-typography autoalpha" ref="projectTypography">
   <li
     v-for="font in fonts"
     :key="font.id"

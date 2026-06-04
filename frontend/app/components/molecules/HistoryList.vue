@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { gsap } from "gsap";
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import type { AboutCollectionItem } from '@nuxt/content';
 
 const props = defineProps<{
@@ -9,8 +8,7 @@ const props = defineProps<{
 
 type HistoryItem = AboutCollectionItem["experience"][number]
 
-const historyList = ref()
-let ctx: gsap.Context;
+const historyList = useTemplateRef('historyList')
 
 const formatHistoryDateAndPlace = (item: Partial<Pick<HistoryItem, 'place' | 'date'>>) => {
   if (!item.place) return item.date
@@ -24,17 +22,17 @@ const isJunctionItem = (currentIndex: number, currentCategory: string) => {
     && currentIndex !== 0
 }
 
-onMounted(() => {
-  const initTimeline = () => {
-    const timeline = gsap.timeline()
-
-    timeline
-      .from(historyList.value, {
-        autoAlpha: 0
-      })
-
-    return timeline
+useGSAP((isReducedMotion, context) => {
+  if (isReducedMotion) {
+    return
   }
+  
+  const timeline = gsap.timeline({
+    scrollTrigger: {
+      trigger: historyList.value,
+      once: true,
+    }
+  })
 
   const iconsTimeline = (gsapContext: gsap.Context) => {
     const timeline = gsap.timeline()
@@ -74,34 +72,22 @@ onMounted(() => {
     return timeline
   }
 
-  ctx = gsap.context((self) => {
-    const timeline = gsap.timeline()
-
-    timeline    
-      .add(initTimeline())
-      .to(historyList.value, {
-        '--inset-block-end': 0,
-        duration: .6,
-        ease: 'power3.out'
-      })
-      .add(iconsTimeline(self), '-=33%')
-      .add(descriptionsTimeline(self), '-=50%')
-
-    ScrollTrigger.create({
-      trigger: historyList.value,
-      once: true,
-      animation: timeline,
-    });
-  }, historyList.value)
-})
-
-onUnmounted(() => {
-  ctx.revert()
-})
+  timeline    
+    .from(historyList.value, {
+      autoAlpha: 0
+    })
+    .to(historyList.value, {
+      '--inset-block-end': 0,
+      duration: .6,
+      ease: 'power3.out'
+    })
+    .add(iconsTimeline(context), '-=33%')
+    .add(descriptionsTimeline(context), '-=50%')
+}, historyList)
 </script>
 
 <template>
-  <ul class="history-list" :style="{ '--history-length': history.length }" ref="historyList">
+  <ul class="history-list autoalpha" :style="{ '--history-length': history.length }" ref="historyList">
     <li 
       v-for="(historyItem, index) in history"
       :key="historyItem.id"

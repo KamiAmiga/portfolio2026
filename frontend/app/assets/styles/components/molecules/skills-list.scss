@@ -6,7 +6,6 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, var(--column-width));
   gap: var(--spacer-xs);
-  visibility: hidden;
   width: 100%;
   padding: 0;
   margin: 0;

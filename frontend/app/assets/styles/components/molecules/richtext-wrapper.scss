@@ -1,7 +1,6 @@
 @use '../../abstracts/' as *;
 
 .richtext-wrapper {
-  visibility: hidden;
   max-width: 60rem;
 
   &--with-focus {

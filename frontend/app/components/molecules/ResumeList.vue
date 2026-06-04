@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { gsap } from "gsap";
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import type { AboutCollectionItem } from '@nuxt/content';
 
 defineProps<{
@@ -8,37 +7,31 @@ defineProps<{
 }>();
 
 const resumeList = useTemplateRef('resumeList')
-let ctx: gsap.Context;
 
-onMounted(() => {
-  if (!resumeList.value) return
+useGSAP((isReducedMotion, context) => {
+  if (isReducedMotion) {
+    return
+  }
   
-  ctx = gsap.context((self) => {
-    const timeline = gsap.timeline()
-
-    timeline    
-      .from(resumeList.value, {
-        autoAlpha: 0
-      })
-      .from(self.selector?.('.resume-list__link'), {
-        '--focus-shape-scale': 0,
-        opacity: 0,
-        duration: .3,
-        ease: 'power2.inOut',
-        stagger: .05
-      })
-
-    ScrollTrigger.create({
+  const timeline = gsap.timeline({
+    scrollTrigger: {
       trigger: resumeList.value,
       once: true,
-      animation: timeline,
-    });
-  }, resumeList.value)
-})
+    }
+  })
 
-onUnmounted(() => {
-  ctx.revert()
-})
+  timeline
+    .from(resumeList.value, {
+      autoAlpha: 0
+    })
+    .from(context.selector?.('.resume-list__link'), {
+      '--focus-shape-scale': 0,
+      opacity: 0,
+      duration: .3,
+      ease: 'power2.inOut',
+      stagger: .05
+    })
+}, resumeList)
 </script>
 
 <template>

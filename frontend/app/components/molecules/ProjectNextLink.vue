@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { gsap } from "gsap";
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import type { ProjectsCollectionItem } from "@nuxt/content";
 
 defineProps<{
@@ -10,36 +9,30 @@ defineProps<{
 }>();
 
 const projectNextLink = useTemplateRef('projectNextLink')
-let ctx: gsap.Context;
 
-onMounted(() => {
-  if (!projectNextLink.value) return
-
-  ctx = gsap.context((self) => {
-    const timeline = gsap.timeline()
-
-    timeline    
-      .from(projectNextLink.value, {
-        autoAlpha: 0,
-      })
-      .from(self.selector?.('.project-next-link__label__line'), {
-        y: '100%',
-        duration: .4,
-        ease: "power3.out",
-        stagger: .1
-      })
-
-    ScrollTrigger.create({
+useGSAP((isReducedMotion, context) => {
+  if (isReducedMotion) {
+    return
+  }
+  
+  const timeline = gsap.timeline({
+    scrollTrigger: {
       trigger: projectNextLink.value,
-      once: false,
-      animation: timeline,
-    });
-  }, projectNextLink.value)
-})
-
-onUnmounted(() => {
-  ctx.revert()
-})
+      once: true,
+    }
+  })
+  
+  timeline    
+    .from(projectNextLink.value, {
+      autoAlpha: 0,
+    })
+    .from(context.selector?.('.project-next-link__label__line'), {
+      y: '100%',
+      duration: .4,
+      ease: "power3.out",
+      stagger: .1
+    })
+}, projectNextLink)
 </script>
 
 <template>
