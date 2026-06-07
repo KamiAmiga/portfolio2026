@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { ProjectsCollectionItem } from "@nuxt/content";
 
 const props = defineProps<{ 
@@ -10,108 +9,93 @@ const props = defineProps<{
 
 const headerWrapper = useTemplateRef('headerWrapper')
 const menuVisible = ref(false)
-let ctx: gsap.Context;
 let titleTimeline: gsap.core.Timeline;
 
 const onTitleTimeline = (payload: gsap.core.Timeline) => {
   titleTimeline = payload;
 };
 
-
-onMounted(() => {
-  if (!headerWrapper.value) return
-
-  const initTimeline = (gsapContext: gsap.Context) => {
-    const timeline = gsap.timeline({
-      onComplete: () => {
-        titleTimeline.play()
-        menuVisible.value = true
-      }
-    })
-
-    timeline
-      .from(headerWrapper.value, {
-        autoAlpha: 0
-      })
-      .set(gsapContext.selector?.('.project-header__title'), {
-        '--displacement-factor': -1,
-      })
-
-    return timeline
+useGSAP((isReducedMotion, context) => {
+  if (isReducedMotion) {
+    return
   }
+  
+  const timeline = gsap.timeline({
+    onComplete: () => {
+      titleTimeline.play()
+      menuVisible.value = true
+    }
+  })
 
-  ctx = gsap.context((self) => {
-    const timeline = gsap.timeline()
-
-    const scrollTimeline = gsap.timeline()
-    const titleWrapperTimeline = gsap.timeline({paused: true})
-    const lastTimeline = gsap.timeline()
-
-    timeline
-      .add(initTimeline(self))
-
-    scrollTimeline
-      .from('.project-header img', {
-        scale: 1.1,
-        ease: 'none'
-      }, 0)
-      .to('.project-header img', {
-        opacity: .25,
-        ease: 'none'
-      }, '<')
-      .to('.project-header__bg', {
-        '--overlay-opacity': 1,
-        ease: 'none'
-      }, '<')
-
-    lastTimeline
-      .to('.project-header img', {
-        y: '50%',
-        ease: 'none'
-      })
-
-    titleWrapperTimeline
-      .fromTo('.project-header__title', {
-        '--displacement-factor': -1
-      }, {
-        '--displacement-factor': 0,
-        duration: .5,
-        ease: 'circ.inOut'
-      })
-
-    ScrollTrigger.create({
+  const scrollTimeline = gsap.timeline({
+    paused: true,
+    scrollTrigger: {
       trigger: headerWrapper.value,
       scrub: true,
       once: false,
       start: '15% top',
       end: 'bottom top',
-      animation: scrollTimeline
-    });
+    }
+  })
 
-    ScrollTrigger.create({
+  const lastTimeline = gsap.timeline({
+    scrollTrigger: {
       trigger: headerWrapper.value,
       scrub: true,
       once: false,
       start: '50% top',
       end: 'bottom top',
-      animation: lastTimeline
-    });
+    }
+  })
 
-    ScrollTrigger.create({
+  const titleWrapperTimeline = gsap.timeline({
+    paused: true,
+    scrollTrigger: {
       trigger: headerWrapper.value,
       once: false,
       start: 'top -50%',
       onEnter: () => titleWrapperTimeline.play(),
       onLeaveBack: () => titleWrapperTimeline.reverse()
-    });
-  }, headerWrapper.value);
-})
+    }
+  })
 
-onUnmounted(() => { 
-  if (!headerWrapper.value) return
-  
-  ctx.revert();
-});
+  timeline
+    .from(headerWrapper.value, {
+      autoAlpha: 0
+    })
+    .set(context.selector?.('.project-header__title'), {
+      '--displacement-factor': -1,
+    })
+
+  scrollTimeline
+    .from(context.selector?.('.project-header img'), {
+      scale: 1.1,
+      ease: 'none'
+    }, 0)
+    .to(context.selector?.('.project-header img'), {
+      opacity: .25,
+      ease: 'none'
+    }, '<')
+    .to(context.selector?.('.project-header__bg'), {
+      '--overlay-opacity': 1,
+      ease: 'none'
+    }, '<')
+
+  lastTimeline
+    .to(context.selector?.('.project-header img'), {
+      y: '50%',
+      ease: 'none'
+    })
+
+  titleWrapperTimeline
+    .fromTo(context.selector?.('.project-header__title'), {
+      '--displacement-factor': -1
+    }, {
+      '--displacement-factor': 0,
+      duration: .5,
+      ease: 'circ.inOut'
+    })
+}, headerWrapper)
 </script>
 
 <template>

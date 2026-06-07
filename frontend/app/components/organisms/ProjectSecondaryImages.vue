@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { gsap } from "gsap";
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import type { ProjectsCollectionItem } from "@nuxt/content";
 
 defineProps<{
@@ -8,43 +7,37 @@ defineProps<{
 }>();
 
 const projectSecondaryImages = useTemplateRef('projectSecondaryImages')
-let ctx: gsap.Context;
 
-onMounted(() => {
-  if (!projectSecondaryImages.value) return
-
-  ctx = gsap.context((self) => {
-    const timeline = gsap.timeline()
-
-    timeline    
-      .from(projectSecondaryImages.value, {
-        autoAlpha: 0
-      })
-      .from(self.selector?.('.project-secondary-image-wrapper'), {
-        clipPath: 'inset(0 0 100% 0)',
-        duration: .5,
-        ease: 'circ.inOut',
-        stagger: .1
-      })
-      .from(self.selector?.('.project-secondary-image'), {
-        opacity: 0,
-        clipPath: 'inset(0 0 100% 0)',
-        duration: .4,
-        ease: 'circ.inOut',
-        stagger: .1
-      }, '-=100%')
-
-    ScrollTrigger.create({
+useGSAP((isReducedMotion, context) => {
+  if (isReducedMotion) {
+    return
+  }
+  
+  const timeline = gsap.timeline({
+    defaults: {
+      stagger: .1,
+      ease: 'circ.inOut'
+    },
+    scrollTrigger: {
       trigger: projectSecondaryImages.value,
       once: true,
-      animation: timeline,
-    });
-  }, projectSecondaryImages.value)
-})
+    }
+  })
 
-onUnmounted(() => {
-  ctx.revert()
-})
+  timeline    
+    .from(projectSecondaryImages.value, {
+      autoAlpha: 0
+    })
+    .from(context.selector?.('.project-secondary-image-wrapper'), {
+      clipPath: 'inset(0 0 100% 0)',
+      duration: .5,
+    })
+    .from(context.selector?.('.project-secondary-image'), {
+      opacity: 0,
+      clipPath: 'inset(0 0 100% 0)',
+      duration: .4,
+    }, '-=100%')
+}, projectSecondaryImages)
 </script>
 
 <template>

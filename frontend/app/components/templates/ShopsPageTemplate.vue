@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { gsap } from "gsap";
 import { SplitText } from "gsap/SplitText";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { ShopsCollectionItem } from '@nuxt/content';
 
 defineProps<{ 
@@ -10,15 +9,18 @@ defineProps<{
 
 const templateWrapper = useTemplateRef('templateWrapper')
 const menuVisible = ref(false)
-let ctx: gsap.Context;
 let titleTimeline: gsap.core.Timeline;
 
 const onTitleTimeline = (payload: gsap.core.Timeline) => {
   titleTimeline = payload;
 };
 
-onMounted(() => {
-  if (!templateWrapper.value) return
+useGSAP((isReducedMotion, context) => {
+  if (isReducedMotion) {
+    return
+  }
+  
+  const timeline = gsap.timeline()
 
   const initTimeline = () => {
     const timeline = gsap.timeline()
@@ -98,47 +100,32 @@ onMounted(() => {
     return timeline
   }
 
-  const socialLinksTimeline = (gsapContext: gsap.Context) => {
-    const timeline = gsap.timeline()
+  const socialLinksTimeline = gsap.timeline({
+    trigger: context.selector?.('[data-social-links]'),
+    once: true,
+  })
 
-    const splitTitle = SplitText.create(gsapContext.selector?.('[data-social-links] [data-text-split]'), {
-      type: "chars",
-      mask: "lines",
-      autoSplit: true,
-      aria: "hidden"
-    });
+  const splitTitle = SplitText.create(context.selector?.('[data-social-links] [data-text-split]'), {
+    type: "chars",
+    mask: "lines",
+    autoSplit: true,
+    aria: "hidden"
+  });
 
-    timeline
-      .from(splitTitle.chars, {
-        opacity: 0,
-        y: '1.5em',
-        duration: .3,
-        ease: "power2.inOut",
-        stagger: .02
-      })
+  timeline    
+    .add(initTimeline())
+    .add(headerTimeline(context))
+    .add(shopsListTimeline(context), '-=25%')
 
-    return timeline
-  }
-
-  ctx = gsap.context((self) => {
-    const timeline = gsap.timeline()
-
-    timeline
-      .add(initTimeline())
-      .add(headerTimeline(self))
-      .add(shopsListTimeline(self), '-=25%')
-
-    ScrollTrigger.create({
-      trigger: self.selector?.('[data-social-links]'),
-      once: true,
-      animation: socialLinksTimeline(self)
-    });
-  }, templateWrapper.value)
-})
-
-onUnmounted(() => {
-  ctx.revert()
-})
+  socialLinksTimeline
+    .from(splitTitle.chars, {
+      opacity: 0,
+      y: '1.5em',
+      duration: .3,
+      ease: "power2.inOut",
+      stagger: .02
+    })
+}, templateWrapper)
 </script>
 
 <template>

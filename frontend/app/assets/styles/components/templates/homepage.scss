@@ -7,7 +7,6 @@
     z-index: var(--z-index-base-increase);
   }
 
-  visibility: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -95,10 +94,6 @@
   &-foreground {
     position: absolute;
     inset: 0;
-  }
-
-  &-background {
-    visibility: hidden; 
   }
 
   &__skyline {
@@ -216,7 +211,6 @@
     position: absolute;
     left: 50%;
     overflow-y: clip;
-    transform: translateX(-50%);
 
     @include breakpoint-m-landscape-up {
       width: min(50%, 100vh);
@@ -224,8 +218,8 @@
   }
 
   &__cityscape {
-    visibility: hidden;
     bottom: var(--horizon-position);
+    transform: translateX(-50%);
 
     &__shape {
       $self: &;
@@ -625,9 +619,9 @@
   }
 
   &__ground {
-    visibility: hidden;
     top: calc(100% - var(--horizon-position) - var(--spacer-xs));
     transform-origin: top center;
+    transform: translateX(calc(-50% - var(--ground-parallax, 0) * 1px));
 
     &::before {
       content: "";
@@ -666,19 +660,23 @@
     }
   }
 
-  &__logo-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: var(--spacer-3xl);
-    aspect-ratio: 1;
-    position: absolute;
-    bottom: calc(var(--horizon-position) - var(--spacer-3xl) * .5);
-    left: calc(50% - var(--spacer-3xl) * .5);
-    z-index: var(--z-index-base-increase);
-    opacity: 0;
-    transform-origin: 33% 50%;
-    transform: scale(0);
+  &__logo {
+    transform: translateX(calc(var(--ground-parallax, 0) * 1.2px));
+
+    &-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: var(--spacer-3xl);
+      aspect-ratio: 1;
+      position: absolute;
+      bottom: calc(var(--horizon-position) - var(--spacer-3xl) * .5);
+      left: calc(50% - var(--spacer-3xl) * .5);
+      z-index: var(--z-index-base-increase);
+      opacity: 0;
+      transform-origin: 33% 50%;
+      transform: scale(0);
+    }
   }
 
   @include breakpoint-m-landscape-up {

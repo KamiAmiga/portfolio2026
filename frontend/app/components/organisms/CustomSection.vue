@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { gsap } from "gsap";
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 interface Props {
@@ -10,30 +9,27 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   titleTag: 'h2' 
 })
-const section = ref()
-let ctx: gsap.Context;
+const section = useTemplateRef('section')
 let titleTimeline: gsap.core.Timeline;
 
 const onTitleTimeline = (payload: gsap.core.Timeline) => {
   titleTimeline = payload;
 };
 
-onMounted(() => {
-  ctx = gsap.context(() => {
-    ScrollTrigger.create({
-      trigger: section.value,
-      start: '-100px bottom',
-      once: true,
-      onEnter: () =>{
-        titleTimeline.play()
-      }
-    });
-  }, section.value);
-});
-
-onUnmounted(() => {
-  ctx.revert();
-});
+useGSAP((isReducedMotion) => {
+  if (isReducedMotion) {
+    return
+  }
+  
+  ScrollTrigger.create({
+    trigger: section.value,
+    start: '-100px bottom',
+    once: true,
+    onEnter: () =>{
+      titleTimeline.play()
+    }
+  });
+}, section)
 </script>
 
 <template>

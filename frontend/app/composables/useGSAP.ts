@@ -4,12 +4,14 @@ import { ScrollTrigger } from "gsap/ScrollTrigger"
 
 export function useGSAP(
   callback: (isReducedMotion: boolean, context: gsap.Context) => void,
-  scope: ShallowRef<HTMLElement | null> | null
+  scope: ShallowRef<HTMLElement | null> | null,
+  hasScrollAnims: boolean = true
 ): void {
   let ctx: gsap.Context
-  console.log(window?.matchMedia("(prefers-reduced-motion: reduce)").matches)
 
   function _callback() {
+    if (!scope?.value) return
+
     ctx?.revert()
 
     nextTick(() => {
@@ -21,7 +23,9 @@ export function useGSAP(
           self
         )
         
-        ScrollTrigger.refresh()
+        if (hasScrollAnims) {
+          ScrollTrigger.refresh()
+        }
       }, scope.value)
     })
   }

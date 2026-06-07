@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { gsap } from "gsap";
 import type { NuxtError } from "#app";
-import { SplitText } from "gsap/SplitText";
 
 const props = defineProps<{ 
   error: NuxtError,
@@ -9,65 +8,47 @@ const props = defineProps<{
 
 const errorWrapper = useTemplateRef('errorWrapper')
 const menuVisible = ref(false)
-let ctx: gsap.Context;
 
-onMounted(() => {
-  if (!errorWrapper.value) return
-
-  const initTimeline = () => {
-    const timeline = gsap.timeline()
-
-    timeline
-      .from(errorWrapper.value, {
-        autoAlpha: 0
-      })
-
-    return timeline
+useGSAP((isReducedMotion, context) => {
+  if (isReducedMotion) {
+    return
   }
+  
+  const timeline = gsap.timeline()
 
-  ctx = gsap.context((self) => {
-    const timeline = gsap.timeline()
-
-    const splitText = SplitText.create(self.selector?.('.error__text__status'), {
-      type: "words,lines",
-      mask: "lines",
-      autoSplit: true,
-      aria: "hidden"
-    });
-
-    timeline    
-      .add(initTimeline())
-      .from(self.selector?.('.error__visual'), {
-        scale: 0,
-        duration: .25,
-        ease: 'back.out(2.5)',
-        onComplete: () => {
-          menuVisible.value = true
-        }
-      })
-      .from(self.selector?.('.error__visual__status'), {
-        opacity: 0,
-        duration: .4,
-        ease: "power2.inOut",
-      })
-      .from(splitText.lines, {
-        opacity: 0,
-        y: '1.5em',
-        duration: .5,
-        ease: "power3.out",
-        stagger: .1
-      }, '-=50%')
-      .from(self.selector?.('.link'), {
-        opacity: 0,
-        duration: .5,
-        ease: "power2.inOut",
-      }, '-=50%')
-  }, errorWrapper.value)
-})
-
-onUnmounted(() => {
-  ctx.revert()
-})
+  timeline    
+    .from(errorWrapper.value, {
+      autoAlpha: 0
+    })
+    .from(context.selector?.('.error__visual'), {
+      scale: 0,
+      duration: .25,
+      ease: 'back.out(2.5)',
+      onComplete: () => {
+        menuVisible.value = true
+      }
+    })
+    .from(context.selector?.('.error__visual__status'), {
+      opacity: 0,
+      duration: .4,
+      ease: "power2.inOut",
+    })
+    .from(context.selector?.('.error__text__status'), {
+      y: 20,
+      duration: .6,
+      ease: 'expo.out'
+    }, '-=50%')
+    .from(context.selector?.('.error__text__status'), {
+      opacity: 0,
+      duration: .4,
+      ease: 'power3.out'
+    }, '<')
+    .from(context.selector?.('.link'), {
+      opacity: 0,
+      duration: .5,
+      ease: "power2.inOut",
+    }, '-=50%')
+}, errorWrapper, false)
 </script>
 
 <template>

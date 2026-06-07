@@ -13,77 +13,71 @@ const projectsListWrapper = useTemplateRef('projectsListWrapper')
 const projectsListScroller = useTemplateRef('projectsListScroller')
 const menuVisible = ref(false)
 const projectsItemsScrollStatus = ref(props.projectsData?.map((_, index) => ({visible: index === 0, preload: index <= 1})) ?? [])
-let ctx: gsap.Context;
 
+useGSAP((isReducedMotion) => {
+  if (isReducedMotion) {
+    return
+  }
+  
+  let pinWrapWidth: number;
+  let horizontalScrollLength:number;
 
-onMounted(() => {
-  if (!projectsListWrapper.value || !projectsListScroller.value) return
+  const projectItems = projectsListWrapper.value?.querySelectorAll('.project-item');
 
-  ctx = gsap.context(() => {
-    let pinWrapWidth: number;
-    let horizontalScrollLength:number;
+  const refresh = () => {
+    if (!projectsListWrapper.value || !projectsListScroller.value) return
+    
+    pinWrapWidth = projectsListScroller.value.scrollWidth;
+    horizontalScrollLength = pinWrapWidth - window.innerWidth;
+  }
 
-    const refresh = () => {
-      if (!projectsListWrapper.value || !projectsListScroller.value) return
-      
-      pinWrapWidth = projectsListScroller.value.scrollWidth;
-      horizontalScrollLength = pinWrapWidth - window.innerWidth;
-    }
+  const scrollTween = gsap.to(projectsListScroller.value, {
+    scrollTrigger: {
+      scrub: true,
+      trigger: projectsListWrapper.value,
+      pin: projectsListWrapper.value,
+      start: "center center",
+      end: () => `+=${pinWrapWidth}`,
+      invalidateOnRefresh: true
+    },
+    x: () => -horizontalScrollLength,
+    ease: "none"
+  });
 
-    const scrollTween = gsap.to(projectsListScroller.value, {
+  projectItems?.forEach((projectItem, index) => {
+    gsap.from(projectItem, {
       scrollTrigger: {
-        scrub: true,
-        trigger: projectsListWrapper.value,
-        pin: projectsListWrapper.value,
-        start: "center center",
-        end: () => `+=${pinWrapWidth}`,
-        invalidateOnRefresh: true
-      },
-      x: () => -horizontalScrollLength,
-      ease: "none"
-    });
+        trigger: projectItem,
+        start: 'left 75%',
+        end: 'right end',
+        containerAnimation: scrollTween,
+        onEnter: () => {
+          const currentItem = projectsItemsScrollStatus.value[index]
+          const nextItem = projectsItemsScrollStatus.value[index + 1]
 
-    const projectItems = projectsListWrapper.value?.querySelectorAll('.project-item');
-
-    projectItems?.forEach((projectItem, index) => {
-      gsap.from(projectItem, {
-        scrollTrigger: {
-          trigger: projectItem,
-          start: 'left 75%',
-          end: 'right end',
-          containerAnimation: scrollTween,
-          onEnter: () => {
-            const currentItem = projectsItemsScrollStatus.value[index]
-            const nextItem = projectsItemsScrollStatus.value[index + 1]
-
-            if (currentItem) {
-              currentItem.visible = true
-            }
-            
-            if (nextItem) {
-              nextItem.preload = true
-            }
-          },
+          if (currentItem) {
+            currentItem.visible = true
+          }
+          
+          if (nextItem) {
+            nextItem.preload = true
+          }
         },
-      });
+      },
     });
+  });
 
-    gsap.from(projectsList.value, {
-      autoAlpha: 0,
-      onComplete: (() => {
-        menuVisible.value = true
-      })
+  gsap.from(projectsList.value, {
+    autoAlpha: 0,
+    onComplete: (() => {
+      menuVisible.value = true
     })
+  })
 
-    refresh();
+  refresh();
 
-    ScrollTrigger.addEventListener("refreshInit", refresh);
-  }, projectsListWrapper.value);
-})
-
-onUnmounted(() => {
-  ctx.revert();
-});
+  ScrollTrigger.addEventListener("refreshInit", refresh);
+}, projectsListWrapper)
 </script>
 
 <template>
@@ -92,7 +86,7 @@ onUnmounted(() => {
 <section
   v-if="projectsData"
   ref="projectsList"
-  class="projects-list-viewport"
+  class="projects-list-viewport autoalpha"
   :data-menu-visible="menuVisible">
   <div ref="projectsListWrapper" class="projects-list-wrapper">          
     <ul ref="projectsListScroller" v-if="projectsData" class="projects-list">

@@ -9,10 +9,26 @@ const props = defineProps<{
   projectsData?: Pick<ProjectsCollectionItem, "title" | "slug" | "cover_image_portrait">[]
 }>()
 
+interface ParallaxAnims {
+  backgroundX: gsap.QuickToFunc
+  backgroundY: gsap.QuickToFunc
+  foregroundX: gsap.QuickToFunc
+  foregroundY: gsap.QuickToFunc
+  cityscapeX: gsap.QuickToFunc
+  cityscapeY: gsap.QuickToFunc
+  ground: gsap.QuickToFunc
+}
+
+interface CityscapeNamesAnims {
+  leftX: gsap.QuickToFunc
+  leftY: gsap.QuickToFunc
+  rightX: gsap.QuickToFunc
+  rightY: gsap.QuickToFunc
+}
+
 const home = useTemplateRef('home');
-const leftBuilding = useTemplateRef('leftBuilding');
-const rightBuilding = useTemplateRef('rightBuilding');
 const mouseParallaxIsActive = ref(false)
+const mousePosition = reactive({ x: 0, y: 0 })
 const menuVisible = ref(false)
 const buildingsAnimInterval: Ref<number | null> = ref(null)
 const leftBuildingData = ref(
@@ -27,9 +43,19 @@ const rightBuildingData = ref(
     next: 1
   }
 )
-let ctx: gsap.Context;
 
-const titleLargeWordsEase = CustomEase.create("titleLargeWords", ".5, 1, .89, 1")
+let parallaxAnims: ParallaxAnims | undefined = undefined
+let cityscapeNamesAnims: CityscapeNamesAnims | undefined = undefined
+
+const parallaxAnimSettings = {
+  delay: 0.1,
+  ease: "power2.out",
+}
+
+const cityscapeAnimSettings = {
+  delay: 0.1,
+  ease: "power3.out",
+}
 
 const getRandomProjectIndex = () => {
   const randomNumber = Math.floor(Math.random() * (props.projectsData?.length ?? 0))
@@ -41,89 +67,112 @@ const getRandomProjectIndex = () => {
   return randomNumber
 }
 
-const cityscapeShapeNamesAnim = (mousePos: {x: number, y: number}, targetShape: 'left' | 'right') => {
-  const targetBuildingBoundingBox = targetShape === 'left'
-    ? leftBuilding.value?.getBoundingClientRect()
-    : rightBuilding.value?.getBoundingClientRect()
-
-  const targetBuildingClass = targetShape === 'left'
-    ? 'illustration__cityscape__shape--front-1'
-    : 'illustration__cityscape__shape--front-2'
-
-  gsap
-    .to(ctx.selector?.(`.${targetBuildingClass} .illustration__cityscape__shape__name`), {
-      x: Math.max(
-        Math.min(
-          mousePos.x - (targetBuildingBoundingBox?.left ?? 0),
-          targetBuildingBoundingBox?.right ?? 0),
-        0),
-      y: Math.max(
-        Math.min(
-          mousePos.y - (targetBuildingBoundingBox?.top ?? 0),
-          targetBuildingBoundingBox?.bottom ?? 0),
-        0),
-      delay: 0.1,
-      ease: "power3.out",
-      overwrite: "auto"
-    })
-}
-
-const illustrationParallaxAnim = (mousePos: {x: number, y: number}) => {
+const mouseMoveListener = (event: MouseEvent) => {
   if (!mouseParallaxIsActive.value) return
 
-  gsap
-    .to(ctx.selector?.('.illustration-foreground'), {
-      x: (mousePos.x / window.innerWidth - 0.5) * 10,
-      y: (mousePos.y / window.innerHeight - 0.5) * 16,
-      delay: 0.2,
-      ease: "power3.out",
-      overwrite: "auto"
-    })
+  mousePosition.x = event.clientX
+  mousePosition.y = event.clientY
 
-  gsap
-    .to(ctx.selector?.('.illustration__cityscape__shape'), {
-      x: (mousePos.x / window.innerWidth - 0.5) * -6,
-      y: (mousePos.y / window.innerHeight) * 16,
-      delay: 0.1,
-      ease: "power2.out",
-      overwrite: "auto"
-    })
+  illustrationParallaxAnim()
+}
 
-  gsap
-    .to(ctx.selector?.('.illustration__logo-wrapper, .illustration__ground'), {
-      x: (mousePos.x / window.innerWidth - 0.5) * 8,
-      delay: 0.1,
-      ease: "power2.out",
-      overwrite: "auto"
-    })
+const frontShapeListener = (event: MouseEvent, shapeSide: 'left' | 'right') => {
+  if (!mouseParallaxIsActive.value) return
+
+  frontShapeNameAnim(event.target as HTMLElement, shapeSide)
+}
+
+const illustrationParallaxAnim = () => {
+  if (!parallaxAnims) return
+
+  parallaxAnims.backgroundX((mousePosition.x / window.innerWidth - 0.5) * 4)
+  parallaxAnims.backgroundY((mousePosition.y / window.innerHeight - 0.5) * 4)
+  parallaxAnims.foregroundX((mousePosition.x / window.innerWidth - 0.5) * 10)
+  parallaxAnims.foregroundY((mousePosition.y / window.innerHeight - 0.5) * 24)
+  parallaxAnims.foregroundX((mousePosition.x / window.innerWidth - 0.5) * -20)
+  parallaxAnims.foregroundY((mousePosition.y / window.innerHeight) * 16)
+  parallaxAnims.ground((mousePosition.x / window.innerWidth - 0.5) * 16)
+}
+
+const frontShapeNameAnim = (currentShape: HTMLElement | null, shapeSide: 'left' | 'right') => {
+  if (!cityscapeNamesAnims || !currentShape) return
+
+  const currentShapeBoundingBox = currentShape.getBoundingClientRect()
+  const newPos = {
+    x: Math.max(
+        Math.min(
+          mousePosition.x - (currentShapeBoundingBox.left),
+          currentShapeBoundingBox.right ?? 0
+        ),
+        0
+      ),
+    y: Math.max(
+        Math.min(
+          mousePosition.y - (currentShapeBoundingBox.top ?? 0),
+          currentShapeBoundingBox.bottom ?? 0
+        ),
+        0
+      ),
+  }
   
-  gsap
-    .to(ctx.selector?.('.illustration-background'), {
-      x: (mousePos.x / window.innerWidth - 0.5) * 4,
-      y: (mousePos.y / window.innerHeight - 0.5) * 4,
-      delay: 0.1,
-      ease: "power2.out",
-      overwrite: "auto"
-    });
+  if (shapeSide === 'left') {
+    cityscapeNamesAnims.leftX(newPos.x)
+    cityscapeNamesAnims.leftY(newPos.y)
+  }
+
+  if (shapeSide === 'right') {
+    cityscapeNamesAnims.rightX(newPos.x)
+    cityscapeNamesAnims.rightY(newPos.y)
+  }
 }
 
-const mouseMoveListener = (event: MouseEvent) => {
-  const mouseX = event.clientX;
-  const mouseY = event.clientY;
+watchEffect(() => {
+  if (!mouseParallaxIsActive.value) return
 
-  cityscapeShapeNamesAnim({x: mouseX, y: mouseY}, 'left')
-  cityscapeShapeNamesAnim({x: mouseX, y: mouseY}, 'right')
-  illustrationParallaxAnim({x: mouseX, y: mouseY})
-}
+  parallaxAnims = {
+    backgroundX: gsap.quickTo('.illustration-background', "x", parallaxAnimSettings),
+    backgroundY: gsap.quickTo('.illustration-background', "y", parallaxAnimSettings),
+    foregroundX: gsap.quickTo('.illustration-foreground', "x", parallaxAnimSettings),
+    foregroundY: gsap.quickTo('.illustration-foreground', "y", parallaxAnimSettings),
+    cityscapeX: gsap.quickTo('.illustration__cityscape__shape', "x", parallaxAnimSettings),
+    cityscapeY: gsap.quickTo('.illustration__cityscape__shape', "y", parallaxAnimSettings),
+    ground: gsap.quickTo('.illustration__logo, .illustration__ground', "--ground-parallax", parallaxAnimSettings),
+  }
 
-onMounted(() => {
-  if (!home.value) return
+  cityscapeNamesAnims = {
+    leftX: gsap.quickTo('.illustration__cityscape__shape--front-1 .illustration__cityscape__shape__name', "x", cityscapeAnimSettings),
+    leftY: gsap.quickTo('.illustration__cityscape__shape--front-1 .illustration__cityscape__shape__name', "y", cityscapeAnimSettings),
+    rightX: gsap.quickTo('.illustration__cityscape__shape--front-2 .illustration__cityscape__shape__name', "x", cityscapeAnimSettings),
+    rightY: gsap.quickTo('.illustration__cityscape__shape--front-2 .illustration__cityscape__shape__name', "y", cityscapeAnimSettings),
+  }
+})
 
-  const initTimeline = (gsapContext: gsap.Context) => {
+useGSAP((isReducedMotion, context) => {
+  if (isReducedMotion) {
+    return
+  }
+
+  const titleLargeWordsEase = CustomEase.create("titleLargeWords", ".5, 1, .89, 1")
+  
+  const timeline = gsap.timeline({
+    onComplete: () => {
+      mouseParallaxIsActive.value = true
+
+      buildingsAnimInterval.value = setInterval(() => {
+        leftBuildingData.value.current = leftBuildingData.value.next
+        leftBuildingData.value.next = getRandomProjectIndex()
+        
+        rightBuildingData.value.current = rightBuildingData.value.next
+        rightBuildingData.value.next = getRandomProjectIndex()
+      }, 7500)
+    }
+  })
+  
+  const initTimeline = () => {
     const timeline = gsap.timeline()
 
     timeline
-      .from(gsapContext.selector?.('.title, .illustration-background, .illustration__ground, .illustration__cityscape'), {
+      .from(home.value, {
         autoAlpha: 0
       })
 
@@ -276,40 +325,23 @@ onMounted(() => {
     return timeline
   }
   
-  const masterTimeline = gsap.timeline({
-    onComplete: () => {
-      mouseParallaxIsActive.value = true
+  timeline
+    .add(initTimeline())
+    .add(logoTimeline(context))
+    .add(titleTimeline(context))
+    .add(groundTimeline(context))
+    .add(cityscapeTimeline(context))
+    .add(skylinesTimeline(context), '-=.9')
+}, home, false)
 
-      buildingsAnimInterval.value = setInterval(() => {
-        leftBuildingData.value.current = leftBuildingData.value.next
-        leftBuildingData.value.next = getRandomProjectIndex()
-        
-        rightBuildingData.value.current = rightBuildingData.value.next
-        rightBuildingData.value.next = getRandomProjectIndex()
-      }, 7500)
-    }
-  })
-  
-  ctx = gsap.context((self) => {
-    masterTimeline
-      .add(initTimeline(self))
-      .add(logoTimeline(self))
-      .add(titleTimeline(self))
-      .add(groundTimeline(self))
-      .add(cityscapeTimeline(self))
-      .add(skylinesTimeline(self), '-=.9')
-  }, home.value);
-
-  document.addEventListener("mousemove", mouseMoveListener);
+onMounted(() => {
+  if (!home.value) return
 
   leftBuildingData.value.next = getRandomProjectIndex()
   rightBuildingData.value.next = getRandomProjectIndex()
 });
 
 onUnmounted(() => {
-  ctx.revert();
-  document.removeEventListener("mousemove", mouseMoveListener);
-
   if(buildingsAnimInterval.value) {
     clearInterval(buildingsAnimInterval.value)
   }
@@ -317,7 +349,11 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div ref="home" :data-menu-visible="menuVisible">
+  <div
+    ref="home"
+    @mousemove="mouseMoveListener"
+    :data-menu-visible="menuVisible"
+    class="autoalpha">
     <Grid
       splitting="full"
       :withTopPadding="false"
@@ -347,7 +383,9 @@ onUnmounted(() => {
           <div class="illustration__cityscape__shape illustration__cityscape__shape--back-4"/>
           <div class="illustration__cityscape__shape illustration__cityscape__shape--back-5"/>
           <div class="illustration__cityscape__shape illustration__cityscape__shape--back-6"/>
-          <div class="illustration__cityscape__shape illustration__cityscape__shape--front-1" ref="leftBuilding">
+          <div
+            class="illustration__cityscape__shape illustration__cityscape__shape--front-1"
+            @mousemove="(event) => frontShapeListener(event, 'left')">
             <NuxtLink
               v-if="projectsData?.at(leftBuildingData.next)"
               :to="`/projets/${projectsData?.at(leftBuildingData.next)?.slug}`"
@@ -375,7 +413,9 @@ onUnmounted(() => {
               {{ projectsData.at(leftBuildingData.next)?.title }}
             </span>
           </div>
-          <div class="illustration__cityscape__shape illustration__cityscape__shape--front-2" ref="rightBuilding">
+          <div
+            class="illustration__cityscape__shape illustration__cityscape__shape--front-2"
+            @mousemove="(event) => frontShapeListener(event, 'right')">
             <NuxtLink
               v-if="projectsData?.at(rightBuildingData.next)"
               :to="`/projets/${projectsData?.at(rightBuildingData.next)?.slug}`"
@@ -411,7 +451,7 @@ onUnmounted(() => {
         </div>
   
         <div class="illustration__logo-wrapper">
-          <Logo />
+          <Logo class="illustration__logo" />
         </div>
       </div>
     </div>
