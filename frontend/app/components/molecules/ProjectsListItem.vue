@@ -128,7 +128,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-<li class="project-item" ref="projectItem">
+<li class="project-item autoalpha" ref="projectItem">
   <NuxtLink :to="`/projets/${project.slug}`" class="project-item__link">
     <div class="project-item__link__title">
       <div class="project-item__link__title__decorator" />

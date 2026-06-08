@@ -14,7 +14,11 @@ useGSAP((isReducedMotion, context) => {
     return
   }
   
-  const timeline = gsap.timeline()
+  const timeline = gsap.timeline({
+    onComplete: () => {
+      menuVisible.value = true
+    }
+  })
 
   timeline    
     .from(headerBackground.value, {

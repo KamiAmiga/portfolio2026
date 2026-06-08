@@ -20,7 +20,7 @@ onMounted(() => {
   }, (context) => {
     const { belowMd, aboveMd, reducedMotion } = context.conditions as {belowMd: boolean, aboveMd: boolean, reducedMotion: boolean}
     let timeline: gsap.core.Timeline
-    
+
     const containerTimeline = () => {
       const timeline = gsap.timeline()
 
@@ -65,6 +65,9 @@ onMounted(() => {
     }
 
     if (reducedMotion) {
+      if (aboveMd) {
+        gsap.set(projectStats.value, { y: '-8rem' })
+      }
       return
     }
 

@@ -41,7 +41,7 @@ useGSAP((isReducedMotion, context) => {
 </script>
 
 <template>
-  <ul class="social-links-list" ref="socialLinksList">
+  <ul class="social-links-list autoalpha" ref="socialLinksList">
     <SocialLinkItem v-for="link in socialLinks" :key="link.id" :socialLink="link" />
   </ul>
 </template>

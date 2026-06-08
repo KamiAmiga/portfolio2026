@@ -16,12 +16,21 @@
       transparent
     );
 
+    @media (prefers-reduced-motion: reduce) {
+      height: auto;
+      background: none;
+    }
+
     &__sticky-wrapper {
       width: 100%;
       height: 100vh;
       position: sticky;
       top: 0;
       overflow-x: clip;
+
+      @media (prefers-reduced-motion: reduce) {
+        position: static;
+      }
     }
 
     &__bg {

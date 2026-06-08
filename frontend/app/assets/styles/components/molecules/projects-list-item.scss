@@ -7,7 +7,6 @@
   padding-block-end: var(--block-end-spacing);
   padding-inline-start: var(--spacer-up-xl-2xl);
   padding-inline-end: var(--spacer-md);
-  visibility: hidden;
 
   &:not(:last-of-type) {
     margin-inline-end: max(var(--spacer-4xl), 10vw);
@@ -97,6 +96,10 @@
               transparent var(--opacity-percentage-5),
               var(--color-primary-reverse)
             );
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          transform: translate(-50%, 50%) rotate(45deg);
         }
       }
     }

@@ -15,10 +15,6 @@ const menuVisible = ref(false)
 const projectsItemsScrollStatus = ref(props.projectsData?.map((_, index) => ({visible: index === 0, preload: index <= 1})) ?? [])
 
 useGSAP((isReducedMotion) => {
-  if (isReducedMotion) {
-    return
-  }
-  
   let pinWrapWidth: number;
   let horizontalScrollLength:number;
 
@@ -43,6 +39,14 @@ useGSAP((isReducedMotion) => {
     x: () => -horizontalScrollLength,
     ease: "none"
   });
+
+  refresh();
+
+  ScrollTrigger.addEventListener("refreshInit", refresh);
+
+  if (isReducedMotion) {
+    return
+  }
 
   projectItems?.forEach((projectItem, index) => {
     gsap.from(projectItem, {
@@ -73,10 +77,6 @@ useGSAP((isReducedMotion) => {
       menuVisible.value = true
     })
   })
-
-  refresh();
-
-  ScrollTrigger.addEventListener("refreshInit", refresh);
 }, projectsListWrapper)
 </script>
 

@@ -75,17 +75,20 @@
     &:focus {
       background-position: 0;
 
-      &::before,
-      &::after {
-        --displacement: calc(var(--spacer-sm) * .5);
-
-        width: calc(100% - var(--spacer-sm));
-        height: calc(100% - var(--spacer-sm));
-        border-color: color-mix(
-          in srgb,
-          transparent var(--opacity-percentage-6),
-          var(--color-primary-reverse));
+      @media (prefers-reduced-motion: no-preference) {
+        &::before,
+        &::after {
+          --displacement: calc(var(--spacer-sm) * .5);
+  
+          width: calc(100% - var(--spacer-sm));
+          height: calc(100% - var(--spacer-sm));
+          border-color: color-mix(
+            in srgb,
+            transparent var(--opacity-percentage-6),
+            var(--color-primary-reverse));
+        }
       }
+
     }
   }
 
