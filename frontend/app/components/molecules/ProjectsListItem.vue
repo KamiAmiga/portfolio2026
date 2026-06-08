@@ -24,77 +24,81 @@ watchEffect(() => {
 onMounted(() => {
   if (!projectItem.value) return
 
-  const initTimeline = () => {
-    const timeline = gsap.timeline({
-      onComplete: () => {
-        titleTimeline.play()
-      }
-    })
-
-    timeline
-      .from(projectItem.value, {
-        autoAlpha: 0
-      })
-
-    return timeline
-  }
-  
-
-  const titleWrapperTimeline = (gsapContext: gsap.Context) => {
-    const timeline = gsap.timeline({
-      onStart: () => {
-        titleTimeline.play()
-      }
-    })
-
-    timeline
-      .fromTo(
-        gsapContext.selector?.('.project-item__link__title'),
-        {
-          '--dashes-opacity': 0,
-          '--dashes-y': '100%'
-        },
-        {
-          '--dashes-opacity': 1,
-          '--dashes-y': '0',
-          duration: .3,
-          ease: 'power2.in',
-        }
-      )
-
-    return timeline
-  }
-
-  const imageTimeline = (gsapContext: gsap.Context) => {
-    const timeline = gsap.timeline()
-
-    timeline
-      .from(
-        gsapContext.selector?.('.project-item__link__image'),
-        {
-          opacity: 0,
-          duration: .6,
-          ease: 'circ.in'
-        }
-      )
-      .from(
-        gsapContext.selector?.('.project-item__link__image'),
-        {
-          x: 80,
-          duration: .5,
-          delay: .1,
-          ease: 'back.out(2)'
-        },
-        0
-      )
-
-    return timeline
-  }
-
   ctx = gsap.context((self) => {
     const timeline = gsap.timeline()
 
+    const initTimeline = () => {
+      const timeline = gsap.timeline({
+        onComplete: () => {
+          titleTimeline.play()
+        }
+      })
+  
+      timeline
+        .from(projectItem.value, {
+          autoAlpha: 0
+        })
+  
+      return timeline
+    }
+    
+  
+    const titleWrapperTimeline = (gsapContext: gsap.Context) => {
+      const timeline = gsap.timeline({
+        onStart: () => {
+          titleTimeline.play()
+        }
+      })
+  
+      timeline
+        .fromTo(
+          gsapContext.selector?.('.project-item__link__title'),
+          {
+            '--dashes-opacity': 0,
+            '--dashes-y': '100%'
+          },
+          {
+            '--dashes-opacity': 1,
+            '--dashes-y': '0',
+            duration: .3,
+            ease: 'power2.in',
+          }
+        )
+  
+      return timeline
+    }
+  
+    const imageTimeline = (gsapContext: gsap.Context) => {
+      const timeline = gsap.timeline()
+  
+      timeline
+        .from(
+          gsapContext.selector?.('.project-item__link__image'),
+          {
+            opacity: 0,
+            duration: .6,
+            ease: 'circ.in'
+          }
+        )
+        .from(
+          gsapContext.selector?.('.project-item__link__image'),
+          {
+            x: 80,
+            duration: .5,
+            delay: .1,
+            ease: 'back.out(2)'
+          },
+          0
+        )
+  
+      return timeline
+    }
+
     self.add("onVisible", () => {
+      if (window?.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        return
+      }
+
       timeline
         .add(initTimeline())
         .fromTo(
