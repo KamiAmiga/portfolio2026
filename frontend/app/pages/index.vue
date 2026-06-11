@@ -14,6 +14,9 @@ if (!homeData.value) {
   })
 }
 
+definePageMeta({ layout: 'no-smooth-scroll' })
+
+
 useSeoFromPageData(homeData?.value?.seo)
 </script>
 

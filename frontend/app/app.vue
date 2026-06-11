@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { CustomEase } from "gsap/CustomEase";
 import 'lenis/dist/lenis.css'
 
-gsap.registerPlugin(ScrollTrigger, CustomEase);
+gsap.registerPlugin(CustomEase);
 
 const mainID = "main"
 const menuLinks = [
@@ -17,39 +16,20 @@ const menuLinks = [
     label: 'À propos'
   }
 ]
-
-const lenisRef = ref()
-
-watchEffect((onInvalidate) => {
-   if (!lenisRef.value?.lenis) return
-
-  lenisRef.value.lenis.on('scroll', ScrollTrigger.update)
-
-  function update(time: number) {
-    lenisRef.value.lenis.raf(time * 1000)
-  }
-  gsap.ticker.add(update)
-
-  gsap.ticker.lagSmoothing(0)
-
-  onInvalidate(() => {
-    gsap.ticker.remove(update)
-  })
-})
 </script>
 
 <template>
-  <VueLenis root ref="lenisRef" :options="{ autoRaf: false, stopInertiaOnNavigate: true }" />
-
-  <CrtFilter />
+  <NuxtLayout>
+    <CrtFilter />
+    
+    <SkipLink :targetID="mainID" />
+    
+    <MainMenu :links="menuLinks" />
   
-  <SkipLink :targetID="mainID" />
-  
-  <MainMenu :links="menuLinks" />
-
-  <main role="main" :id="mainID">
-    <NuxtPage />
-  </main>
+    <main role="main" :id="mainID">
+      <NuxtPage />
+    </main>
+  </NuxtLayout>
 </template>
 
 <style lang="scss">

@@ -17,13 +17,15 @@ const menuLinks = [
 </script>
 
 <template>
-  <CrtFilter />
-  
-  <SkipLink :targetID="mainID" />
-  
-  <MainMenu :links="menuLinks" />
-  
-  <main role="main">
-    <ErrorPageTemplate :error="error" />
-  </main>
+  <NuxtLayout name="no-smooth-scroll">
+    <CrtFilter />
+    
+    <SkipLink :targetID="mainID" />
+    
+    <MainMenu :links="menuLinks" />
+    
+    <main role="main">
+      <ErrorPageTemplate :error="error" />
+    </main>
+  </NuxtLayout>
 </template>
