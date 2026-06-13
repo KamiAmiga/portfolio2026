@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { gsap } from "gsap";
 import { CustomEase } from "gsap/CustomEase";
-import 'lenis/dist/lenis.css'
 
 gsap.registerPlugin(CustomEase);
 

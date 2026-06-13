@@ -8,16 +8,7 @@ if (!aboutData.value) {
   })
 }
 
-const seoMeta = aboutData?.value?.seo
-
-if (seoMeta) {  
-  useSeoMeta({
-    title: seoMeta.metaTitle,
-    description: seoMeta.metaDescription,
-    ogTitle: seoMeta.metaTitle ?? '',
-    ogDescription: seoMeta.metaDescription ?? '',
-  })
-}
+useSeoFromPageData(aboutData?.value?.seo)
 </script>
 
 <template>

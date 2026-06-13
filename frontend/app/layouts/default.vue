@@ -5,10 +5,11 @@ import 'lenis/dist/lenis.css'
 
 gsap.registerPlugin(ScrollTrigger);
 
+const nuxtApp = useNuxtApp()
 const lenisRef = ref()
 
 watchEffect((onInvalidate) => {
-   if (!lenisRef.value?.lenis) return
+  if (!lenisRef.value?.lenis) return
 
   lenisRef.value.lenis.on('scroll', ScrollTrigger.update)
 
@@ -22,6 +23,12 @@ watchEffect((onInvalidate) => {
   onInvalidate(() => {
     gsap.ticker.remove(update)
   })
+})
+
+nuxtApp.hook("page:start", () => {
+  if (!lenisRef.value) return
+  
+  lenisRef.value.lenis.scrollTo(0, {immediate: true})
 })
 </script>
 
