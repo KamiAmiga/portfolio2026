@@ -85,13 +85,16 @@ const frontShapeListener = (event: MouseEvent, shapeSide: 'left' | 'right') => {
 const illustrationParallaxAnim = () => {
   if (!parallaxAnims) return
 
-  parallaxAnims.backgroundX((mousePosition.x / window.innerWidth - 0.5) * 4)
-  parallaxAnims.backgroundY((mousePosition.y / window.innerHeight - 0.5) * 4)
-  parallaxAnims.foregroundX((mousePosition.x / window.innerWidth - 0.5) * 10)
-  parallaxAnims.foregroundY((mousePosition.y / window.innerHeight - 0.5) * 24)
-  parallaxAnims.foregroundX((mousePosition.x / window.innerWidth - 0.5) * -20)
+  const xPosNormalize = mousePosition.x / window.innerWidth - 0.5
+  const yPosNormalize = mousePosition.y / window.innerHeight - 0.5
+
+  parallaxAnims.backgroundX(xPosNormalize * 4)
+  parallaxAnims.backgroundY(yPosNormalize * 4)
+  parallaxAnims.foregroundX(xPosNormalize * 10)
+  parallaxAnims.foregroundY(yPosNormalize * 24)
+  parallaxAnims.foregroundX(xPosNormalize * -20)
   parallaxAnims.foregroundY((mousePosition.y / window.innerHeight) * 16)
-  parallaxAnims.ground((mousePosition.x / window.innerWidth - 0.5) * 16)
+  parallaxAnims.ground(xPosNormalize * 16)
 }
 
 const frontShapeNameAnim = (currentShape: HTMLElement | null, shapeSide: 'left' | 'right') => {
