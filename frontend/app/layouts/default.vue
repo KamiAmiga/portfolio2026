@@ -33,7 +33,14 @@ nuxtApp.hook("page:start", () => {
 </script>
 
 <template>
-  <VueLenis root ref="lenisRef" :options="{ autoRaf: false, stopInertiaOnNavigate: true }" />
+  <VueLenis
+    root
+    ref="lenisRef"
+    :options="{ 
+      autoRaf: false,
+      stopInertiaOnNavigate: true,
+      lerp: .06
+    }" />
 
   <slot />
 </template>
