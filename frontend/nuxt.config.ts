@@ -31,6 +31,7 @@ export default defineNuxtConfig({
   modules: [
     '@nuxt/content',
     '@nuxt/image',
+    '@tresjs/nuxt',
     'lenis/nuxt',
     'nuxt-icons',
     'nuxt-strapi-blocks-renderer',

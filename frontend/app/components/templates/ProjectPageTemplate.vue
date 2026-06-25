@@ -1,6 +1,10 @@
 <script lang="ts" setup>
 import { gsap } from "gsap";
 import type { ProjectsCollectionItem } from "@nuxt/content";
+import ProjectMainImagesCanvas from "../organisms/ProjectMainImagesCanvas.vue";
+
+// https://tympanus.net/codrops/2024/02/07/on-scroll-revealing-webgl-image-explorations/
+// https://tympanus.net/codrops/2024/08/27/grid-displacement-texture-with-rgb-shift-using-three-js-gpgpu-and-shaders/
 
 const props = defineProps<{ 
   data: ProjectsCollectionItem
@@ -137,7 +141,7 @@ useGSAP((isReducedMotion, context) => {
     </div>
   </Grid>
 
-  <section 
+  <!-- <section 
     v-if="data?.main_images?.at(0)"
     class="project-main-imgs">
     <ProjectMainImage 
@@ -146,7 +150,8 @@ useGSAP((isReducedMotion, context) => {
       :images="mainImage.images"
       :type="mainImage.type"
       :index="index" />
-  </section>
+  </section> -->
+  <ProjectMainImagesCanvas :images="data.main_images" />
 </div>
 
 <Grid v-if="data?.typography?.at(0) || data?.colors?.at(0)" splitting="halves">
