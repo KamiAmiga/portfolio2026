@@ -18,7 +18,11 @@ const props = defineProps<{
         </NuxtLink>
       </li>
 
-      <li v-for="link in links" :key="link.target">
+      <li
+        v-for="(link, index) in links"
+        :key="link.target"
+        class="main-menu__list__item"
+        :style="{ '--index': index }">
         <MainMenuLink :link="link" />
       </li>
     </ul>
