@@ -1,18 +1,9 @@
 .title {
   margin: 0;
   position: relative;
-  text-shadow: 
-    0
-    0 
-    var(--spacer-xs)
-    color-mix(
-      in srgb,
-      transparent var(--opacity-percentage-6),
-      var(--color-primary-reverse)
-    );
 
   &__content {
-    overflow-y: hidden;
+    overflow-y: clip;
   }
 
   &__background {

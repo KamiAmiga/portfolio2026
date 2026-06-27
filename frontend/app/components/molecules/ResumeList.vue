@@ -38,7 +38,7 @@ useGSAP((isReducedMotion, context) => {
 <ul class="resume-list" ref="resumeList">
   <li v-for="resumeItem in resume" :key="resumeItem.id">
     <a
-      class="resume-list__link font-sans--base-capitalized"
+      class="resume-list__link text-shadow--sm font-sans--base-capitalized"
       target="_blank"
       :href="resumeItem.file.url">
       {{ resumeItem.name }}

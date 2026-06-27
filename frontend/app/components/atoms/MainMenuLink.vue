@@ -9,7 +9,7 @@ const props = defineProps<{
 
 <template>
 <NuxtLink
-  class="main-menu-link font-sans--base-bold"
+  class="main-menu-link text-shadow--sm font-sans--base-bold"
   :to="link.target"
   @click="(event) => (event.target as HTMLElement).blur()">
   {{ link.label }}

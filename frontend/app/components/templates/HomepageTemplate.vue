@@ -365,8 +365,8 @@ onUnmounted(() => {
       <h1 class="title">
         <span class="sr-only">{{ data.title }} {{ data.subtitle }}</span>
 
-        <div class="title__small font-sans--md-capitalized">{{ data.title }}</div>
-        <div class="title__large font-sans--3xl">{{ data.subtitle }}</div>
+        <div class="title__small text-shadow--sm font-sans--md-capitalized">{{ data.title }}</div>
+        <div class="title__large text-shadow--lg font-sans--3xl">{{ data.subtitle }}</div>
       </h1>
     </Grid>
 

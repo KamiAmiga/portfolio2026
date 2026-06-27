@@ -15,7 +15,7 @@ const props = defineProps<{
 <template>
   <li class="skill-item" :class="`skill-item--${skill.category}`">
     <Icon class="skill-item__main-icon" size="lg" :name="skill.icon_name" />
-    <div>{{ skill.name }}</div>
+    <div class="text-shadow--sm">{{ skill.name }}</div>
 
     <template v-if="skill.level">
       <Icon

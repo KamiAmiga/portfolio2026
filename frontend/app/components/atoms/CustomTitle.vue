@@ -23,7 +23,7 @@ const classes = computed(() => {
     'autoalpha',
     'title',
     `title--${props.level}`,
-    props.level === 'main' ? 'font-sans--3xl' : 'font-sans--2xl',
+    props.level === 'main' ? 'font-sans--3xl text-shadow--lg' : 'font-sans--2xl text-shadow--md',
     props.enforceVisibility && props.level === 'main' && 'title--added-bg'
   ].join(' ')
 })

@@ -102,9 +102,9 @@ useGSAP((isReducedMotion, context) => {
 
       <div class="history-list__item__description-wrapper">
         <div class="history-list__item__description">
-          <h3 class="font-sans font-sans--base-bold">{{ historyItem.name }}</h3>
+          <h3 class="text-shadow--sm font-sans--base-bold">{{ historyItem.name }}</h3>
     
-          <div v-if="historyItem.place || historyItem.date" class="font-mono font-mono--sm">
+          <div v-if="historyItem.place || historyItem.date" class="font-mono--sm">
             {{ formatHistoryDateAndPlace({place: historyItem.place, date: historyItem.date}) }}
           </div>
         </div>

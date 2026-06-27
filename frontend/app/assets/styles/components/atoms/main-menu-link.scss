@@ -13,13 +13,13 @@
     bottom: 0;
     background-color: var(--color-accent-base);
     box-shadow:
-      0
-      0
+      1px
+      1px
       var(--spacer-sm)
-      var(--spacer-2xs)
+      1px
       color-mix(
         in srgb,
-        transparent var(--opacity-percentage-6),
+        transparent var(--opacity-percentage-3),
         var(--color-accent-lighter)
       );
     transition: all .16s .04s ease-out;
