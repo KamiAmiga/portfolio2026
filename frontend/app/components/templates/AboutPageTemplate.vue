@@ -6,56 +6,8 @@ const props = defineProps<{
   data: AboutCollectionItem,
 }>()
 
-interface ParallaxAnims {
-  eyeX: gsap.QuickToFunc
-  eyeY: gsap.QuickToFunc
-  eyeInnerX: gsap.QuickToFunc
-  eyeInnerY: gsap.QuickToFunc
-}
-
 const headerBackground = useTemplateRef('headerBackground')
 const menuVisible = ref(false)
-const mousePosition = reactive({ x: 0, y: 0 })
-
-let parallaxAnims: ParallaxAnims | undefined = undefined
-
-const parallaxAnimSettings = {
-  delay: 0.1,
-  ease: "power2.out",
-}
-
-const mouseMoveListener = (event: MouseEvent) => {
-  mousePosition.x = event.clientX
-  mousePosition.y = event.clientY
-
-  illustrationParallaxAnim()
-}
-
-const illustrationParallaxAnim = () => {
-  if (!parallaxAnims || !headerBackground.value) return
-  
-  const headerBackgroundBoundingBox = headerBackground.value.getBoundingClientRect()
-
-
-  const xPosNormalize = mousePosition.x / headerBackgroundBoundingBox.width - 0.5
-  const yPosNormalize = mousePosition.y / (headerBackgroundBoundingBox.y + headerBackgroundBoundingBox.height) - .5
-
-  parallaxAnims.eyeX(xPosNormalize)
-  parallaxAnims.eyeY(yPosNormalize)
-  parallaxAnims.eyeInnerX(xPosNormalize * 12)
-  parallaxAnims.eyeInnerY(yPosNormalize * 12)
-}
-
-watchEffect(() => {
-  if (!menuVisible.value) return
-
-  parallaxAnims = {
-    eyeX: gsap.quickTo('.about-header__background__logo-wrapper', "--eyeX", parallaxAnimSettings),
-    eyeY: gsap.quickTo('.about-header__background__logo-wrapper', "--eyeY", parallaxAnimSettings),
-    eyeInnerX: gsap.quickTo('.about-header__background__logo-wrapper', 'x', parallaxAnimSettings),
-    eyeInnerY: gsap.quickTo('.about-header__background__logo-wrapper', "y", parallaxAnimSettings),
-  }
-})
 
 useGSAP((isReducedMotion, context) => {
   if (isReducedMotion) {
@@ -63,7 +15,6 @@ useGSAP((isReducedMotion, context) => {
   }
 
   const logoWrapper = context.selector?.('.about-header__background__logo-wrapper')
-
   
   const timeline = gsap.timeline({
     onComplete: () => {
@@ -93,15 +44,18 @@ useGSAP((isReducedMotion, context) => {
 <CustomHeader
   title="A propos"
   size="small"
-  class="about-header"
-  @mousemove="mouseMoveListener">
+  class="about-header">
   <template v-slot:background>
     <div class="about-header__background autoalpha" ref="headerBackground" :data-menu-visible="menuVisible">
       <div class="about-header__background__skylines about-header__background__skylines--1"/>
       <div class="about-header__background__skylines about-header__background__skylines--2"/>
       <div class="about-header__background__skylines about-header__background__skylines--3"/>
       <div class="about-header__background__logo-wrapper">
-        <Logo class="about-header__background__logo"/>
+        <Logo 
+          v-if="headerBackground"
+          :hasParallaxAnim="true"
+          :mouseParallaxBoundaries="headerBackground"
+          class="about-header__background__logo"/>
       </div>
     </div>
   </template>

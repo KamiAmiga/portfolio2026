@@ -116,18 +116,6 @@
     }
 
     &__logo {
-      &::before {
-        translate: 
-          calc(var(--eyeX, 0) * var(--wrapper-size) * .45)
-          calc(var(--eyeY, 0) * var(--wrapper-size) * .45);
-      }
-
-      &::after {
-        translate:
-          calc(var(--eyeX, 0) * var(--wrapper-size) * .4)
-          calc(var(--eyeY, 0) * var(--wrapper-size) * .4);
-      }
-
       &-wrapper {
         --wrapper-size: var(--spacer-4xl);
 

@@ -664,14 +664,16 @@
     transform: translateX(calc(var(--ground-parallax, 0) * 1.2px));
 
     &-wrapper {
+      --wrapper-size: var(--spacer-3xl);
+
       display: flex;
       justify-content: center;
       align-items: center;
-      width: var(--spacer-3xl);
+      width: var(--wrapper-size);
       aspect-ratio: 1;
       position: absolute;
-      bottom: calc(var(--horizon-position) - var(--spacer-3xl) * .5);
-      left: calc(50% - var(--spacer-3xl) * .5);
+      bottom: calc(var(--horizon-position) - var(--wrapper-size) * .5);
+      left: calc(50% - var(--wrapper-size) * .5);
       z-index: var(--z-index-base-increase);
       opacity: 0;
       transform-origin: 33% 50%;

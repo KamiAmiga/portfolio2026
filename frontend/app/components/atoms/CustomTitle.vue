@@ -64,10 +64,10 @@ useGSAP((isReducedMotion, context) => {
 
     timeline
       .from(gsapContext.selector?.('.title__border-bold'), {
-          scaleX: 0,
-          duration: type === 'main' ? .3 : .2,
-          ease: "power2.out",
-        }, type === 'main' ? '-=25%' : '-=50%')
+        scaleX: 0,
+        duration: type === 'main' ? .3 : .2,
+        ease: "power2.out",
+      }, type === 'main' ? '-=25%' : '-=50%')
 
     return timeline
   }

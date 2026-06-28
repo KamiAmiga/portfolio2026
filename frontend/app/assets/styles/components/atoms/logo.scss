@@ -22,10 +22,12 @@
   &::before {
     width: 50%;
     aspect-ratio: var(--triangle-aspect-ratio-sm);
-    top: 50%;
+    top: 25%;
     left: 25%;
     background-color: var(--color-primary-base);
-    transform: translateY(-50%);
+    translate: 
+      calc(var(--eye-inner-x, 0) * var(--wrapper-size) * .35)
+      calc(var(--eye-inner-y, 0) * var(--wrapper-size) * .35);
   }
 
   &::after {
@@ -34,5 +36,8 @@
     left: 16.5%;
     bottom: 50%;
     background-color: var(--color-primary-reverse);
+    translate:
+      calc(var(--eye-inner-x, 0) * var(--wrapper-size) * .28)
+      calc(var(--eye-inner-y, 0) * var(--wrapper-size) * .32);
   } 
 }

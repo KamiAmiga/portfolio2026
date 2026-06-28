@@ -9,16 +9,6 @@ const props = defineProps<{
   projectsData?: Pick<ProjectsCollectionItem, "title" | "slug" | "cover_image_portrait">[]
 }>()
 
-interface ParallaxAnims {
-  backgroundX: gsap.QuickToFunc
-  backgroundY: gsap.QuickToFunc
-  foregroundX: gsap.QuickToFunc
-  foregroundY: gsap.QuickToFunc
-  cityscapeX: gsap.QuickToFunc
-  cityscapeY: gsap.QuickToFunc
-  ground: gsap.QuickToFunc
-}
-
 interface CityscapeNamesAnims {
   leftX: gsap.QuickToFunc
   leftY: gsap.QuickToFunc
@@ -27,7 +17,7 @@ interface CityscapeNamesAnims {
 }
 
 const home = useTemplateRef('home');
-const mouseParallaxIsActive = ref(false)
+const mouseListenerIsActive = ref(false)
 const mousePosition = reactive({ x: 0, y: 0 })
 const menuVisible = ref(false)
 const buildingsAnimInterval: Ref<number | null> = ref(null)
@@ -44,13 +34,7 @@ const rightBuildingData = ref(
   }
 )
 
-let parallaxAnims: ParallaxAnims | undefined = undefined
 let cityscapeNamesAnims: CityscapeNamesAnims | undefined = undefined
-
-const parallaxAnimSettings = {
-  delay: 0.1,
-  ease: "power2.out",
-}
 
 const cityscapeAnimSettings = {
   delay: 0.1,
@@ -68,33 +52,16 @@ const getRandomProjectIndex = () => {
 }
 
 const mouseMoveListener = (event: MouseEvent) => {
-  if (!mouseParallaxIsActive.value) return
+  if (!mouseListenerIsActive.value) return
 
   mousePosition.x = event.clientX
   mousePosition.y = event.clientY
-
-  illustrationParallaxAnim()
 }
 
 const frontShapeListener = (event: MouseEvent, shapeSide: 'left' | 'right') => {
-  if (!mouseParallaxIsActive.value) return
+  if (!mouseListenerIsActive.value) return
 
   frontShapeNameAnim(event.target as HTMLElement, shapeSide)
-}
-
-const illustrationParallaxAnim = () => {
-  if (!parallaxAnims) return
-
-  const xPosNormalize = mousePosition.x / window.innerWidth - 0.5
-  const yPosNormalize = mousePosition.y / window.innerHeight - 0.5
-
-  parallaxAnims.backgroundX(xPosNormalize * 4)
-  parallaxAnims.backgroundY(yPosNormalize * 4)
-  parallaxAnims.foregroundX(xPosNormalize * 10)
-  parallaxAnims.foregroundY(yPosNormalize * 24)
-  parallaxAnims.foregroundX(xPosNormalize * -20)
-  parallaxAnims.foregroundY((mousePosition.y / window.innerHeight) * 16)
-  parallaxAnims.ground(xPosNormalize * 16)
 }
 
 const frontShapeNameAnim = (currentShape: HTMLElement | null, shapeSide: 'left' | 'right') => {
@@ -130,17 +97,7 @@ const frontShapeNameAnim = (currentShape: HTMLElement | null, shapeSide: 'left' 
 }
 
 watchEffect(() => {
-  if (!mouseParallaxIsActive.value) return
-
-  parallaxAnims = {
-    backgroundX: gsap.quickTo('.illustration-background', "x", parallaxAnimSettings),
-    backgroundY: gsap.quickTo('.illustration-background', "y", parallaxAnimSettings),
-    foregroundX: gsap.quickTo('.illustration-foreground', "x", parallaxAnimSettings),
-    foregroundY: gsap.quickTo('.illustration-foreground', "y", parallaxAnimSettings),
-    cityscapeX: gsap.quickTo('.illustration__cityscape__shape', "x", parallaxAnimSettings),
-    cityscapeY: gsap.quickTo('.illustration__cityscape__shape', "y", parallaxAnimSettings),
-    ground: gsap.quickTo('.illustration__logo, .illustration__ground', "--ground-parallax", parallaxAnimSettings),
-  }
+  if (!mouseListenerIsActive.value) return
 
   cityscapeNamesAnims = {
     leftX: gsap.quickTo('.illustration__cityscape__shape--front-1 .illustration__cityscape__shape__name', "x", cityscapeAnimSettings),
@@ -159,7 +116,7 @@ useGSAP((isReducedMotion, context) => {
   
   const timeline = gsap.timeline({
     onComplete: () => {
-      mouseParallaxIsActive.value = true
+      mouseListenerIsActive.value = true
 
       buildingsAnimInterval.value = setInterval(() => {
         leftBuildingData.value.current = leftBuildingData.value.next
@@ -454,7 +411,7 @@ onUnmounted(() => {
         </div>
   
         <div class="illustration__logo-wrapper">
-          <Logo class="illustration__logo" />
+          <Logo :hasParallaxAnim="true" :disableOuterAnim="true" class="illustration__logo" />
         </div>
       </div>
     </div>
