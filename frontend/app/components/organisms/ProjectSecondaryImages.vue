@@ -7,6 +7,7 @@ defineProps<{
 }>();
 
 const projectSecondaryImages = useTemplateRef('projectSecondaryImages')
+const loadAssets = useAssetsLoading(projectSecondaryImages)
 
 useGSAP((isReducedMotion, context) => {
   if (isReducedMotion) {
@@ -51,7 +52,8 @@ useGSAP((isReducedMotion, context) => {
         class="project-secondary-image"
         format="half_grid"
         :is-cover="true"
-        :picture-data-default="secondaryImg" />
+        :picture-data-default="secondaryImg"
+        :loading="loadAssets" />
     </div>
   </Grid>
 </div>

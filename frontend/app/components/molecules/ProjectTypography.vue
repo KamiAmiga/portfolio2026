@@ -7,6 +7,7 @@ defineProps<{
 }>();
 
 const projectTypography = useTemplateRef('projectTypography')
+const loadAssets = useAssetsLoading(projectTypography)
 
 useGSAP((isReducedMotion, context) => {
   if (isReducedMotion) {
@@ -51,7 +52,7 @@ useGSAP((isReducedMotion, context) => {
       :src="`${font.typo_visual?.url}`"
       :alt="font.typo_name"
       class="project-typography__item__visual"
-      loading="lazy" >
+      :loading="loadAssets" >
   </li>
 </ul>
 </template>

@@ -9,6 +9,7 @@ defineProps<{
 }>();
 
 const projectNextLink = useTemplateRef('projectNextLink')
+const loadAssets = useAssetsLoading(projectNextLink)
 
 useGSAP((isReducedMotion, context) => {
   if (isReducedMotion) {
@@ -44,7 +45,8 @@ useGSAP((isReducedMotion, context) => {
       class="project-next-link__image"
       format="full_screen"
       :isCover="true"
-      :pictureDataDefault="coverImg" />
+      :pictureDataDefault="coverImg"
+      :loading="loadAssets" />
 
     <div class="project-next-link__label">
       <div class="project-next-link__label__line-wrapper">
