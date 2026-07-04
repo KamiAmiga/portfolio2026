@@ -1,0 +1,55 @@
+@use '../../abstracts/' as *;
+
+.curtains {
+  display: grid;
+  position: absolute;
+  inset: 0;
+  grid-template-columns: repeat(4, 1fr);
+
+  @include breakpoint-l-up {
+    grid-template-columns: repeat(6, 1fr);
+  }
+
+  @include reduced-motion {
+    display: none;
+  }
+
+  &-wrapper {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: calc(var(--z-index-crt) - 1);
+  }
+
+  &--back {
+    --background: color-mix(
+      in srgb,
+      var(--color-primary-darker) var(--opacity-percentage-7),
+      var(--color-accent-darker)
+    );
+
+    z-index: var(--z-index-base-decrease);
+    opacity: var(--opacity-6);
+  }
+
+  &--front {
+    --background: var(--color-primary-base);
+  }
+  
+  &__element {
+    position: relative;
+    z-index: 1;
+    transform: scaleY(0);
+    transform-origin: top center;
+    background: var(--background);
+    box-shadow: 0 -2px 0 2px var(--background);
+
+    &:nth-child(n + 5) {
+      display: none;
+
+      @include breakpoint-l-up {
+        display: block;
+      }
+    }
+  }
+}

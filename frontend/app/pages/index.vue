@@ -1,4 +1,10 @@
 <script lang="ts" setup>
+import transitionConfig from '../helpers/pageTransitionConfig';
+
+const props = defineProps<{ 
+  id: string
+}>()
+
 const { data: homeData } = await useAsyncData('home-data', () => queryCollection('home').first())
 const { data: projectsData } = await useAsyncData(
   'home-projects-data',
@@ -14,12 +20,15 @@ if (!homeData.value) {
   })
 }
 
-definePageMeta({ layout: 'no-smooth-scroll' })
-
+definePageMeta({ 
+  pageTransition: transitionConfig
+})
 
 useSeoFromPageData(homeData?.value?.seo)
 </script>
 
-<template>
-  <HomepageTemplate v-if="homeData" :data="homeData" :projectsData="projectsData" />
+<template >
+  <main role="main" :id="id">
+    <HomepageTemplate v-if="homeData" :data="homeData" :projectsData="projectsData" />
+  </main>
 </template>

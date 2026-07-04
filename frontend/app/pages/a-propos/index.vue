@@ -1,4 +1,10 @@
 <script setup lang="ts">
+import transitionConfig from '../../helpers/pageTransitionConfig';
+
+const props = defineProps<{ 
+  id: string
+}>()
+
 const { data: aboutData } = await useAsyncData('about', () => queryCollection('about').first())
 
 if (!aboutData.value) {
@@ -8,9 +14,15 @@ if (!aboutData.value) {
   })
 }
 
+definePageMeta({ 
+  pageTransition: transitionConfig
+})
+
 useSeoFromPageData(aboutData?.value?.seo)
 </script>
 
 <template>
-  <AboutPageTemplate v-if="aboutData" :data="aboutData"/>
+  <main role="main" :id="id">
+    <AboutPageTemplate v-if="aboutData" :data="aboutData"/>
+  </main>
 </template>

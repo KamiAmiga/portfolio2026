@@ -1,4 +1,10 @@
 <script setup lang="ts">
+import transitionConfig from '../../helpers/pageTransitionConfig';
+
+const props = defineProps<{ 
+  id: string
+}>()
+
 const { data: projectsListPageData } = await useAsyncData('projects-list-page', () => queryCollection('projectsList').first())
 const { data: projectsData } = await useAsyncData(
   'projects-data',
@@ -15,10 +21,16 @@ if (!projectsListPageData.value) {
   })
 }
 
+definePageMeta({ 
+  pageTransition: transitionConfig
+})
+
 useSeoFromPageData(projectsListPageData?.value?.seo)
 </script>
 
 <template>
-  <ProjectsListPageTemplate v-if="projectsListPageData" :data="projectsListPageData" :projectsData="projectsData" />
+  <main role="main" :id="id">
+    <ProjectsListPageTemplate v-if="projectsListPageData" :data="projectsListPageData" :projectsData="projectsData" />
+  </main>
 </template>
 

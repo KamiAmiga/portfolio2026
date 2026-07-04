@@ -9,6 +9,7 @@ const props = withDefaults(
   })
 
 const wrapper = useTemplateRef('wrapper')
+const { transitionState } = useTransitionComposable();
 
 useGSAP((isReducedMotion, context) => {
   if (isReducedMotion) {
@@ -21,30 +22,34 @@ useGSAP((isReducedMotion, context) => {
       once: true,
     }
   })
-
-  timeline
-    .from(wrapper.value, {
-      autoAlpha: 0
-    })
-    .from(context.selector?.('.richtext-wrapper__content'), {
-      y: 20,
-      duration: .6,
-      ease: 'expo.out'
-    })
-    .from(context.selector?.('.richtext-wrapper__content'), {
-      opacity: 0,
-      duration: .4,
-      ease: 'power3.out'
-    }, '<')
   
-  if (props.withFocus) {[
-    timeline
-      .from(wrapper.value, {
-        '--focus-shape-scale': 0,
-        duration: .3,
-        ease: "power3.inOut"
-      }, '<')
-  ]}
+  watchEffect(() => {
+    if(transitionState.transitionComplete) {
+      timeline
+        .from(wrapper.value, {
+          autoAlpha: 0
+        })
+        .from(context.selector?.('.richtext-wrapper__content'), {
+          y: 20,
+          duration: .6,
+          ease: 'expo.out'
+        })
+        .from(context.selector?.('.richtext-wrapper__content'), {
+          opacity: 0,
+          duration: .4,
+          ease: 'power3.out'
+        }, '<')
+      
+      if (props.withFocus) {[
+        timeline
+          .from(wrapper.value, {
+            '--focus-shape-scale': 0,
+            duration: .3,
+            ease: "power3.inOut"
+          }, '<')
+      ]}
+    }
+  })
 }, wrapper)
 </script>
 

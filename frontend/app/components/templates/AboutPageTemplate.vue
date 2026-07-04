@@ -8,6 +8,7 @@ const props = defineProps<{
 
 const headerBackground = useTemplateRef('headerBackground')
 const menuVisible = ref(false)
+const { transitionState } = useTransitionComposable();
 
 useGSAP((isReducedMotion, context) => {
   if (isReducedMotion) {
@@ -29,13 +30,19 @@ useGSAP((isReducedMotion, context) => {
     .from(headerBackground.value, {
       autoAlpha: 0
     })
-    .to(logoWrapper, {
-      keyframes: [
-        {scale: 1, duration: .25, ease: "power2.in"},
-        {rotation: '+=180deg', duration: .5, ease: "logoSpinEase", delay: -.2},
-        {opacity: 1, duration: .4, ease: "power2.inOut", delay: -.5}
-      ],
-    })
+
+  watchEffect(() => {
+    if(transitionState.transitionComplete) {
+      timeline
+        .to(logoWrapper, {
+          keyframes: [
+            {scale: 1, duration: .25, ease: "power2.in"},
+            {rotation: '+=180deg', duration: .5, ease: "logoSpinEase", delay: -.2},
+            {opacity: 1, duration: .4, ease: "power2.inOut", delay: -.5}
+          ],
+        })
+    }
+  })
 
 }, headerBackground, false)
 </script>

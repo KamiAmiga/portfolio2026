@@ -1,4 +1,8 @@
 <script setup lang="ts">
+const props = defineProps<{ 
+  id: string
+}>()
+
 const { data: shopsData } = await useAsyncData('shops', () => queryCollection('shops').first())
 
 if (!shopsData.value) {
@@ -12,5 +16,7 @@ useSeoFromPageData(shopsData?.value?.seo)
 </script>
 
 <template>
+<main role="main" :id="id">
   <ShopsPageTemplate v-if="shopsData" :data="shopsData" />
+</main>
 </template>

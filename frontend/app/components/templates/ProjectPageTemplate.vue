@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import { gsap } from "gsap";
-import type { ProjectsCollectionItem } from "@nuxt/content";
+import type { ContentNavigationItem, ProjectsCollectionItem } from "@nuxt/content";
 
 const props = defineProps<{ 
   data: ProjectsCollectionItem
-  surroundings?: Pick<ProjectsCollectionItem, 'title' | 'slug' | 'cover_image_landscape'>
+  nextProject?: Pick<ProjectsCollectionItem, 'title' | 'slug' | 'cover_image_landscape'>
 }>()
 
 const headerWrapper = useTemplateRef('headerWrapper')
@@ -166,10 +166,10 @@ useGSAP((isReducedMotion, context) => {
 <ProjectSecondaryImages v-if="data?.secondary_images?.at(0)" :secondaryImgs="data?.secondary_images" />
 
 <ProjectNextLink
-  v-if="surroundings"
-  :title="surroundings.title"
-  :slug="surroundings.slug"
-  :coverImg="surroundings.cover_image_landscape" />
+  v-if="nextProject"
+  :title="nextProject.title"
+  :slug="nextProject.slug"
+  :coverImg="nextProject.cover_image_landscape" />
 </template>
 
 <style lang="scss" scoped>
