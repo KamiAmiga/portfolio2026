@@ -1,8 +1,9 @@
 @use '../../abstracts/' as *;
 
-
 .project-main-image {
   $self: &;
+
+  position: relative;
 
   &--ui-mobile_desktop {
     display: flex;
@@ -22,12 +23,21 @@
     align-items: center;
   }
 
+  &__mask,
+  &__filter {
+    position: absolute;
+    inset: 0;
+    z-index: var(--z-index-base-decrease);
+  }
+
   &__image {
-    max-height: 120vh;
+    width: 100%;
+    max-height: 100vh;
+    object-fit: contain;
 
     &-wrapper {
-      background-color: var(--color-accent-darker);
-
+      max-height: 100vh;
+      
       #{$self}--ui-mobile & {
         max-width: 50%;
 
@@ -36,7 +46,7 @@
         }
       }
     
-      &:first-child {
+      &:first-of-type {
         #{$self}--ui-mobile_desktop & {
           margin-inline-end: 20%;
         }
@@ -45,7 +55,7 @@
           margin-block-start: var(--spacer-up-2xl-3xl);
         }
 
-        &:not(:last-child) {
+        &:not(:last-of-type) {
           #{$self}--design-print & {
             position: relative;
             z-index: var(--z-index-base-increase);
@@ -64,7 +74,7 @@
         }
       }
     
-      &:nth-child(2) {
+      &:nth-of-type(2) {
         #{$self}--ui-mobile_desktop & {
           max-width: 33%;
           margin-block-start: -20%;
