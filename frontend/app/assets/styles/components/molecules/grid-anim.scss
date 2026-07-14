@@ -1,0 +1,8 @@
+.grid-anim {
+  &__mask,
+  &__filter {
+    position: absolute;
+    inset: 0;
+    z-index: var(--z-index-base-decrease);
+  }
+}

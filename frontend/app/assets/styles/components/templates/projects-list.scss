@@ -1,33 +1,19 @@
 @use '../../abstracts/' as *;
 
 .projects-list {
-  &-viewport {
-    width: 100%;
-    position: relative;
-    overflow: hidden;
-  }
+  --block-start-spacing: calc(var(--spacer-3xl) + env(safe-area-inset-bottom));
+  --block-end-spacing: calc(var(--spacer-3xl) + var(--spacer-2xl) + env(safe-area-inset-bottom));
 
-  &-wrapper {
-    display: flex;
-    flex-wrap: nowrap;
-    position: relative;
-    will-change: transform;
-  }
-
-  --block-start-spacing: calc(var(--spacer-4xl) + env(safe-area-inset-bottom));
-  --block-end-spacing: calc(var(--spacer-3xl) + env(safe-area-inset-bottom));
-
-  display: flex;
-  flex-wrap: nowrap;
-  align-items: end;
-  padding: 0;
-  margin: 0;
-  position: relative;
   list-style-type: none;
-  will-change: transform;
+  margin: 0;
+  padding: 0;
 
-  &::after {
-    content: '';
+  @include breakpoint-m-landscape-up {
+    --block-end-spacing: calc(var(--spacer-3xl) + env(safe-area-inset-bottom));
+  }
+
+  &::before {
+    content: "";
     width: 100%;
     height: 1px;
     background-color: var(--color-accent-base);
@@ -36,7 +22,105 @@
     bottom: var(--block-end-spacing);
   }
 
-  @include breakpoint-m-landscape-up {
-    --block-start-spacing: calc(var(--spacer-3xl) + env(safe-area-inset-bottom));
+  &-control {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: var(--spacer-2xl);
+    aspect-ratio: 1;
+    padding: 0;
+    border: none;
+    position: fixed;
+    bottom: calc(var(--spacer-2xl) + env(safe-area-inset-bottom));
+    color: var(--color-primary-reverse);
+    background-color: transparent;
+    cursor: pointer;
+
+    @include breakpoint-m-landscape-up {
+      height: var(--spacer-xl);
+      bottom: calc(50% - var(--spacer-xl));
+    }
+
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      transform: rotate(45deg);
+    }
+
+    &::before {
+      inset: var(--spacer-sm);
+      z-index: var(--z-index-base-decrease);
+      background: no-repeat linear-gradient(
+        var(--gradient-angle),
+        color-mix(
+          in srgb,
+          transparent var(--opacity-percentage-5),
+          var(--color-secondary-darker)
+        ),
+        color-mix(
+          in srgb,
+          transparent var(--opacity-percentage-8),
+          var(--color-secondary-darker)
+        ) 80%,
+      );
+    }
+
+    &::after {
+      inset: calc(var(--spacer-2xs) + var(--spacer-sm));
+      border: 1px solid color-mix(
+        in srgb,
+        transparent var(--opacity-percentage-9),
+        var(--color-secondary-lighter)
+      );
+      transition: border .2s ease-in-out,
+        inset .2s ease-out;
+    }
+
+    &:focus-visible::after,
+    &:hover::after {
+      inset: calc(var(--spacer-xs) + var(--spacer-sm));
+      border-color: color-mix(
+        in srgb,
+        transparent var(--opacity-percentage-7),
+        var(--color-secondary-lighter)
+      );
+    }
+
+    &--prev {
+      --gradient-angle: 45deg;
+
+      right: calc(50% + var(--spacer-sm));
+
+      @include breakpoint-m-landscape-up {
+        right: unset;
+        left: var(--spacer-xl);
+      }
+    }
+
+    &--next {
+      --gradient-angle: 235deg;
+
+      left: calc(50% + var(--spacer-sm));
+
+      @include breakpoint-m-landscape-up {
+        left: unset;
+        right: var(--spacer-xl);
+      }
+    }
+
+    &__icon {
+      transition: transform .2s ease-out;
+
+      .projects-list-control--prev:hover &,
+      .projects-list-control--prev:focus-visible & {
+        transform: translateX(-12.5%);
+      }
+
+      .projects-list-control--next:hover &,
+      .projects-list-control--next:focus-visible & {
+        transform: translateX(12.5%);
+      }
+    }
   }
 }

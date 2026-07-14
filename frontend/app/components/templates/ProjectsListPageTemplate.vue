@@ -8,96 +8,109 @@ const props = defineProps<{
   projectsData?: Pick<ProjectsCollectionItem, "title" | "slug" | "cover_image_portrait" | "cover_image_landscape">[]
 }>()
 
-const projectsList = useTemplateRef('projectsList')
-const projectsListWrapper = useTemplateRef('projectsListWrapper')
-const projectsListScroller = useTemplateRef('projectsListScroller')
-const menuVisible = ref(false)
-const projectsItemsScrollStatus = ref(props.projectsData?.map((_, index) => ({visible: index === 0, preload: index <= 1})) ?? [])
+const slideToProject = (index: number) => {
+  animating.value = true;
+  currentIndex.value = index;
+}
 
-useGSAP((isReducedMotion) => {
-  let pinWrapWidth: number;
-  let horizontalScrollLength:number;
+const handleKeydown = (event: KeyboardEvent) => {
+  if (animating.value) return
 
-  const projectItems = projectsListWrapper.value?.querySelectorAll('.project-item');
-
-  const refresh = () => {
-    if (!projectsListWrapper.value || !projectsListScroller.value) return
-    
-    pinWrapWidth = projectsListScroller.value.scrollWidth;
-    horizontalScrollLength = pinWrapWidth - window.innerWidth;
+  if (
+    (event.code === "ArrowUp" || event.code === "ArrowLeft")
+    && currentIndex.value > 0
+  ) {
+    slideToProject(currentIndex.value - 1);
   }
 
-  const scrollTween = gsap.to(projectsListScroller.value, {
-    scrollTrigger: {
-      scrub: true,
-      trigger: projectsListWrapper.value,
-      pin: projectsListWrapper.value,
-      start: "center center",
-      end: () => `+=${pinWrapWidth}`,
-      invalidateOnRefresh: true
-    },
-    x: () => -horizontalScrollLength,
-    ease: "none"
-  });
+  if (
+    (event.code === "ArrowDown" ||event.code === "ArrowRight")
+    && currentIndex.value < (props.projectsData?.length ?? 0) -1
+  ) {
+    slideToProject(currentIndex.value + 1);
+  }
+}
 
-  refresh();
+const setAnimEnded = () => {
+  animating.value = false
+};
 
-  ScrollTrigger.addEventListener("refreshInit", refresh);
+const projectsList = useTemplateRef('projectsList')
+const animating = ref(false)
+const currentIndex = ref(0)
 
+useGSAP((isReducedMotion) => {
   if (isReducedMotion) {
     return
   }
 
-  projectItems?.forEach((projectItem, index) => {
-    gsap.from(projectItem, {
-      scrollTrigger: {
-        trigger: projectItem,
-        start: 'left 75%',
-        end: 'right end',
-        containerAnimation: scrollTween,
-        onEnter: () => {
-          const currentItem = projectsItemsScrollStatus.value[index]
-          const nextItem = projectsItemsScrollStatus.value[index + 1]
+  const timeline = gsap.timeline()
 
-          if (currentItem) {
-            currentItem.visible = true
-          }
-          
-          if (nextItem) {
-            nextItem.preload = true
-          }
-        },
-      },
-    });
-  });
-
-  gsap.from(projectsList.value, {
-    autoAlpha: 0,
-    onComplete: (() => {
-      menuVisible.value = true
+  timeline
+    .from(projectsList.value, {
+      autoAlpha: 0
     })
-  })
-}, projectsListWrapper)
+
+  ScrollTrigger.observe({
+    target: window,
+    type: "wheel,touch,pointer",
+    preventDefault: true,
+    wheelSpeed: -1,
+    onUp: () => {
+      if (animating.value || currentIndex.value === (props.projectsData ?? []).length - 1) return;
+      slideToProject(currentIndex.value + 1);
+    },
+    onDown: () => {
+      if (animating.value || currentIndex.value === 0) return;
+      slideToProject(currentIndex.value - 1);
+    },
+    tolerance: 16,
+  });
+}, projectsList)
+
+onMounted(() => {
+  document.addEventListener('keydown', handleKeydown);
+})
+
+onUnmounted(() => {
+  document.removeEventListener('keydown', handleKeydown)
+})
 </script>
 
 <template>
 <h1 class="sr-only">{{ data?.title }}</h1>
 
-<section
-  v-if="projectsData"
+<div
   ref="projectsList"
-  class="projects-list-viewport autoalpha"
-  :data-menu-visible="menuVisible">
-  <div ref="projectsListWrapper" class="projects-list-wrapper">          
-    <ul ref="projectsListScroller" v-if="projectsData" class="projects-list">
-      <ProjectsListItem 
-        v-for="(project, index) in projectsData"
-        :key="project?.slug"
-        :project="project"
-        :visibilityStatus="projectsItemsScrollStatus[index]" />
-    </ul>
-  </div>
-</section>
+  class="autoalpha">
+  <ul class="projects-list">
+    <ProjectsListItem 
+      v-for="(project, index) in projectsData"
+      :key="project?.slug"
+      :project="project"
+      :index="index"
+      :visibilityStatus="{
+        visible : index === currentIndex,
+        preload: index <= currentIndex + 1
+      }"
+      @endAnim="setAnimEnded" />
+  </ul>
+  
+  <button
+    v-if="currentIndex > 0"
+    class="projects-list-control projects-list-control--prev"
+    @click="() => slideToProject(currentIndex - 1)">
+    <span class="sr-only">Projet précédent</span>
+    <Icon name="arrow-left" class="projects-list-control__icon" />
+  </button>
+  <button
+    v-if="currentIndex < (projectsData?.length ?? 0) -1"
+    class="projects-list-control projects-list-control--next"
+    @click="() => slideToProject(currentIndex + 1)">
+    <span class="sr-only">Projet suivant</span>
+    <Icon name="arrow-right" class="projects-list-control__icon" />
+  </button>
+</div>
 </template>
 
 <style lang="scss" scoped>

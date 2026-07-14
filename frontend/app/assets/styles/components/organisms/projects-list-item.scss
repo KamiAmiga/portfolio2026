@@ -1,16 +1,13 @@
 @use '../../abstracts/' as *;
 
-.project-item {
+.projects-list-item {
+  $self: &;
+
   width: 100vw;
   height: 100vh;
-  padding-block-start: var(--block-start-spacing);
-  padding-block-end: var(--block-end-spacing);
-  padding-inline-start: var(--spacer-up-xl-2xl);
-  padding-inline-end: var(--spacer-md);
-
-  &:not(:last-of-type) {
-    margin-inline-end: max(var(--spacer-4xl), 10vw);
-  }
+  padding: var(--block-start-spacing) var(--spacer-md) var(--block-end-spacing) var(--spacer-up-xl-2xl);
+  position: fixed;
+  inset: 0;
 
   &__link {
     display: block;
@@ -107,36 +104,44 @@
     &__image {
       position: relative;
       overflow: hidden;
-      box-shadow:
-        0
-        0
-        0
-        0
-        color-mix(
-          in srgb,
-          transparent var(--opacity-percentage-6),
-          var(--color-secondary-base)
-        );
-      transition: box-shadow .3s cubic-bezier(0.76, 0, 0.24, 1);
-
-      .project-item__link:hover &,
-      .project-item__link:focus & {
+      
+      &-wrapper {
+        width: 100%;
+        height: 100%;
         box-shadow:
+          inset
           0
           0
-          var(--spacer-base)
-          var(--spacer-2xs)
+          0
+          0
           color-mix(
             in srgb,
             transparent var(--opacity-percentage-6),
             var(--color-secondary-base)
           );
+        transition: box-shadow .3s cubic-bezier(0.76, 0, 0.24, 1);
+
+        #{$self}__link:hover &,
+        #{$self}__link:focus & {
+          box-shadow:
+            inset
+            0
+            0
+            var(--spacer-base)
+            var(--spacer-2xs)
+            color-mix(
+              in srgb,
+              transparent var(--opacity-percentage-6),
+              var(--color-secondary-base)
+            );
+        }
       }
+
     }
   }
 
   @include breakpoint-m-landscape-up {
     padding-inline-start: max(25vw, var(--spacer-2xl));
-    padding-inline-end: max(15vw, var(--spacer-4xl));
+    padding-inline-end: max(12.5vw, var(--spacer-4xl));
   }
 }
