@@ -3,10 +3,10 @@
   grid-template-columns: 1fr;
   grid-template-rows: 1fr;
   align-items: center;
-  height: clamp(10rem, 30vh, 30vw);
+  height: clamp(15rem, 40vh, 33vw);
+  overflow: clip;
   position: relative;
-  overflow: hidden;
-  margin-block: var(--grid-block-padding);
+  margin-block-start: var(--grid-block-padding);
   text-decoration: none;
 
   &::before,
@@ -26,11 +26,57 @@
     z-index: var(--z-index-base-decrease);
     background: linear-gradient(
       150deg,
-      var(--color-primary-base) 10%,
       transparent,
       var(--color-primary-base) 90%,
     );
     opacity: var(--opacity-7);
+
+    .project-next-link:hover &,
+    .project-next-link:focus & {
+      opacity: var(--opacity-5);
+    }
+  }
+
+  &-wrapper {
+    --focus-el-distance: var(--spacer-base);
+    --border-el-settings: 1px solid var(--color-secondary-lighter);
+
+    position: relative;
+    overflow: clip;
+
+    &::before,
+    &::after {
+      content: "";
+      width: var(--spacer-lg);
+      height: var(--spacer-lg);
+      position: absolute;
+      z-index: var(--z-index-base-increase);
+      opacity: 0;
+      transition: opacity .2s .05s ease-out,
+        transform .25s cubic-bezier(0.33, 1, 0.68, 1);
+    }
+
+    &::before {
+      border-top: var(--border-el-settings);
+      border-left: var(--border-el-settings);
+      top: var(--focus-el-distance);
+      left: var(--focus-el-distance);
+      transform: translate(calc(var(--focus-el-distance) * -1), calc(var(--focus-el-distance) * -1));
+    }
+
+    &::after {
+      border-right: var(--border-el-settings);
+      border-bottom: var(--border-el-settings);
+      right: var(--focus-el-distance);
+      bottom: var(--focus-el-distance);
+      transform: translate(var(--focus-el-distance), var(--focus-el-distance));
+    }
+
+    &:has(.project-next-link:hover, .project-next-link:focus)::before,
+    &:has(.project-next-link:hover, .project-next-link:focus)::after {
+      opacity: 1;
+      transform: translate(0, 0);
+    }
   }
 
   > * {
@@ -43,11 +89,12 @@
     inset: 0;
     z-index: var(--z-index-base-decrease);
     filter: saturate(50%);
+    transform: scale(1.02);
     transition: transform .4s cubic-bezier(0.33, 1, 0.68, 1);
 
     .project-next-link:hover &,
     .project-next-link:focus & {
-      transform: scale(1.02);
+      transform: scale(1);
     }
   }
 
@@ -58,13 +105,9 @@
     padding-inline-end: var(--grid-inline-padding);
     position: relative;
 
-    &__line {
-      display: inline-block;
-
-      &-wrapper {
-        position: relative;
-        overflow: hidden;
-      }
+    &__overtitle,
+    &__title {
+      overflow-y: clip;
     }
   }
 }
