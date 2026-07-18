@@ -8,15 +8,18 @@ let matchMedia = gsap.matchMedia()
 const pageTransition: TransitionProps = {
   name: 'page-transition',
   mode: 'out-in',
+  onBeforeEnter: () => {
+    window.scrollTo(0, 0)
+  },
   onEnter: (page, done) => {
-    matchMedia.add("(prefers-reduced-motion: no-preference)", () => {      
+    matchMedia.add("(prefers-reduced-motion: no-preference)", () => {
       gsap.set('.curtains-wrapper', { display: 'initial' })
       gsap
         .timeline({
           paused: true,
           onComplete() {
-            toggleTransitionComplete(true);
-            done();
+            toggleTransitionComplete(true)
+            done()
           },
         })
         .to('.curtains--front .curtains__element', { 
@@ -41,8 +44,8 @@ const pageTransition: TransitionProps = {
         .timeline({
           paused: true,
           onComplete: () => {
-            toggleTransitionComplete(true);
-            done();
+            toggleTransitionComplete(true)
+            done()
           },
         })
         .to(page, {autoAlpha: 1})
@@ -50,18 +53,13 @@ const pageTransition: TransitionProps = {
     });
   },
   onLeave: (page, done) => {
+    toggleTransitionComplete(false);
     matchMedia.add("(prefers-reduced-motion: no-preference)", () => {
-      toggleTransitionComplete(false);
       gsap.set('.curtains-wrapper', { display: 'initial' })
       gsap
         .timeline({ 
           paused: true,
-          onComplete: () => {
-            window.scrollTo(0, 0)
-            setTimeout(() => {
-              done()
-            }, 300)
-          }
+          onComplete: done
         })
         .to('.curtains--back .curtains__element', {
           scaleY: 1,
@@ -82,10 +80,7 @@ const pageTransition: TransitionProps = {
       gsap
         .timeline({
           paused: true,
-          onComplete() {
-            toggleTransitionComplete(true);
-            done();
-          },
+          onComplete: done
         })
         .to(page, {opacity: 0})
         .play();
