@@ -50,12 +50,16 @@ useGSAP((isReducedMotion, context) => {
     const timeline = gsap.timeline()
 
     timeline
-      .from(splitOvertitle.words, {
-        y: '100%',
+      .set(splitOvertitle.words, { y: '100%' })
+      .from(context.selector?.('.project-next-link__label__overtitle'), {
+        autoAlpha: 0,
+      })
+      .to(splitOvertitle.words, {
+        y: 0,
         duration: .4,
         ease: "power3.inOut",
         stagger: .05
-      })
+      }, '<')
 
     return timeline
   }
@@ -64,13 +68,17 @@ useGSAP((isReducedMotion, context) => {
     const timeline = gsap.timeline()
 
     timeline
-      .from(splitTitle.chars, {
-        opacity: 0,
-        y: '100%',
+      .set(splitTitle.chars, { y: '100%', opacity: 0 })
+      .from(context.selector?.('.project-next-link__label__title'), {
+        autoAlpha: 0,
+      })
+      .to(splitTitle.chars, {
+        opacity: 1,
+        y: 0,
         duration: .3,
         ease: "power2.inOut",
         stagger: .02
-      })
+      }, '<')
 
     return timeline
   }
@@ -101,8 +109,8 @@ useGSAP((isReducedMotion, context) => {
     <div class="project-next-link__label">    
       <span class="sr-only">Projet suivant {{ title }}</span>
       
-      <div class="project-next-link__label__overtitle font-mono--base">Projet suivant</div>
-      <div class="project-next-link__label__title font-sans--md-capitalized">{{ title }}</div>
+      <div class="project-next-link__label__overtitle font-mono--base autoalpha">Projet suivant</div>
+      <div class="project-next-link__label__title font-sans--md-capitalized autoalpha">{{ title }}</div>
     </div>
   </NuxtLink>
 </div>
