@@ -17,6 +17,7 @@
     content: "";
     position: absolute;
     clip-path: polygon(0 0, 100% 50%, 0 100%);
+    scale: var(--eye-inner-scale, 1);
   }
 
   &::before {
@@ -39,5 +40,24 @@
     translate:
       calc(var(--eye-inner-x, 0) * var(--wrapper-size) * .28)
       calc(var(--eye-inner-y, 0) * var(--wrapper-size) * .32);
-  } 
+  }
+
+  &--with-blink {
+    animation: blink 9s both infinite;
+
+    @media (prefers-reduced-motion) {
+      animation: none;
+    }
+
+    @keyframes blink {
+      70%, 73%, 76% {
+        scale: 1 1;
+        clip-path: polygon(0 0, 100% 50%, 0 100%);
+      }
+      71.5%, 74.5% {
+        scale: 1 .75;
+        clip-path: polygon(0 50%, 100% 50%, 0 50%);
+      }
+    }
+  }
 }

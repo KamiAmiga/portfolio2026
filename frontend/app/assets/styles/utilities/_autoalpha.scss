@@ -3,7 +3,7 @@
 .autoalpha {
   visibility: hidden;
 
-  @media (prefers-reduced-motion: reduce) {
+  @media (prefers-reduced-motion) {
     visibility: initial;
   }
 }

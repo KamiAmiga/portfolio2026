@@ -17,7 +17,7 @@ interface CityscapeNamesAnims {
 }
 
 const home = useTemplateRef('home');
-const mouseListenerIsActive = ref(false)
+const illustrationAnimEnded = ref(false)
 const mousePosition = reactive({ x: 0, y: 0 })
 const menuVisible = ref(false)
 const buildingsAnimInterval: Ref<number | null> = ref(null)
@@ -52,14 +52,14 @@ const getRandomProjectIndex = () => {
 }
 
 const mouseMoveListener = (event: MouseEvent) => {
-  if (!mouseListenerIsActive.value) return
+  if (!illustrationAnimEnded.value) return
 
   mousePosition.x = event.clientX
   mousePosition.y = event.clientY
 }
 
 const frontShapeListener = (event: MouseEvent, shapeSide: 'left' | 'right') => {
-  if (!mouseListenerIsActive.value) return
+  if (!illustrationAnimEnded.value) return
 
   frontShapeNameAnim(event.target as HTMLElement, shapeSide)
 }
@@ -97,7 +97,7 @@ const frontShapeNameAnim = (currentShape: HTMLElement | null, shapeSide: 'left' 
 }
 
 watchEffect(() => {
-  if (!mouseListenerIsActive.value) return
+  if (!illustrationAnimEnded.value) return
 
   cityscapeNamesAnims = {
     leftX: gsap.quickTo('.illustration__cityscape__shape--front-1 .illustration__cityscape__shape__name', "x", cityscapeAnimSettings),
@@ -116,7 +116,7 @@ useGSAP((isReducedMotion, context) => {
   
   const timeline = gsap.timeline({
     onComplete: () => {
-      mouseListenerIsActive.value = true
+      illustrationAnimEnded.value = true
 
       buildingsAnimInterval.value = setInterval(() => {
         leftBuildingData.value.current = leftBuildingData.value.next
@@ -411,7 +411,11 @@ onUnmounted(() => {
         </div>
   
         <div class="illustration__logo-wrapper">
-          <Logo :hasParallaxAnim="true" :disableOuterAnim="true" class="illustration__logo" />
+          <Logo
+            :hasParallaxAnim="true"
+            :disableOuterAnim="true"
+            :withBlink="illustrationAnimEnded"
+            class="illustration__logo" />
         </div>
       </div>
     </div>

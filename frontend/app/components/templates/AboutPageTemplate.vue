@@ -1,14 +1,19 @@
 <script setup lang="ts">
 import { gsap } from "gsap";
+import { CustomWiggle } from "gsap/CustomWiggle";
+import { Draggable } from "gsap/Draggable";
 import type { AboutCollectionItem } from '@nuxt/content';
 
 const props = defineProps<{ 
   data: AboutCollectionItem,
 }>()
 
+gsap.registerPlugin(Draggable, CustomWiggle)
+
 const headerBackground = useTemplateRef('headerBackground')
 const menuVisible = ref(false)
-const { transitionState } = useTransitionComposable();
+const { transitionState } = useTransitionComposable()
+const logoBlink = ref(false)
 
 useGSAP((isReducedMotion, context) => {
   if (isReducedMotion) {
@@ -16,11 +21,57 @@ useGSAP((isReducedMotion, context) => {
   }
 
   const logoWrapper = context.selector?.('.about-header__background__logo-wrapper')
+
+  CustomWiggle.create("logoWiggle", {
+    wiggles: 8,
+    type:"uniform"
+  });
+
+  Draggable.create(logoWrapper, {
+    bounds: headerBackground.value ?? undefined,
+    dragResistance: .5,
+    onPress: () => {
+      logoBlink.value = false
+      gsap.to(
+        logoWrapper,
+        {
+          scale: 1.1,
+          '--eye-inner-scale': .85,
+          duration: 0.2,
+          ease:'power3.inOut'
+        }
+      )
+    },
+    onDrag: () => {
+      wiggleTimeline.play()
+    },
+    onRelease: () => {
+      logoBlink.value = true
+      wiggleTimeline.pause()
+      wiggleTimeline.revert()
+      gsap.to(
+        logoWrapper,
+        {
+          scale: 1,
+          '--eye-inner-scale': 1,
+          x:0,
+          y:0,
+          duration: 0.6,
+          ease:'elastic.out(2, .5)'
+        }
+      )
+    },
+  });
   
   const timeline = gsap.timeline({
     onComplete: () => {
       menuVisible.value = true
+      logoBlink.value = true
     }
+  })
+
+  const wiggleTimeline = gsap.timeline({
+    paused: true
   })
 
   timeline
@@ -30,6 +81,15 @@ useGSAP((isReducedMotion, context) => {
     .from(headerBackground.value, {
       autoAlpha: 0
     })
+
+  wiggleTimeline
+    .to(context.selector?.('.logo'), {
+      x: 5,
+      y: 2,
+      rotation: 5,
+      ease: "logoWiggle",
+      repeat: -1
+    });
 
   watchEffect(() => {
     if(transitionState.transitionComplete) {
@@ -43,7 +103,6 @@ useGSAP((isReducedMotion, context) => {
         })
     }
   })
-
 }, headerBackground, false)
 </script>
 
@@ -62,6 +121,7 @@ useGSAP((isReducedMotion, context) => {
           v-if="headerBackground"
           :hasParallaxAnim="true"
           :mouseParallaxBoundaries="headerBackground"
+          :withBlink="logoBlink"
           class="about-header__background__logo"/>
       </div>
     </div>

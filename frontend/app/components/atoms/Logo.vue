@@ -5,6 +5,7 @@ const props = defineProps<{
   hasParallaxAnim?: boolean
   mouseParallaxBoundaries?: HTMLElement | null
   disableOuterAnim?:boolean
+  withBlink?: boolean
 }>()
 
 interface ParallaxAnims {
@@ -28,10 +29,10 @@ const mouseMoveListener = (event: MouseEvent) => {
   mousePosition.x = event.clientX
   mousePosition.y = event.clientY
 
-  illustrationParallaxAnim()
+  logoParallaxAnim()
 }
 
-const illustrationParallaxAnim = () => {
+const logoParallaxAnim = () => {
   if (!parallaxAnims) return
 
   const boundaries = props.mouseParallaxBoundaries ?? document.body
@@ -55,8 +56,8 @@ const illustrationParallaxAnim = () => {
   }
 
   if(!props.disableOuterAnim) {
-    parallaxAnims.eyeX(xPosNormalize * 12)
-    parallaxAnims.eyeY(yPosNormalize * 12)
+    parallaxAnims.eyeX(xPosNormalize * 20)
+    parallaxAnims.eyeY(yPosNormalize * 20)
   }
 
   parallaxAnims.eyeInnerX(xPosNormalize)
@@ -90,7 +91,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div ref="logo" class="logo"/>
+  <div ref="logo" class="logo" :class="{ 'logo--with-blink': withBlink }" />
 </template>
 
 <style lang="scss" scoped>

@@ -12,7 +12,7 @@ const props = defineProps<{
   <Grid splitting="full" :withTopPadding="false" :withBottomPadding="false">
     <ul class="main-menu__list">
       <li class="main-menu__list__item main-menu__list__item--home">
-        <NuxtLink to="/">
+        <NuxtLink to="/" class="main-menu__list__item__link">
           <span class="sr-only">Retour à l'accueil</span>
           <Logo />
         </NuxtLink>

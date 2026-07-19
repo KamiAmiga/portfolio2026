@@ -95,7 +95,7 @@
             );
         }
 
-        @media (prefers-reduced-motion: reduce) {
+        @media (prefers-reduced-motion) {
           transform: translate(-50%, 50%) rotate(45deg);
         }
       }
