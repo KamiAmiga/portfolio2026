@@ -3,6 +3,12 @@ import { gsap } from "gsap";
 
 const props = defineProps<{ 
   index: number
+  customCellsSize?: {
+    min: number
+    max: number
+    windowRatio: number
+  }
+  customGridAppearDuration?: number
 }>()
 const emit = defineEmits(["gridAnimTimeline"])
 
@@ -13,7 +19,13 @@ const createCells = () => {
 
   const width = gridAnimWrapper.value.getBoundingClientRect().width;
   const height = gridAnimWrapper.value.getBoundingClientRect().height;
-  const cellSize = Math.min(Math.max(window.innerWidth / 20, 25), 50)
+  const cellSize = Math.min(
+    Math.max(
+      window.innerWidth / (props.customCellsSize?.windowRatio ?? 20), 
+      (props.customCellsSize?.min ?? 25)
+    ), 
+    (props.customCellsSize?.max ?? 50)
+  )
 
   const cols = Math.floor(width / cellSize);
   const rows = Math.floor(height / cellSize);
@@ -79,7 +91,7 @@ useGSAP((isReducedMotion, context) => {
         duration: .2,
         stagger: {
           ease: 'sine.inOut',
-          amount: .6
+          amount: props.customGridAppearDuration ?? .6
         },
       })
     }

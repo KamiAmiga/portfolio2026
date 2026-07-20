@@ -9,103 +9,33 @@ const props = defineProps<{
   projectsData?: Pick<ProjectsCollectionItem, "title" | "slug" | "cover_image_portrait">[]
 }>()
 
-interface CityscapeNamesAnims {
-  leftX: gsap.QuickToFunc
-  leftY: gsap.QuickToFunc
-  rightX: gsap.QuickToFunc
-  rightY: gsap.QuickToFunc
-}
-
 const home = useTemplateRef('home');
 const illustrationAnimEnded = ref(false)
-const mousePosition = reactive({ x: 0, y: 0 })
+const startBuildingAnims = ref(false)
 const menuVisible = ref(false)
-const buildingsAnimInterval: Ref<number | null> = ref(null)
-const leftBuildingData = ref(
-  {
-    current: 0,
-    next: 0,
-  }
-)
-const rightBuildingData = ref(
-  {
-    current: 1,
-    next: 1
-  }
-)
 
-let cityscapeNamesAnims: CityscapeNamesAnims | undefined = undefined
+const evenAndOddProjects = () => {
+  if(!props.projectsData?.at(0)) return
 
-const cityscapeAnimSettings = {
-  delay: 0.1,
-  ease: "power3.out",
-}
+  const odd = [];
+  const even = [];
 
-const getRandomProjectIndex = () => {
-  const randomNumber = Math.floor(Math.random() * (props.projectsData?.length ?? 0))
-
-  if (randomNumber === leftBuildingData.value.current || randomNumber === rightBuildingData.value.current) {
-    getRandomProjectIndex()
-  }
-
-  return randomNumber
-}
-
-const mouseMoveListener = (event: MouseEvent) => {
-  if (!illustrationAnimEnded.value) return
-
-  mousePosition.x = event.clientX
-  mousePosition.y = event.clientY
-}
-
-const frontShapeListener = (event: MouseEvent, shapeSide: 'left' | 'right') => {
-  if (!illustrationAnimEnded.value) return
-
-  frontShapeNameAnim(event.target as HTMLElement, shapeSide)
-}
-
-const frontShapeNameAnim = (currentShape: HTMLElement | null, shapeSide: 'left' | 'right') => {
-  if (!cityscapeNamesAnims || !currentShape) return
-
-  const currentShapeBoundingBox = currentShape.getBoundingClientRect()
-  const newPos = {
-    x: Math.max(
-        Math.min(
-          mousePosition.x - (currentShapeBoundingBox.left),
-          currentShapeBoundingBox.right ?? 0
-        ),
-        0
-      ),
-    y: Math.max(
-        Math.min(
-          mousePosition.y - (currentShapeBoundingBox.top ?? 0),
-          currentShapeBoundingBox.bottom ?? 0
-        ),
-        0
-      ),
+  for (let index = 0; index < props.projectsData.length; index++) {
+    if (index % 2 === 0) {
+      even.push(props.projectsData[index]);
+    } else {
+      odd.push(props.projectsData[index]);
+    }
   }
   
-  if (shapeSide === 'left') {
-    cityscapeNamesAnims.leftX(newPos.x)
-    cityscapeNamesAnims.leftY(newPos.y)
-  }
-
-  if (shapeSide === 'right') {
-    cityscapeNamesAnims.rightX(newPos.x)
-    cityscapeNamesAnims.rightY(newPos.y)
-  }
+  return { 
+    even: even.filter((project) => !!project),
+    odd: odd.filter((project) => !!project),
+  };
 }
 
-watchEffect(() => {
-  if (!illustrationAnimEnded.value) return
-
-  cityscapeNamesAnims = {
-    leftX: gsap.quickTo('.illustration__cityscape__shape--front-1 .illustration__cityscape__shape__name', "x", cityscapeAnimSettings),
-    leftY: gsap.quickTo('.illustration__cityscape__shape--front-1 .illustration__cityscape__shape__name', "y", cityscapeAnimSettings),
-    rightX: gsap.quickTo('.illustration__cityscape__shape--front-2 .illustration__cityscape__shape__name', "x", cityscapeAnimSettings),
-    rightY: gsap.quickTo('.illustration__cityscape__shape--front-2 .illustration__cityscape__shape__name', "y", cityscapeAnimSettings),
-  }
-})
+const leftBuildingProjectsList = evenAndOddProjects()?.even
+const rightBuildingProjectsList = evenAndOddProjects()?.odd
 
 useGSAP((isReducedMotion, context) => {
   if (isReducedMotion) {
@@ -117,14 +47,6 @@ useGSAP((isReducedMotion, context) => {
   const timeline = gsap.timeline({
     onComplete: () => {
       illustrationAnimEnded.value = true
-
-      buildingsAnimInterval.value = setInterval(() => {
-        leftBuildingData.value.current = leftBuildingData.value.next
-        leftBuildingData.value.next = getRandomProjectIndex()
-        
-        rightBuildingData.value.current = rightBuildingData.value.next
-        rightBuildingData.value.next = getRandomProjectIndex()
-      }, 7500)
     }
   })
   
@@ -260,6 +182,9 @@ useGSAP((isReducedMotion, context) => {
         y: '+130%',
         duration: .4,
         ease: "power2.out",
+        onStart: () => {
+          startBuildingAnims.value = true
+        }
       }, '-=50%')
       .from(gsapContext.selector?.('.illustration__cityscape__lights'), {
         opacity: 0,
@@ -293,25 +218,11 @@ useGSAP((isReducedMotion, context) => {
     .add(cityscapeTimeline(context))
     .add(skylinesTimeline(context), '-=.9')
 }, home, false)
-
-onMounted(() => {
-  if (!home.value) return
-
-  leftBuildingData.value.next = getRandomProjectIndex()
-  rightBuildingData.value.next = getRandomProjectIndex()
-});
-
-onUnmounted(() => {
-  if(buildingsAnimInterval.value) {
-    clearInterval(buildingsAnimInterval.value)
-  }
-});
 </script>
 
 <template>
   <div
     ref="home"
-    @mousemove="mouseMoveListener"
     :data-menu-visible="menuVisible"
     class="autoalpha">
     <Grid
@@ -343,66 +254,26 @@ onUnmounted(() => {
           <div class="illustration__cityscape__shape illustration__cityscape__shape--back-4"/>
           <div class="illustration__cityscape__shape illustration__cityscape__shape--back-5"/>
           <div class="illustration__cityscape__shape illustration__cityscape__shape--back-6"/>
-          <div
+
+          <HomeFrontBuilding 
+            v-if="leftBuildingProjectsList?.at(0)"
             class="illustration__cityscape__shape illustration__cityscape__shape--front-1"
-            @mousemove="(event) => frontShapeListener(event, 'left')">
-            <NuxtLink
-              v-if="projectsData?.at(leftBuildingData.next)"
-              :to="`/projets/${projectsData?.at(leftBuildingData.next)?.slug}`"
-              class="illustration__cityscape__shape__inner">
-              <span class="sr-only">Voir le projet : {{ projectsData.at(leftBuildingData.next)?.title }}</span>
-              
-              <CustomPicture 
-                v-for="(project, index) in projectsData"
-                :key="project?.slug"
-                class="illustration__cityscape__shape__inner__img"
-                :class="{
-                  'illustration__cityscape__shape__inner__img--next': leftBuildingData.next === index,
-                  'illustration__cityscape__shape__inner__img--hidden': leftBuildingData.current !== index && leftBuildingData.next !== index,
-                }"
-                :pictureDataDefault="project.cover_image_portrait"
-                :loading="[leftBuildingData.current, leftBuildingData.next].includes(index) ? 'eager' : 'lazy'"
-                format="fourth_grid"
-                :isCover="true" />
-            </NuxtLink>
-
-            <span
-              v-if="projectsData?.at(leftBuildingData.next)?.title"
-              aria-hidden="true"
-              class="illustration__cityscape__shape__name font-mono--sm">
-              {{ projectsData.at(leftBuildingData.next)?.title }}
-            </span>
-          </div>
-          <div
+            :index="0"
+            side="left"
+            :canStartAnim="startBuildingAnims"
+            :projectsList="leftBuildingProjectsList"
+            :projectsAnimSettings="{ duration: 6.5, delay: 0.05 }"
+            />
+          <HomeFrontBuilding 
+            v-if="rightBuildingProjectsList?.at(0)"
             class="illustration__cityscape__shape illustration__cityscape__shape--front-2"
-            @mousemove="(event) => frontShapeListener(event, 'right')">
-            <NuxtLink
-              v-if="projectsData?.at(rightBuildingData.next)"
-              :to="`/projets/${projectsData?.at(rightBuildingData.next)?.slug}`"
-              class="illustration__cityscape__shape__inner">
-              <span class="sr-only">Voir le projet : {{ projectsData.at(rightBuildingData.next) }}</span>
-              
-              <CustomPicture 
-                v-for="(project, index) in projectsData"
-                :key="project?.slug"
-                class="illustration__cityscape__shape__inner__img"
-                :class="{
-                  'illustration__cityscape__shape__inner__img--next': rightBuildingData.next === index,
-                  'illustration__cityscape__shape__inner__img--hidden': rightBuildingData.current !== index && rightBuildingData.next !== index,
-                }"
-                :pictureDataDefault="project.cover_image_portrait"
-                :loading="[rightBuildingData.current, rightBuildingData.next].includes(index) ? 'eager' : 'lazy'"
-                format="fourth_grid"
-                :isCover="true" />
-            </NuxtLink>
+            :index="1"
+            side="right"
+            :canStartAnim="startBuildingAnims"
+            :projectsList="rightBuildingProjectsList"
+            :projectsAnimSettings="{ duration: 7, delay: .2 }"
+            />
 
-            <span
-              v-if="projectsData?.at(rightBuildingData.next)?.title"
-              aria-hidden="true"
-              class="illustration__cityscape__shape__name font-mono--sm">
-              {{ projectsData.at(rightBuildingData.next)?.title }}
-            </span>
-          </div>
           <div class="illustration__cityscape__lights"/>
         </div>
   
@@ -414,7 +285,7 @@ onUnmounted(() => {
           <Logo
             :hasParallaxAnim="true"
             :disableOuterAnim="true"
-            :withBlink="illustrationAnimEnded"
+            :withBlink="startBuildingAnims"
             class="illustration__logo" />
         </div>
       </div>

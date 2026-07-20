@@ -18,7 +18,7 @@ interface ParallaxAnims {
 const logo = useTemplateRef('logo')
 const mousePosition = reactive({ x: 0, y: 0 })
 
-let parallaxAnims: ParallaxAnims | undefined = undefined
+let parallaxAnims: ParallaxAnims
 
 const parallaxAnimSettings = {
   delay: 0.1,
