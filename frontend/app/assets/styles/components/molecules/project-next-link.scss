@@ -1,3 +1,5 @@
+@use '../../abstracts/' as *;
+
 .project-next-link {
   display: grid;
   grid-template-columns: 1fr;
@@ -89,12 +91,15 @@
     inset: 0;
     z-index: var(--z-index-base-decrease);
     filter: saturate(50%);
-    transform: scale(1.02);
-    transition: transform .4s cubic-bezier(0.33, 1, 0.68, 1);
 
-    .project-next-link:hover &,
-    .project-next-link:focus & {
-      transform: scale(1);
+    @include no-reduced-motion {
+      transform: scale(1.02);
+      transition: transform .4s cubic-bezier(0.33, 1, 0.68, 1);
+  
+      .project-next-link:hover &,
+      .project-next-link:focus & {
+        transform: scale(1);
+      }
     }
   }
 

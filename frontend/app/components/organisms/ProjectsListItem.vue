@@ -25,33 +25,49 @@ const onGridAnimTimeline = (payload: gsap.core.Timeline) => {
 };
 
 useGSAP((isReducedMotion, context) => {
-  if (isReducedMotion) {
-    return
-  }
+  const enterTL = isReducedMotion
+    ? gsap.timeline({
+      paused: true,
+      onStart: () => {
+        leaveTL.revert()
+        gridAnimTimeline.play(0, false)
+      },
+      onComplete: () => {
+        sendEndAnim()
+      }
+    })
+    : gsap.timeline({
+      paused: true,
+      onStart: () => {
+        leaveTL.revert()
+      },
+      onComplete: () => {
+        sendEndAnim()
+      }
+    })
 
-  const enterTL = gsap.timeline({
-    paused: true,
-    onStart: () => {
-      leaveTL.revert()
-    },
-    onComplete: () => {
-      sendEndAnim()
-    }
-  })
-
-  const leaveTL = gsap.timeline({
-    paused: true,
-    onComplete: () => {
-      enterTL.revert()
-      decoratorTimeline().revert()
-      titleWrapperTimeline().revert()
-      titleTimeline.revert()
-      titleTimeline.time(0)
-      imageTimeline().revert()
-      gridAnimTimeline.revert()
-      gridAnimTimeline.time(0)
-    }
-  })
+  const leaveTL = isReducedMotion
+    ? gsap.timeline({
+      paused: true,
+      onComplete: () => {
+        enterTL.revert()
+        gridAnimTimeline.revert()
+        gridAnimTimeline.time(0)
+      }
+    })
+    : gsap.timeline({
+      paused: true,
+      onComplete: () => {
+        enterTL.revert()
+        decoratorTimeline().revert()
+        titleWrapperTimeline().revert()
+        titleTimeline.revert()
+        titleTimeline.time(0)
+        imageTimeline().revert()
+        gridAnimTimeline.revert()
+        gridAnimTimeline.time(0)
+      }
+    })
 
   const decoratorTimeline = () => {
     const timeline = gsap.timeline({
@@ -139,34 +155,69 @@ useGSAP((isReducedMotion, context) => {
     return timeline
   }
 
-  enterTL
-    .set(context.selector?.('.projects-list-item__link__image-wrapper'), {
-      opacity: 0
-    })
-    .set(context.selector?.('.projects-list-item__link__title__decorator'), {
-      opacity: 0
-    })
-    .set(
-      context.selector?.('.projects-list-item__link__title'),
-      {
-        opacity: 0,
-        '--dashes-opacity': 0,
-        '--dashes-y': '100%'
-      }
-    )
-    .to(projectsListItem.value, {
-      autoAlpha: 1
-    })
-    .add(decoratorTimeline)
-    .add(titleWrapperTimeline, '<')
-    .add(imageTimeline, '<+=.1')
+  if (isReducedMotion) {
+    gsap
+      .set(
+        context.selector?.('.title'),
+        {
+          opacity: 0,
+        }
+      )
 
-  leaveTL
-    .to(projectsListItem.value, {
-      opacity: 0,
-      duration: .3,
-      ease: 'sine.inOut'
-    })
+    enterTL
+      .to(projectsListItem.value, {
+        autoAlpha: 1
+      })
+      .set(
+        context.selector?.('.title'),
+        {
+          opacity: 1,
+        }
+      )
+
+    leaveTL
+      .to(projectsListItem.value, {
+        opacity: 0,
+        duration: .3,
+        ease: 'sine.inOut'
+      })
+      .set(
+        context.selector?.('.title'),
+        {
+          opacity: 0,
+        }
+      )
+  }
+  else {
+    enterTL
+      .set(context.selector?.('.projects-list-item__link__image-wrapper'), {
+        opacity: 0
+      })
+      .set(context.selector?.('.projects-list-item__link__title__decorator'), {
+        opacity: 0
+      })
+      .set(
+        context.selector?.('.projects-list-item__link__title'),
+        {
+          opacity: 0,
+          '--dashes-opacity': 0,
+          '--dashes-y': '100%'
+        }
+      )
+      .to(projectsListItem.value, {
+        autoAlpha: 1
+      })
+      .add(decoratorTimeline)
+      .add(titleWrapperTimeline, '<')
+      .add(imageTimeline, '<+=.1')
+
+    leaveTL
+      .to(projectsListItem.value, {
+        opacity: 0,
+        duration: .3,
+        ease: 'sine.inOut'
+      })
+  }
 
   watchEffect(() => {
     if (!props.visibilityStatus) return

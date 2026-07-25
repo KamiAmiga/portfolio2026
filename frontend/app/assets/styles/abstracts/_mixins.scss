@@ -78,3 +78,9 @@
     @content;
   }
 }
+
+@mixin no-reduced-motion {
+  @media (prefers-reduced-motion: no-preference) {
+    @content;
+  }
+}

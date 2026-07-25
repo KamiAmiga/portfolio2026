@@ -9,6 +9,16 @@
   position: fixed;
   inset: 0;
 
+  @include breakpoint-m-landscape-up {
+    padding-inline-start: max(25vw, var(--spacer-2xl));
+    padding-inline-end: max(12.5vw, var(--spacer-4xl));
+  }
+
+  
+  @include reduced-motion {
+    visibility: hidden;
+  }
+
   &__link {
     display: block;
     height: 100%;
@@ -104,12 +114,15 @@
     &__image {
       position: relative;
       overflow: hidden;
-      transform: scale(1.05);
-      transition: transform .4s cubic-bezier(0.33, 1, 0.68, 1);
 
-      #{$self}__link:hover &,
-      #{$self}__link:focus & {
-        transform: scale(1);
+      @include no-reduced-motion {
+        transform: scale(1.05);
+        transition: transform .4s cubic-bezier(0.33, 1, 0.68, 1);
+  
+        #{$self}__link:hover &,
+        #{$self}__link:focus & {
+          transform: scale(1);
+        }
       }
       
       &-wrapper {
@@ -155,10 +168,5 @@
         }
       }
     }
-  }
-
-  @include breakpoint-m-landscape-up {
-    padding-inline-start: max(25vw, var(--spacer-2xl));
-    padding-inline-end: max(12.5vw, var(--spacer-4xl));
   }
 }

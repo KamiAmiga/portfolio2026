@@ -1,3 +1,5 @@
+@use '../../abstracts/' as *;
+
 .about-header {
   &__background {
     display: grid;
@@ -125,7 +127,10 @@
         width: var(--wrapper-size);
         aspect-ratio: 1;
         transform-origin: 33% 50%;
-        transform: scale(0);
+
+        @include no-reduced-motion {
+          transform: scale(0);
+        }
       }
     }
   }

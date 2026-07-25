@@ -53,11 +53,7 @@ const onGridAnimTimeline = (payload: gsap.core.Timeline) => {
 const projectMainImage = useTemplateRef('projectMainImage')
 const loadAssets = useAssetsLoading(projectMainImage)
 
-useGSAP((isReducedMotion) => {
-  if (isReducedMotion) {
-    return
-  }
-
+useGSAP(() => {
   const timeline = gsap.timeline({
     scrollTrigger: {
       trigger: projectMainImage.value,

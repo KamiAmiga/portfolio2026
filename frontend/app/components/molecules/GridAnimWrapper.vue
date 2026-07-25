@@ -8,7 +8,11 @@ const props = defineProps<{
 const emit = defineEmits(["gridAnimTimeline"])
 
 const createCells = () => {
-  if (!svgMaskGroup.value || !gridAnimWrapper.value) return null;
+  if (
+    !svgMaskGroup.value
+    || !gridAnimWrapper.value
+    || window?.matchMedia("(prefers-reduced-motion: reduce)").matches
+  ) return null;
 
   svgMaskGroup.value.innerHTML = '';
 
@@ -64,18 +68,27 @@ const svgMaskRect = useTemplateRef('svgMaskRect')
 const maskCells = ref<SVGRectElement[]>([])
 
 useGSAP((isReducedMotion, context) => {
-  if (isReducedMotion) {
-    return
-  }
-
   const timeline = gsap.timeline({
     paused: true
   })
+
+  emit("gridAnimTimeline", timeline);
 
   timeline
     .from(gridAnimWrapper.value, {
       autoAlpha: 0
     })
+
+  if (isReducedMotion) {
+    timeline
+      .set(gridAnimWrapper.value, {
+        maskImage: 'none',
+        filter: 'none'
+      })
+      .play(0)
+
+    return
+  }
 
   watchEffect(() => {
     if (maskCells.value?.at(0)) {
@@ -116,8 +129,6 @@ useGSAP((isReducedMotion, context) => {
         mode: 'normal'
       }
     })
-
-  emit("gridAnimTimeline", timeline);
 }, gridAnimWrapper)
 
 onMounted(() => {
@@ -130,11 +141,11 @@ onMounted(() => {
 onUnmounted(() => {
   maskCells.value = []
 
-  window.removeEventListener('resize', updateLayout)
-
   svgMaskElement.value?.setAttribute('viewBox', `0 0 100 100`);
   svgMaskRect.value?.querySelector('mask rect')?.setAttribute('width', '100');
   svgMaskRect.value?.querySelector('mask rect')?.setAttribute('height', '100');
+
+  window.removeEventListener('resize', updateLayout)
 })
 </script>
 

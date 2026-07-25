@@ -40,10 +40,6 @@ const animating = ref(false)
 const currentIndex = ref(0)
 
 useGSAP((isReducedMotion) => {
-  if (isReducedMotion) {
-    return
-  }
-
   const timeline = gsap.timeline()
 
   timeline
