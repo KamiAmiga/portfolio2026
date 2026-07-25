@@ -1,7 +1,7 @@
 @use '../../abstracts/' as *;
 
 .projects-list {
-  --block-start-spacing: calc(var(--spacer-3xl) + env(safe-area-inset-bottom));
+  --block-start-spacing: calc(var(--spacer-3xl) + env(safe-area-inset-top));
   --block-end-spacing: calc(var(--spacer-3xl) + var(--spacer-2xl) + env(safe-area-inset-bottom));
 
   list-style-type: none;
@@ -112,14 +112,9 @@
     &__icon {
       transition: transform .2s ease-out;
 
-      .projects-list-control--prev:hover &,
-      .projects-list-control--prev:focus-visible & {
-        transform: translateX(-12.5%);
-      }
-
-      .projects-list-control--next:hover &,
-      .projects-list-control--next:focus-visible & {
-        transform: translateX(12.5%);
+      .projects-list-control:hover &,
+      .projects-list-control:focus-visible & {
+        transform: scale(.85);
       }
     }
   }

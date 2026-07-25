@@ -3,11 +3,6 @@ import { gsap } from "gsap";
 
 const props = defineProps<{ 
   index: number
-  customCellsSize?: {
-    min: number
-    max: number
-    windowRatio: number
-  }
   customGridAppearDuration?: number
 }>()
 const emit = defineEmits(["gridAnimTimeline"])
@@ -21,10 +16,10 @@ const createCells = () => {
   const height = gridAnimWrapper.value.getBoundingClientRect().height;
   const cellSize = Math.min(
     Math.max(
-      window.innerWidth / (props.customCellsSize?.windowRatio ?? 20), 
-      (props.customCellsSize?.min ?? 25)
+      window.innerWidth / 10, 
+      30
     ), 
-    (props.customCellsSize?.max ?? 50)
+    60
   )
 
   const cols = Math.floor(width / cellSize);
@@ -155,7 +150,9 @@ onUnmounted(() => {
       ref="svgMaskElement"
       class="grid-anim__mask"
       viewBox="0 0 100 100"
-      preserveAspectRatio="none">
+      preserveAspectRatio="none"
+      aria-hidden="true"
+      focusable="false">
       <defs>
         <mask :id="`grid-anim-${index}-mask`" maskUnits="userSpaceOnUse">
           <rect
@@ -170,7 +167,12 @@ onUnmounted(() => {
       </defs>
     </svg>
   
-    <svg width="0" height="0" class="grid-anim__filter">
+    <svg
+      width="0"
+      height="0"
+      class="grid-anim__filter"
+      aria-hidden="true"
+      focusable="false">
       <filter :id="`grid-anim-${index}-filter`">
         <feColorMatrix type="matrix" 
           result="red_"

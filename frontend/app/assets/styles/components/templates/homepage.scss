@@ -96,6 +96,18 @@
     inset: 0;
   }
 
+  &-background {
+    background: linear-gradient(
+      to bottom,
+      transparent 80%,
+      color-mix(
+        in srgb,
+        transparent var(--opacity-percentage-8),
+        var(--color-accent-darker)
+      )
+    )
+  }
+
   &__skyline {
     height: 0;
     border-top-width: 2px;

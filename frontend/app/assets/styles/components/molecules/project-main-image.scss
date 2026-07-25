@@ -20,7 +20,6 @@
   &--design-print {
     display: flex;
     flex-direction: column;
-    align-items: center;
   }
 
   &__mask,
@@ -32,8 +31,17 @@
 
   &__image {
     width: 100%;
+    height: auto;
     max-height: 133vh;
     object-fit: contain;
+
+    #{$self}:nth-of-type(odd) & {
+      object-position: right;
+    }
+    
+    #{$self}:nth-of-type(even) & {
+      object-position: left;
+    }
 
     &-wrapper {
       max-height: 133vh;

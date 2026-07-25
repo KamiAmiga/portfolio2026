@@ -8,9 +8,6 @@ let matchMedia = gsap.matchMedia()
 const pageTransition: TransitionProps = {
   name: 'page-transition',
   mode: 'out-in',
-  onBeforeEnter: () => {
-    window.scrollTo(0, 0)
-  },
   onEnter: (page, done) => {
     matchMedia.add("(prefers-reduced-motion: no-preference)", () => {
       gsap.set('.curtains-wrapper', { display: 'initial' })
@@ -59,7 +56,14 @@ const pageTransition: TransitionProps = {
       gsap
         .timeline({ 
           paused: true,
-          onComplete: done
+          onComplete: () => {
+            window.scrollTo({
+              top: 0,
+              left: 0,
+              behavior: "instant",
+            })
+            done()
+          } 
         })
         .to('.curtains--back .curtains__element', {
           scaleY: 1,
@@ -80,7 +84,14 @@ const pageTransition: TransitionProps = {
       gsap
         .timeline({
           paused: true,
-          onComplete: done
+          onComplete: () => {
+            window.scrollTo({
+              top: 0,
+              left: 0,
+              behavior: "instant",
+            })
+            done()
+          } 
         })
         .to(page, {opacity: 0})
         .play();

@@ -53,7 +53,7 @@ const onGridAnimTimeline = (payload: gsap.core.Timeline) => {
 const projectMainImage = useTemplateRef('projectMainImage')
 const loadAssets = useAssetsLoading(projectMainImage)
 
-useGSAP((isReducedMotion, context) => {
+useGSAP((isReducedMotion) => {
   if (isReducedMotion) {
     return
   }
@@ -73,6 +73,10 @@ useGSAP((isReducedMotion, context) => {
       autoAlpha: 0
     })
 }, projectMainImage)
+
+onUnmounted(() => {
+  gridAnimTimeline.revert()
+})
 </script>
 
 <template>  

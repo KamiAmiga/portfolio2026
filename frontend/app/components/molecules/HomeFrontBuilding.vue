@@ -145,7 +145,6 @@ useGSAP((isReducedMotion, context) => {
     <GridAnimWrapper
       v-if="projectsList[currentProjectIndex]?.cover_image_portrait"
       :index="index"
-      :customCellsSize="{ min: 16, max: 32, windowRatio: 80 }"
       :customGridAppearDuration=".4"
       class="home-front-building__inner__img-wrapper"
       @gridAnimTimeline="onGridAnimTimeline">

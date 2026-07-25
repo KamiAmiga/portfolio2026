@@ -44,13 +44,12 @@ export default defineNuxtConfig({
   vite: {
     optimizeDeps: {
       include: [
-        '@vue/devtools-core',
-        '@vue/devtools-kit',
         'gsap',
         'gsap/ScrollTrigger',
-        'gsap/ScrollSmoother',
         'gsap/CustomEase',
         'gsap/SplitText',
+        'gsap/CustomWiggle',
+        'gsap/Draggable',
       ]
     }
   }
