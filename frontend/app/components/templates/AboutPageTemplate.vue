@@ -14,6 +14,7 @@ const headerBackground = useTemplateRef('headerBackground')
 const menuVisible = ref(false)
 const { transitionState } = useTransitionComposable()
 const logoBlink = ref(false)
+const logoDraggedCounter = ref(0)
 
 useGSAP((isReducedMotion, context) => {
   if (isReducedMotion) {
@@ -22,12 +23,23 @@ useGSAP((isReducedMotion, context) => {
 
   const logoWrapper = context.selector?.('.about-header__background__logo-wrapper')
 
+  const logoEntranceKeyframes = [
+    {scale: 1, duration: .25, ease: "power2.in"},
+    {rotation: '+=180deg', duration: .5, ease: "logoSpinEase", delay: -.2},
+    {opacity: 1, duration: .4, ease: "power2.inOut", delay: -.5}
+  ]
+
   CustomWiggle.create("logoWiggle", {
     wiggles: 8,
     type:"uniform"
   });
 
-  Draggable.create(logoWrapper, {
+  CustomWiggle.create("logoAngryWiggle", {
+    wiggles: 5,
+    type:"uniform"
+  });
+
+  const draggables = Draggable.create(logoWrapper, {
     bounds: headerBackground.value ?? undefined,
     dragResistance: .5,
     onPress: () => {
@@ -57,7 +69,14 @@ useGSAP((isReducedMotion, context) => {
           x:0,
           y:0,
           duration: 0.6,
-          ease:'elastic.out(2, .5)'
+          ease:'elastic.out(2, .5)',
+          onComplete: () => {
+            logoDraggedCounter.value++
+
+            if (logoDraggedCounter.value === 5) {
+              angryTimeline.play(0)
+            }
+          }
         }
       )
     },
@@ -67,11 +86,34 @@ useGSAP((isReducedMotion, context) => {
     onComplete: () => {
       menuVisible.value = true
       logoBlink.value = true
+      draggables.at(0)?.enable()
     }
   })
 
   const wiggleTimeline = gsap.timeline({
     paused: true
+  })
+
+  const angryTimeline = gsap.timeline({
+    paused: true,
+    onStart: () => {
+      logoBlink.value = false
+      draggables.at(0)?.disable()
+    },
+    onComplete: () => {
+      logoDraggedCounter.value = 0
+      gsap.delayedCall(5, () => {
+        gsap.set(logoWrapper, {
+          rotation: '-=180deg',
+        })
+        gsap.to(logoWrapper, {
+          keyframes: logoEntranceKeyframes,
+        })
+        
+        angryTimeline.revert()
+        draggables.at(0)?.enable()
+      })
+    }
   })
 
   timeline
@@ -91,15 +133,32 @@ useGSAP((isReducedMotion, context) => {
       repeat: -1
     });
 
+  angryTimeline
+    .to(context.selector?.('.logo'), {
+      background: 'var(--color-secondary-darker)'
+    })
+    .to(context.selector?.('.logo'), {
+      scaleY: .7,
+      clipPath: 'polygon(0 10%, 100% 50%, 0 90%)',
+      ease: 'circ.inOut',
+      duration: .2
+    }, '<+.1')
+    .to(logoWrapper, {
+      x: '25%',
+      ease: 'logoAngryWiggle',
+      duration: .5
+    })
+    .to(logoWrapper, {
+      scale: 0,
+      ease: 'back.in(2)',
+      duration: .4
+    }, '+=.25')
+
   watchEffect(() => {
     if(transitionState.transitionComplete) {
       timeline
         .to(logoWrapper, {
-          keyframes: [
-            {scale: 1, duration: .25, ease: "power2.in"},
-            {rotation: '+=180deg', duration: .5, ease: "logoSpinEase", delay: -.2},
-            {opacity: 1, duration: .4, ease: "power2.inOut", delay: -.5}
-          ],
+          keyframes: logoEntranceKeyframes
         })
     }
   })
