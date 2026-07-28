@@ -21,6 +21,16 @@ export default defineNuxtConfig({
   ],
   css: ['lenis/dist/lenis.css'],
   devtools: { enabled: true },
+  experimental: {
+    defaults: {
+      nuxtLink: {
+        prefetchOn: {
+          interaction: true,
+          visibility: false,
+        },
+      },
+    },
+  },
   image: {
     screens: {
       'xs': 480,

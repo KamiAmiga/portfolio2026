@@ -152,18 +152,18 @@ useGSAP((isReducedMotion, context) => {
 <Grid v-if="data?.typography?.at(0) || data?.colors?.at(0)" splitting="halves">
   <CustomSection v-if="data?.typography?.at(0)" title="Typographie">
     <template v-slot:content>
-      <ProjectTypography :fonts="data.typography" />
+      <LazyProjectTypography :fonts="data.typography" />
     </template>
   </CustomSection>
   
   <CustomSection v-if="data?.colors?.at(0)" title="Couleurs">
     <template v-slot:content>
-      <ProjectColors :colors="data.colors" />
+      <LazyProjectColors :colors="data.colors" />
     </template>
   </CustomSection>
 </Grid>
 
-<ProjectSecondaryImages v-if="data?.secondary_images?.at(0)" :secondaryImgs="data?.secondary_images" />
+<LazyProjectSecondaryImages v-if="data?.secondary_images?.at(0)" :secondaryImgs="data?.secondary_images" />
 
 <ProjectNextLink
   v-if="nextProject"
