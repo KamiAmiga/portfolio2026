@@ -9,21 +9,21 @@ $icon-sizes: (
   xl: map.get($font-sizes, xl),
 );
 
-.nuxt-icon {
+.custom-icon {
   display: inline-block;
   line-height: 1;
 
   @each $key, $value in $icon-sizes {
     &--#{$key} {
       svg {
-        width: $value;
-        height: auto;
+        width: $value !important;
+        height: auto !important;
         aspect-ratio: 1;
       }
     }
   }
 
   svg {
-    margin-bottom: 0;
+    margin-bottom: 0 !important;
   }
 }

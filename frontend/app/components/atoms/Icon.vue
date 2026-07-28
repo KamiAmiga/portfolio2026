@@ -13,7 +13,7 @@ const props = withDefaults(defineProps<Props>(), {
 <template>
 <nuxt-icon
   :name="name"
-  :class="`nuxt-icon--${size}`"
+  :class="`custom-icon--${size}`"
   :aria-label="ariaLabel ?? null"
   :aria-hidden="ariaLabel ? null : true"
   focusable="false" />
