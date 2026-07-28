@@ -19,6 +19,7 @@ export default defineNuxtConfig({
       global: true
     },
   ],
+  css: ['lenis/dist/lenis.css'],
   devtools: { enabled: true },
   image: {
     screens: {
