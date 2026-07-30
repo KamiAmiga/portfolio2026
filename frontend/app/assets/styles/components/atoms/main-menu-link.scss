@@ -4,6 +4,11 @@
   padding-block-end: var(--spacer-xs);
   text-decoration: none;
 
+  &__label {
+    display: inline-block;
+    overflow-y: clip;
+  }
+
   &::after {
     content: "";
     display: block;
