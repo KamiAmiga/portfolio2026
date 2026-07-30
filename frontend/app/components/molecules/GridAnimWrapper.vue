@@ -7,65 +7,90 @@ const props = defineProps<{
 }>()
 const emit = defineEmits(["gridAnimTimeline"])
 
-const createCells = () => {
-  if (
-    !svgMaskGroup.value
-    || !gridAnimWrapper.value
-    || window?.matchMedia("(prefers-reduced-motion: reduce)").matches
-  ) return null;
-
-  svgMaskGroup.value.innerHTML = '';
-
-  const width = gridAnimWrapper.value.getBoundingClientRect().width;
-  const height = gridAnimWrapper.value.getBoundingClientRect().height;
-  const cellSize = Math.min(
-    Math.max(
-      window.innerWidth / 10, 
-      30
-    ), 
-    60
-  )
-
-  const cols = Math.floor(width / cellSize);
-  const rows = Math.floor(height / cellSize);
-
-  const cellW = width / cols;
-  const cellH = height / rows;
-
-  for (let y = 0; y < rows; y++) {
-    for (let x = 0; x < cols; x++) {
-      const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-
-      rect.setAttribute('x', (x * cellW).toString());
-      rect.setAttribute('y', (y * cellH).toString());
-      rect.setAttribute('width', cellW.toString());
-      rect.setAttribute('height', cellH.toString());
-      rect.setAttribute('fill', 'white');
-      rect.setAttribute('shape-rendering', 'crispEdges');
-      rect.setAttribute('opacity', '0');
-
-      svgMaskGroup.value.appendChild(rect);
-      maskCells.value.push(rect);
-    }
-  }
-}
-
-const updateLayout = () => {
-  if (!gridAnimWrapper.value || !svgMaskElement.value || !svgMaskRect.value) return null;
-
-  const width = gridAnimWrapper.value.getBoundingClientRect().width;
-  const height = gridAnimWrapper.value.getBoundingClientRect().height;
-
-  svgMaskElement.value.setAttribute('viewBox', `0 0 ${width} ${height}`);
-  svgMaskRect.value.setAttribute('width', width.toString());
-  svgMaskRect.value.setAttribute('height', height.toString());
-}
+const masksSettings = [
+  {
+    gradient: 'conic-gradient(at 3rem 3rem, #000000 75%, rgba(0, 0, 0, 0.25) 0%)',
+    position: '0 0',
+    size: '12rem 12rem'
+  },
+  {
+    gradient: 'conic-gradient(at 6rem 6rem, #000000 75%, rgba(0, 0, 0, 0.25) 0%)',
+    position: '0 6rem',
+    size: '24rem 48rem'
+  },
+  {
+    gradient: 'conic-gradient(at 3rem 3rem, #000000 75%, rgba(0, 0, 0, 0.25) 0%)',
+    position: '3rem 3rem',
+    size: '12rem 12rem'
+  },
+  {
+    gradient: 'conic-gradient(at 9rem 3rem, #000000 75%, rgba(0, 0, 0, 0.25) 0%)',
+    position: '3rem 12rem',
+    size: '24rem 6rem'
+  },
+  {
+    gradient: 'conic-gradient(at 6rem 6rem, #000000 75%, rgba(0, 0, 0, 0.25) 0%)',
+    position: '6rem 0',
+    size: '12rem 12rem'
+  },
+  {
+    gradient: 'conic-gradient(at 3rem 3rem, #000000 75%, rgba(0, 0, 0, 0.25) 0%)',
+    position: '3rem 12rem',
+    size: '12rem 12rem'
+  },
+  {
+    gradient: 'conic-gradient(at 3rem 3rem, #000000 75%, rgba(0, 0, 0, 0.25) 0%)',
+    position: '6rem 6rem',
+    size: '12rem 12rem'
+  },
+  {
+    gradient: 'conic-gradient(at 6rem 6rem, #000000 75%, rgba(0, 0, 0, 0.25) 0%)',
+    position: '6rem 0',
+    size: '12rem 12rem'
+  },
+  {
+    gradient: 'conic-gradient(at 6rem 6rem, #000000 75%, rgba(0, 0, 0, 0.25) 0%)',
+    position: '3rem 3rem',
+    size: '24rem 24rem'
+  },
+  {
+    gradient: 'conic-gradient(at 6rem 3rem, #000000 75%, rgba(0, 0, 0, 0.25) 0%)',
+    position: '6rem 3rem',
+    size: '12rem 12rem'
+  },
+  {
+    gradient: 'conic-gradient(at 3rem 6rem, #000000 75%, rgba(0, 0, 0, 0.25) 0%)',
+    position: '0 0',
+    size: '12rem 12rem'
+  },
+  {
+    gradient: 'conic-gradient(at 6rem 6rem, #000000 75%, rgba(0, 0, 0, 0.25) 0%)',
+    position: '0 0',
+    size: '12rem 12rem'
+  },
+  {
+    gradient: 'conic-gradient(at 3rem 3rem, #000000 75%, rgba(0, 0, 0, 0.25) 0%)',
+    position: '3rem 3rem',
+    size: '6rem 6rem'
+  },
+  {
+    gradient: 'conic-gradient(at 6rem 6rem, #000000 75%, rgba(0, 0, 0, 0.25) 0%)',
+    position: '6rem 6rem',
+    size: '24rem 24rem'
+  },
+  {
+    gradient: 'conic-gradient(at 6rem 6rem, #000000 75%, rgba(0, 0, 0, 0.25) 0%)',
+    position: '0 0',
+    size: '12rem 12rem'
+  },
+]
+const masksImgKeyframes: string[] = []
 
 const gridAnimWrapper = useTemplateRef('gridAnimWrapper')
-const svgMaskElement = useTemplateRef('svgMaskElement')
-const svgMaskGroup = useTemplateRef('svgMaskGroup')
-const svgMaskRect = useTemplateRef('svgMaskRect')
-const maskCells = ref<SVGRectElement[]>([])
+
+for (let index = 0; index <= masksSettings.length; index++) {
+  masksImgKeyframes.push(masksSettings.slice(0, masksSettings.length - index).map((mask) => mask.gradient).join(','))
+}
 
 useGSAP((isReducedMotion, context) => {
   const timeline = gsap.timeline({
@@ -74,15 +99,9 @@ useGSAP((isReducedMotion, context) => {
 
   emit("gridAnimTimeline", timeline);
 
-  timeline
-    .from(gridAnimWrapper.value, {
-      autoAlpha: 0
-    })
-
   if (isReducedMotion) {
     timeline
       .set(gridAnimWrapper.value, {
-        maskImage: 'none',
         filter: 'none'
       })
       .play(0)
@@ -90,22 +109,24 @@ useGSAP((isReducedMotion, context) => {
     return
   }
 
-  watchEffect(() => {
-    if (maskCells.value?.at(0)) {
-      const shuffled = gsap.utils.shuffle(maskCells.value);
-      
-      timeline.to(shuffled, {
-        opacity: 1,
-        duration: .2,
-        stagger: {
-          ease: 'sine.inOut',
-          amount: props.customGridAppearDuration ?? .6
-        },
-      })
-    }
-  })
-
   timeline
+    .set(context.selector?.('.grid-anim__inner'), {
+      maskImage: masksSettings.map((mask) => mask.gradient).join(','),
+      maskPosition: masksSettings.map((mask) => mask.position).join(','),
+      maskSize: masksSettings.map((mask) => mask.size).join(','),
+      maskRepeat: 'repeat',
+      maskComposite: 'intersect'
+    })
+    .from(gridAnimWrapper.value, {
+      autoAlpha: 0
+    })
+    .to(context.selector?.('.grid-anim__inner'), {
+      keyframes: {
+        maskImage: masksImgKeyframes,
+      },
+      duration: props.customGridAppearDuration ?? .8,
+      ease: 'sine.in',
+    }, '<')
     .to(context.selector?.('.grid-anim__filter feOffset'), {
       attr: {
         dx: 0,
@@ -113,7 +134,7 @@ useGSAP((isReducedMotion, context) => {
       },
       duration: .5,
       ease: "back.in(2)",
-    }, '<')
+    }, '-=100%')
     .to(context.selector?.('.grid-anim__filter feColorMatrix'), {
       attr: {
         values: `1 0 0 0 0
@@ -130,54 +151,15 @@ useGSAP((isReducedMotion, context) => {
       }
     })
 }, gridAnimWrapper)
-
-onMounted(() => {
-  createCells()
-  updateLayout()
-
-  window.addEventListener('resize', updateLayout)
-})
-
-onUnmounted(() => {
-  maskCells.value = []
-
-  svgMaskElement.value?.setAttribute('viewBox', `0 0 100 100`);
-  svgMaskRect.value?.querySelector('mask rect')?.setAttribute('width', '100');
-  svgMaskRect.value?.querySelector('mask rect')?.setAttribute('height', '100');
-
-  window.removeEventListener('resize', updateLayout)
-})
 </script>
 
 <template>
   <div
     ref="gridAnimWrapper"
-    class="grid-anim"
+    class="grid-anim autoalpha"
     :style="{
-      'mask-image': `url(#grid-anim-${index}-mask)`,
       'filter': `url(#grid-anim-${index}-filter)`
     }">
-    <svg
-      ref="svgMaskElement"
-      class="grid-anim__mask"
-      viewBox="0 0 100 100"
-      preserveAspectRatio="none"
-      aria-hidden="true"
-      focusable="false">
-      <defs>
-        <mask :id="`grid-anim-${index}-mask`" maskUnits="userSpaceOnUse">
-          <rect
-            ref="svgMaskRect"
-            x="0"
-            y="0"
-            width="100"
-            height="100"
-            fill="black" />
-          <g ref="svgMaskGroup"></g>
-        </mask>
-      </defs>
-    </svg>
-  
     <svg
       width="0"
       height="0"
@@ -204,7 +186,9 @@ onUnmounted(() => {
       </filter>
     </svg>
     
-    <slot />
+    <div class="grid-anim__inner">
+      <slot />
+    </div>
   </div>
 </template>
 
