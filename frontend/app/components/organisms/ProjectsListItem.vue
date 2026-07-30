@@ -255,7 +255,6 @@ useGSAP((isReducedMotion, context) => {
     <div class="projects-list-item__link__image-wrapper">
       <GridAnimWrapper
         :index="index"
-        :customGridAppearDuration="1.2"
         @gridAnimTimeline="onGridAnimTimeline">
         <CustomPicture 
           v-if="project.cover_image_landscape"
