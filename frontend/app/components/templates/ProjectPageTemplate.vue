@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { gsap } from "gsap";
-import type { ContentNavigationItem, ProjectsCollectionItem } from "@nuxt/content";
+import type { ProjectsCollectionItem } from "@nuxt/content";
 
 const props = defineProps<{ 
   data: ProjectsCollectionItem

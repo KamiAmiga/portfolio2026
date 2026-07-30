@@ -11,9 +11,13 @@ defineProps<{
 
 const projectNextLink = useTemplateRef('projectNextLink')
 const loadAssets = useAssetsLoading(projectNextLink)
+const enableHoverFocusAnim = ref(false)
 
 const handleHoverFocus = () => {
-  if (!splittedTitleTimeline || !splittedOvertitleTimeline) return
+  if (
+    !splittedTitleTimeline 
+    || !splittedOvertitleTimeline 
+    || !enableHoverFocusAnim.value) return
 
   splittedTitleTimeline().play(0)
   splittedOvertitleTimeline().play(0)
@@ -47,7 +51,11 @@ useGSAP((isReducedMotion, context) => {
   });
 
   splittedOvertitleTimeline = () => {
-    const timeline = gsap.timeline()
+    const timeline = gsap.timeline({
+      onComplete: () => {
+        enableHoverFocusAnim.value = true
+      }
+    })
 
     timeline
       .set(splitOvertitle.words, { y: '100%' })

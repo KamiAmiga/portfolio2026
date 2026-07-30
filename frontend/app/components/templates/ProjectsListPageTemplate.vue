@@ -39,7 +39,7 @@ const projectsList = useTemplateRef('projectsList')
 const animating = ref(false)
 const currentIndex = ref(0)
 
-useGSAP((isReducedMotion) => {
+useGSAP(() => {
   const timeline = gsap.timeline()
 
   timeline
@@ -110,5 +110,5 @@ onUnmounted(() => {
 </template>
 
 <style lang="scss" scoped>
-@use '/assets/styles/components/templates/projects-list' as *;
+@use '~/assets/styles/components/templates/projects-list' as *;
 </style>

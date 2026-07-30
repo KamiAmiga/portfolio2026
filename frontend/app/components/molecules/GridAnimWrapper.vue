@@ -109,7 +109,7 @@ useGSAP((isReducedMotion, context) => {
     return
   }
 
-  timeline
+  gsap
     .set(context.selector?.('.grid-anim__inner'), {
       maskImage: masksSettings.map((mask) => mask.gradient).join(','),
       maskPosition: masksSettings.map((mask) => mask.position).join(','),
@@ -117,6 +117,8 @@ useGSAP((isReducedMotion, context) => {
       maskRepeat: 'repeat',
       maskComposite: 'intersect'
     })
+    
+  timeline
     .from(gridAnimWrapper.value, {
       autoAlpha: 0
     })
@@ -126,7 +128,7 @@ useGSAP((isReducedMotion, context) => {
       },
       duration: props.customGridAppearDuration ?? .8,
       ease: 'sine.in',
-    }, '<')
+    }, '<+.1')
     .to(context.selector?.('.grid-anim__filter feOffset'), {
       attr: {
         dx: 0,
@@ -193,5 +195,5 @@ useGSAP((isReducedMotion, context) => {
 </template>
 
 <style lang="scss" scoped>
-@use '../../assets/styles/components/molecules/grid-anim.scss' as *;
+@use '~/assets/styles/components/molecules/grid-anim.scss' as *;
 </style>

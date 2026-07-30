@@ -27,24 +27,24 @@ const onGridAnimTimeline = (payload: gsap.core.Timeline) => {
 useGSAP((isReducedMotion, context) => {
   const enterTL = isReducedMotion
     ? gsap.timeline({
-      paused: true,
-      onStart: () => {
-        leaveTL.revert()
-        gridAnimTimeline.play(0, false)
-      },
-      onComplete: () => {
-        sendEndAnim()
-      }
-    })
+        paused: true,
+        onStart: () => {
+          leaveTL.revert()
+          gridAnimTimeline.play(0, false)
+        },
+        onComplete: () => {
+          sendEndAnim()
+        }
+      })
     : gsap.timeline({
-      paused: true,
-      onStart: () => {
-        leaveTL.revert()
-      },
-      onComplete: () => {
-        sendEndAnim()
-      }
-    })
+        paused: true,
+        onStart: () => {
+          leaveTL.revert()
+        },
+        onComplete: () => {
+          sendEndAnim()
+        }
+      })
 
   const leaveTL = isReducedMotion
     ? gsap.timeline({
@@ -145,11 +145,11 @@ useGSAP((isReducedMotion, context) => {
       .from(
         context.selector?.('.projects-list-item__link__image-wrapper'),
         {
-          x: 150,
+          x: 160,
           duration: .6,
-          ease: 'back.out(1.25)'
+          ease: 'back.out(1.5)'
         },
-        '<+=.4'
+        '<+=.2'
       )
 
     return timeline
@@ -252,23 +252,25 @@ useGSAP((isReducedMotion, context) => {
         @titleTimeline="onTitleTimeline" />
     </div>
 
-    <GridAnimWrapper
-      :index="index"
-      class="projects-list-item__link__image-wrapper"
-      @gridAnimTimeline="onGridAnimTimeline">
-      <CustomPicture 
-        v-if="project.cover_image_landscape"
-        :pictureDataDefault="project.cover_image_landscape"
-        :pictureDataPortrait="project.cover_image_portrait"
-        :isCover="true"
-        :loading="visibilityStatus?.preload ? 'eager' : 'lazy'"
-        format="full_grid"
-        class="projects-list-item__link__image" />
-    </GridAnimWrapper>
+    <div class="projects-list-item__link__image-wrapper">
+      <GridAnimWrapper
+        :index="index"
+        :customGridAppearDuration="1.2"
+        @gridAnimTimeline="onGridAnimTimeline">
+        <CustomPicture 
+          v-if="project.cover_image_landscape"
+          :pictureDataDefault="project.cover_image_landscape"
+          :pictureDataPortrait="project.cover_image_portrait"
+          :isCover="true"
+          :loading="visibilityStatus?.preload ? 'eager' : 'lazy'"
+          format="full_grid"
+          class="projects-list-item__link__image" />
+      </GridAnimWrapper>
+    </div>
   </NuxtLink>
 </li>
 </template>
 
 <style lang="scss" scoped>
-@use '../../assets/styles/components/organisms/projects-list-item.scss' as *;
+@use '~/assets/styles/components/organisms/projects-list-item.scss' as *;
 </style>

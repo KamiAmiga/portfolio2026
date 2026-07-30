@@ -3,7 +3,6 @@ import type { StrapiImage } from "~/types/strapiResponsiveImage";
 interface SeoData {
   metaTitle: string;
   metaDescription: string;
-  metaImage: StrapiImage;
 }
 
 export const useSeoFromPageData = (seoData?: SeoData) => {
