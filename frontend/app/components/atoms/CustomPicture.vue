@@ -22,7 +22,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const modifiers = {
   format: 'webp',
-  quality: 85
+  quality: 75
 }
 
 const img = useImage()
